@@ -1,26 +1,32 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::all();
+        $user = Auth::user();
+        
+        // Get projects where the user is associated or is an admin
+        if ($user->role == 'admin') {
+            $projects = Project::all();
+        } else {
+            $projects = $user->projects;
+        }
+        
         return view('projects.index', compact('projects'));
-
-
-
-
     }
 
     public function create()
     {
-        return view('projects.create');
+        $users = User::all();
+        return view('projects.create', compact('users'));
     }
 
     public function store(Request $request)
@@ -28,17 +34,32 @@ class ProjectController extends Controller
         $request->validate([
             'name' => 'required',
             'type' => 'required',
-            'description' => 'nullable'
+            'description' => 'nullable',
+            'users' => 'required|array',
+            'users.*' => 'exists:users,id',
+        ]);
+    
+        // Proje oluştur
+        $project = Project::create([
+            'name' => $request->name,
+            'type' => $request->type,
+            'description' => $request->description,
+            
         ]);
 
-        Project::create($request->all());
+        $project->users()->attach($request->input('users'));
 
         return redirect()->route('projects.index')->with('success', 'Proje başarıyla oluşturuldu.');
     }
+    
 
     public function show(Project $project)
     {
-        return view('projects.show', compact('project'));
+        // Sadece projede yer alan kullanıcı projeyi görebilir
+        if (Auth::user()->role != 'admin' && !$project->users->contains(Auth::user()->id)) {
+            abort(403, 'Bu projeye erişim izniniz yok.');
+        }
+        return view('projects.index', compact('project'));
     }
 
     public function edit(Project $project)
@@ -65,5 +86,6 @@ class ProjectController extends Controller
 
         return redirect()->route('projects.index')->with('success', 'Proje başarıyla silindi.');
     }
-}
 
+    
+}

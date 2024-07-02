@@ -9,11 +9,6 @@
             <i class="fas fa-home"></i> Anasayfa
         </a>
 
-
-
-
-
-
         <div class="relative group" x-data="{ open: false }">
             <a href="#" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-100 hover:text-blue-800" @click="open = !open">
                 <i class="fas fa-user"></i> Profilim
@@ -31,6 +26,9 @@
                     @csrf
                     <button type="submit" class="w-full text-left">Çıkış Yap</button>
                 </form>            </div>
-        </div>
+        </div> 
     </div>
+    <a href="{{ route('user') }}" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-100 hover:text-blue-800">
+            <i class="fas fa-clock"></i> Mesai Takip
+    </a>
 </div>

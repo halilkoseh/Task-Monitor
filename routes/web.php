@@ -47,9 +47,6 @@ Route::post('/admin/tasks', [AdminController::class, 'storeTask'])->name('admin.
 Route::get('/users/{id}/tasks', [UserController::class, 'showTasks'])->name('admin.index');
 
 
-//yeni
-
-
 
 
 
@@ -99,12 +96,10 @@ Route::get('/admin/users/assaign', [UserController::class, 'assaign'])->name('ad
 
 
 
+Route::get('/admin/projects/{projectId}/users/assaign', [AdminController::class, 'getProjectUsers']);
 
 
 
 
-
-
-Route::get('projects/show/{id}', [AdminController::class, 'index1'])->name('projects.show');
 
 

@@ -24,7 +24,12 @@ class TaskController extends Controller
         return response()->json(['success' => true, 'message' => 'Görev durumu güncellendi']);
     }
 
+    public function destroyTasks(Task $task)
+    {
+        $task->delete();
 
+        return redirect()->route('projects.index')->with('success', 'Başarıyla silindi.');
+    }
 
 }
 

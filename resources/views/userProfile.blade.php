@@ -1,8 +1,4 @@
-<!-- resources/views/profile.blade.php -->
-
 @extends('userLayout.app')
-
-
 
 @section('content')
 <div class="container mx-auto p-4">
