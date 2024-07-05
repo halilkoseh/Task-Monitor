@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-3NDgm8En5yDN9qF8x6cSwpKXoJd/U1kK6Ma4McYAcj3PP5U5cF8NyM4NlbKQ3n8U9sGFAZR/w/lD1fxT8J2N2w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
 
-    <body class="bg-gray-100 text-gray-900 flex">
+    <body class="bg-gray-100 text-gray-900 flex ">
 
 
 

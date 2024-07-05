@@ -9,25 +9,25 @@
             <i class="fas fa-th-large"></i> Ana Sayfa
         </a>
         <a href="#"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-green-600 transition-colors duration-200">
             <i class="fas fa-calendar-alt"></i> Takvim
         </a>
         <a href="{{ route('admin.users.create') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-red-600 transition-colors duration-200">
             <i class="fa-solid fa-user-plus"></i> Kullanıcı Ekle
         </a>
         <a href="{{ route('admin.users.show') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-yellow-600 transition-colors duration-200">
             <i class="fa-solid fa-users"></i> Kullanıcılar
         </a>
         <a href="{{ route('admin.users.assaign') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-orange-600 transition-colors duration-200">
             <i class="fa-solid fa-list-check"></i> Görev Ata
         </a>
 
 
         <a href="{{ route('admin.workSessions') }}"
-        class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-green-600 transition-colors duration-200">
+        class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-blue-600 transition-colors duration-200">
         <i class="fa-solid fa-clock"></i> Mesai Takip
     </a>
 
@@ -51,7 +51,7 @@
 
 
         <a href=""
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-red-600 transition-colors duration-200">
             <i class="fa-solid fa-file-pen"></i> Raporlar
         </a>
 

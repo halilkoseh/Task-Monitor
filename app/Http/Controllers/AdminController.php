@@ -61,19 +61,18 @@ class AdminController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'username' => 'required|unique:users,username,' . $id,
-
             'gorev' => 'required',
         ]);
-
+    
         $user = User::findOrFail($id);
         $user->name = $request->name;
-        $user->username = $request->username;
         $user->gorev = $request->gorev;
         $user->save();
-
-        return redirect()->back()->with('success', 'Kullanıcı başarıyla güncellendi!');
+    
+        return redirect()->route('admin.users.show')->with('success', 'Kullanıcı başarıyla güncellendi!');
     }
+    
+    
 
     
   

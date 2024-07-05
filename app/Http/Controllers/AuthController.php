@@ -22,7 +22,7 @@ class AuthController extends Controller
     if (!Auth::attempt($credentials)) {
 
         return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
+            'username' => 'Hay aksi! Giriş bilgileriniz hatalı.',
         ]);
     }
 
