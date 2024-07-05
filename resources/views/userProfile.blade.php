@@ -1,4 +1,3 @@
-<!-- resources/views/profile.blade.php -->
 
 @extends('userLayout.app')
 

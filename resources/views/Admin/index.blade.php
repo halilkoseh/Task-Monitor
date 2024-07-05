@@ -2,16 +2,14 @@
 
 @section('content')
     <style>
-        /* Genel Stiller */
         body {
             font-family: "Nunito", sans-serif;
-            background-color: #f3f4f6; /* Tailwind'in cool gray-100 tonu */
-            color: #1f2937; /* Tailwind'in cool gray-900 tonu */
+            background-color: #f3f4f6; 
+            color: #1f2937;
         }
 
-        /* Navbar Stilleri */
         .sidebar {
-            background-color: #1e40af; /* Tailwind'in indigo-800 tonu */
+            background-color: #1e40af; 
             color: #ffffff;
         }
 
@@ -20,7 +18,7 @@
         }
 
         .sidebar a:hover {
-            background-color: #3b82f6; /* Tailwind'in blue-500 tonu */
+            background-color: #3b82f6; 
             color: #ffffff;
         }
 
@@ -33,7 +31,7 @@
         }
 
         .column:hover {
-            background-color: #f9fafb; /* Tailwind'in cool gray-50 tonu */
+            background-color: #f9fafb; 
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -48,7 +46,6 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* Kartların Durumlarına Göre Renkler */
         .bg-atandi {
             background-color: #fee2e2; /* Red-100 */
         }
@@ -69,7 +66,6 @@
             background-color: #d1fae5; /* Green-100 */
         }
 
-        /* Diğer Stiller */
         .dragging {
             opacity: 0.5;
         }

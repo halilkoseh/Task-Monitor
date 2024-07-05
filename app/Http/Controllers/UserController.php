@@ -17,13 +17,11 @@ class UserController extends Controller
 {
     public function create()
     {
-        // Kullanıcı oluşturma formunu gösterme
         return view('admin.users.create');
     }
 
     public function show()
     {
-        // Tüm kullanıcıları gösterme
         $users = User::all();
         return view('admin.users.show', compact('users'));
     }
@@ -31,7 +29,7 @@ class UserController extends Controller
     public function assaign()
     {
         $users = User::all();
-        $projects = Project::all(); // Tüm projeleri al
+        $projects = Project::all(); 
         $tasks = Task::all();
 
         return view('admin.users.assaign', compact('users', 'projects', 'tasks'));
@@ -58,7 +56,6 @@ class UserController extends Controller
 
     public function showProfile()
     {
-        // Kullanıcı profilini gösterme
         $user = Auth::user();
         return view('profile', compact('user'));
     }
@@ -84,21 +81,12 @@ class UserController extends Controller
 
 
 
-
-
-
-    // yeni eklenenler
-
-
     public function showUserTasks()
     {
-        // Şu anki kullanıcıyı al
         $user = Auth::user();
 
-        // Kullanıcının görevlerini al
         $userTasks = $user->tasks;
 
-        // Verileri görünüme gönder
         return view('user.tasks', [
             'userTasks' => $userTasks,
         ]);
@@ -121,116 +109,87 @@ class UserController extends Controller
     }
 
 
-    // yeni eklenenler mesai
- // Start a new work session
- // Start a new work session
-
  public function startWorkSession()
-{
-    $user = Auth::user();
-
-    // Kullanıcı zaten aktif bir mesai başlatmış mı kontrol et
-    $activeSession = $user->workSessions()->where('status', 'working')->orWhere('status', 'on_break')->first();
-
-    if ($activeSession) {
-        return response()->json(['message' => 'Halen aktif bir mesainiz var.'], 400);
-    }
-
-    // Yeni mesai başlat
-
-
-    $workSession = $user->workSessions()->create([
-        'start_time' => now()->format("Y-m-d H:i:s") ,
-
-
-
-        'status' => 'working'
-    ]);
-
-    return response()->json(['message' => 'Mesai başlatıldı', 'workSession' => $workSession]);
-}
- 
-
-
-public function startBreak()
-{
-    $user = Auth::user();
-    $workSession = $user->workSessions()->where('status', 'working')->latest()->first();
-
-
-    if ($workSession) {
-        $workSession->breaks()->create([
-            'start_time' => now()->format("Y-m-d H:i:s"),
-        ]);
-
-        $workSession->status = 'on_break';
-        $workSession->save();
-
-        return response()->json(['message' => 'Mola başlatıldı', 'workSession' => $workSession]);
-    }
-
-    return response()->json(['message' => 'Şu anda molada değilsiniz veya aktif bir mesai yok.'], 400);
-}
-
- // End the current break and resume work
- public function endBreak()
  {
      $user = Auth::user();
-     $workSession = $user->workSessions()->where('status', 'on_break')->latest()->first();
-     $currentBreak = $workSession->breaks()->whereNull('end_time')->latest()->first();
  
-    
-
-     if ($workSession && $currentBreak) {
-         // $currentBreak->update(['end_time' => now()->format("Y-m-d H:i:s") ,
-          //  'start_time'=>$currentBreak->start_time ]);
-
-        $currentBreak->end_time=now()->format("Y-m-d H:i:s");
-        
-
-         $workSession->update(['status' => 'working']);
+     $activeSession = $user->workSessions()->where('status', 'working')->orWhere('status', 'on_break')->first();
  
-         // dd(now()->format("Y-m-d H:i:s"), $currentBreak->end_time,$currentBreak->start_time);
-
-
-
-
-         return redirect()->back();
-
-
+     if ($activeSession) {
+         return response()->json(['message' => 'You already have an active work session.'], 400);
      }
  
-     return response()->json(['message' => 'Aktif bir mola bulunamadı.'], 400);
-
-
+     $workSession = $user->workSessions()->create([
+         'start_time' => now(),
+         'status' => 'working'
+     ]);
+ 
+     return redirect()->route('user.workSessions')->with('message', 'Work session started');
  }
  
+ 
 
- public function endWorkSession()
+ public function startBreak()
  {
      $user = Auth::user();
-     $workSession = $user->workSessions()->where('status', 'working')->orWhere('status', 'on_break')->latest()->first();
+     $workSession = $user->workSessions()->where('status', 'working')->latest()->first();
  
      if ($workSession) {
-         if ($workSession->status === 'on_break') {
-             // Mola bitirme
-             $this->endBreak();
-         }
- 
-         $workSession->update([
-             'end_time' => now()->format("Y-m-d H:i:s"),
-             'status' => 'ended',
+         $workSession->breaks()->create([
+             'start_time' => now(),
          ]);
  
-         return response()->json(['message' => 'Mesai sona erdi', 'workSession' => $workSession]);
+         $workSession->status = 'on_break';
+         $workSession->save();
+ 
+         return redirect()->route('user.workSessions')->with('message', 'Break started');
      }
  
-     return response()->json(['message' => 'Aktif bir mesai bulunamadı.'], 400);
+     return response()->json(['message' => 'You are not currently working or there is no active work session.'], 400);
  }
  
 
- // Show all work sessions with breaks
- public function showWorkSessions()
+public function endBreak()
+{
+    $user = Auth::user();
+    $workSession = $user->workSessions()->where('status', 'on_break')->latest()->first();
+    $currentBreak = $workSession ? $workSession->breaks()->whereNull('end_time')->latest()->first() : null;
+
+    if ($workSession && $currentBreak) {
+        $currentBreak->update(['end_time' => now()]);
+
+        $workSession->status = 'working';
+        $workSession->save();
+
+        return redirect()->back()->with('message', 'Break ended');
+    }
+
+    return response()->json(['message' => 'No active break found.'], 400);
+}
+
+public function endWorkSession()
+{
+    $user = Auth::user();
+    $workSession = $user->workSessions()->whereIn('status', ['working', 'on_break'])->latest()->first();
+
+    if ($workSession) {
+        if ($workSession->status === 'on_break') {
+            $this->endBreak();
+        }
+
+        $workSession->update([
+            'end_time' => now(),
+            'status' => 'ended',
+        ]);
+
+        return redirect()->route('user.workSessions')->with('message', 'Work session ended');
+    }
+
+    return response()->json(['message' => 'No active work session found.'], 400);
+}
+
+
+public function showWorkSessions()
 {
     $user = Auth::user();
     $workSessions = $user->workSessions()->with('breaks')->get();
@@ -239,7 +198,7 @@ public function startBreak()
 
     foreach ($workSessions as $session) {
         $startTime = Carbon::parse($session->start_time);
-        $endTime = Carbon::parse($session->end_time ?? Carbon::now());
+        $endTime = Carbon::parse($session->end_time ?? now());
 
         $workDuration = 0;
         $currentStartTime = $startTime;
@@ -263,20 +222,18 @@ public function startBreak()
     $seconds = $totalWorkDuration % 60;
 
     $formattedTotalWorkDuration = '';
-
     if ($hours > 0) {
-        $formattedTotalWorkDuration .= "$hours saat ";
+        $formattedTotalWorkDuration .= "$hours hours ";
     }
     if ($minutes > 0) {
-        $formattedTotalWorkDuration .= "$minutes dakika ";
+        $formattedTotalWorkDuration .= "$minutes minutes ";
     }
     if ($seconds > 0 || empty($formattedTotalWorkDuration)) {
-        $formattedTotalWorkDuration .= "$seconds saniye";
+        $formattedTotalWorkDuration .= "$seconds seconds";
     }
 
     return view('user.workSessions', compact('workSessions', 'formattedTotalWorkDuration'));
 }
-
 
 
 

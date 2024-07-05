@@ -158,9 +158,7 @@
             });
 
             if (response.ok) {
-                // İsteğin başarılı olduğunu kontrol ediyoruz.
                 console.log("Görev durumu güncellendi.");
-                // Sayfanın yeniden yüklenmesini sağlıyoruz.
                 window.location.reload();
             } else {
                 console.error("Görev durumu güncellenirken hata oluştu.");

@@ -5,10 +5,6 @@
 @section('content')
 
 
-<!-- Sidebar -->
-
-
-<!-- Main Content -->
 <div class="flex-1 p-6 mt-8">
     <h1 class="text-3xl font-semibold mb-6 text-center">Kullanıcılar Tablosu</h1>
     <div class="overflow-x-auto">

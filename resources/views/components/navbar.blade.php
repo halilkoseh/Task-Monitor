@@ -1,10 +1,8 @@
 <div class="bg-white w-64 min-h-screen shadow-lg flex flex-col">
-    <!-- Logo and Title -->
     <div class="p-6 flex items-center gap-2 border-b">
         <span class="text-xl font-bold text-gray-800">Task Monitor</span>
     </div>
 
-    <!-- Navigation Links -->
     <div class="flex flex-col mt-4 space-y-2 flex-grow">
         <a href="{{ route('admin') }}"
             class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">

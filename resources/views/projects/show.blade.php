@@ -4,10 +4,8 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Task Manager</title>
-        <!-- Include Tailwind CSS -->
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet" />
 
-        <!-- Include Font Awesome for icons -->
         <link href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
         <link href="     https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/brands.min.css" />
@@ -34,12 +32,10 @@
 
     <body class="bg-gray-100 text-gray-900 flex">
         <div class="bg-white w-64 min-h-screen shadow-lg flex flex-col">
-            <!-- Logo and Title -->
             <div class="p-6 flex items-center gap-2 border-b">
                 <span class="text-xl font-bold text-gray-800">Task Monitor</span>
             </div>
 
-            <!-- Navigation Links -->
             <div class="flex flex-col mt-4 space-y-2 flex-grow">
                 <a href="{{ route('admin') }}" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"> <i class="fas fa-th-large"></i> Ana Sayfa </a>
                 <a href="#" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"> <i class="fas fa-calendar-alt"></i> Takvim </a>
@@ -54,7 +50,6 @@
                 <a href="" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"> <i class="fa-solid fa-file-pen"></i> Raporlar </a>
             </div>
 
-            <!-- User Profile Section at the Bottom -->
             <div class="p-4 bg-gray-100 mt-auto flex items-center gap-2 border-t">
                 <div>
                     <div class="text-gray-800">{{ Auth::user()->name }}</div>
@@ -96,7 +91,6 @@
 
 
     <div class="flex flex-wrap gap-3">
-        <!-- Atandı Sütunu -->
         <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="Atandı" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
             <h2 class="text-xl font-bold mb-4 text-red-600">Atandı</h2>
             @foreach ($project->tasks()->where('status', 'Atandı')->get() as $task)
@@ -118,7 +112,6 @@
                 </div>
             @endforeach
         </div>
-        <!-- Başladı Sütunu -->
         <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="basladi" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
             <h2 class="text-xl font-bold mb-4 text-yellow-600">Başladı</h2>
             @foreach ($project->tasks()->where('status', 'basladi')->get() as $task)
@@ -140,7 +133,6 @@
                 </div>
             @endforeach
         </div>
-        <!-- Devam Ediyor Sütunu -->
         <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="Devam Ediyor" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
             <h2 class="text-xl font-bold mb-4 text-blue-600">Devam Ediyor</h2>
             @foreach ($project->tasks()->where('status', 'Devam Ediyor')->get() as $task)
@@ -162,7 +154,6 @@
                 </div>
             @endforeach
         </div>
-        <!-- Test Ediliyor Sütunu -->
         <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="test ediliyor" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
             <h2 class="text-xl font-bold mb-4 text-orange-600">Test Ediliyor</h2>
             @foreach ($project->tasks()->where('status', 'test ediliyor')->get() as $task)
@@ -184,7 +175,6 @@
                 </div>
             @endforeach
         </div>
-        <!-- Tamamlandı Sütunu -->
         <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="tamamlandi" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
             <h2 class="text-xl font-bold mb-4 text-green-600">Tamamlandı</h2>
             @foreach ($project->tasks()->where('status', 'tamamlandi')->get() as $task)

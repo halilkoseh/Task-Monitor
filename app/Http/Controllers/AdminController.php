@@ -21,12 +21,12 @@ class AdminController extends Controller
 
         $users = User::all();
         $userTasks = User::with('tasks')->get();
-        $tasks = Task::all(); // Tüm görevleri al
+        $tasks = Task::all(); 
 
         return view('admin.index', [
             'users' => $users,
             'userTasks' => $userTasks,
-            'tasks' => $tasks // Tüm görevleri görünüme gönder
+            'tasks' => $tasks 
         ]);
     }
 
@@ -77,13 +77,11 @@ class AdminController extends Controller
   
     public function storeTask(Request $request)
     {
-        // Ek materyalleri yükleme işlemi
         $attachmentPath = null;
         if ($request->hasFile('attachments')) {
             $attachmentPath = $request->file('attachments')->store('attachments', 'public');
         }
     
-        // Atanan her kullanıcı için ayrı bir görev kaydı oluşturma
         foreach ($request->input('assignedTo') as $userId) {
             $task = Task::create([
                 'title' => $request->taskTitle,
@@ -95,14 +93,13 @@ class AdminController extends Controller
                 'attachments' => $attachmentPath
             ]);
     
-            // Kullanıcıya e-posta gönderme
             $user = User::find($userId);
             $users = User::all();
-            $projects = Project::all(); // Tüm projeleri al
+            $projects = Project::all(); 
             $tasks = Task::all();
 
             
-            if ($user && $user->username) { // Check if user exists and has a valid email address
+            if ($user && $user->username) { 
                 Mail::to($user->username)->send(new TaskAssigned($task, $user,));
             } else {
        
@@ -132,19 +129,16 @@ class AdminController extends Controller
 
     public function index1($id)
 {
-    // Projeyi id'ye göre bul, ve ilişkili kullanıcıları ve görevlerini al
     $project = Project::with(['tasks' => function ($query) use ($id) {
                           $query->where('project', $id)->with('assignedUser');
                       }, 'users'])
                       ->where('id', $id)
                       ->firstOrFail();
 
-    // Eğer bulunan proje yoksa 404 hatası göster
     if (!$project) {
         abort(404);
     }
 
-    // Kullanıcıların görevlerini al
     $userTasks = User::with('tasks')->get();
 
     return view('projects.show', [

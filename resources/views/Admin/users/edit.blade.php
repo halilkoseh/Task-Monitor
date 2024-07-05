@@ -34,7 +34,6 @@
     </div>
 </div>
 <script>
-    // Profilim menüsünü açma/kapama işlevi
     const profileMenu = document.querySelector('.relative');
     profileMenu.addEventListener('mouseenter', function () {
         const submenu = this.querySelector('.absolute');
