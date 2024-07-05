@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\OffdayController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -121,3 +122,17 @@ Route::get('/user/work-sessions', [UserController::class, 'showWorkSessions'])->
 
 Route::get('/user/work-sessions', [UserController::class, 'showWorkSessions'])->name('user.workSessions');
 Route::get('/user/work-sessions', [UserController::class, 'showWorkSessions'])->name('user.workSessions');
+
+
+    Route::get('/user/offdays', [OffdayController::class, 'index1'])->name('offday.index');
+    Route::get('/offdays/create', [OffdayController::class, 'create'])->name('offday.create');
+    Route::post('/offdays', [OffdayController::class, 'store'])->name('offday.store');
+    Route::get('/offdays/{id}', [OffdayController::class, 'show'])->name('offday.show');
+    
+
+
+
+
+     Route::get('/admin/offdays', [OffdayController::class, 'Index'])->name('offdays.index');
+     Route::post('/admin/offdays/{id}/approve', [OffdayController::class, 'approve'])->name('offdays.approve');
+     Route::post('/admin/offdays/{id}/reject', [OffdayController::class, 'reject'])->name('offdays.reject');

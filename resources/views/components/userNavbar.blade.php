@@ -18,6 +18,12 @@
 
 
 
+    <a href="{{ route('offday.index') }}"
+    class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-100 hover:text-green-800 transition-colors duration-200">
+    <i class="fas fa-clock"></i> İzin Takip Talep
+</a>
+
+
 
 
         <div class="relative group" x-data="{ open: false }">

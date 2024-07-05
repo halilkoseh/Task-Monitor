@@ -33,6 +33,14 @@
 
 
 
+    <a href="{{ route('offdays.index') }}"
+    class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-green-600 transition-colors duration-200">
+    <i class="fa-solid fa-clock"></i> İzin Takip
+</a>
+
+
+
+
 
 
         <a href="{{ route('projects.index') }}"
