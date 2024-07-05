@@ -17,6 +17,5 @@ class Project extends Model
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'project', 'id'); // specify the foreign key and local key
-    }
+        return $this->hasMany(Task::class, 'project_id', 'id');     }
 }

@@ -13,7 +13,7 @@ class Task extends Model
         'title',
         'description',
         'user_id',
-        'project',
+        'project_id',
         'start_date',
         'due_date',
         'attachments',
@@ -26,19 +26,15 @@ class Task extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function projectName()
+    public function project()
     {
-        return $this->belongsTo(Project::class, 'project', 'id'); // specify the foreign key and local key
+        return $this->belongsTo(Project::class);
     }
 
 
 
 
-    public function tasks()
-    {
-        return $this->hasMany(Task::class, 'user_id');
-
-    }
+   
 
 
 

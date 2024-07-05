@@ -11,6 +11,8 @@ use App\Mail\TaskAssigned;
 use Illuminate\Support\Facades\Mail;
 use App\Models\WorkSession;
 use App\Models\WorkBreak;
+use App\Models\UserProject;
+
 
 
 
@@ -90,8 +92,21 @@ class AdminController extends Controller
                 'project' => $request->project,
                 'start_date' => $request->startDate,
                 'due_date' => $request->dueDate,
-                'attachments' => $attachmentPath
+                'attachments' => $attachmentPath,
+                'project_id' => $request->project
+
             ]);
+
+
+
+
+            // UserProject tablosuna ekleme yap
+            UserProject::create([
+                'user_id' => $userId,
+                'project_id' => $request->project,
+            ]);
+
+
     
             $user = User::find($userId);
             $users = User::all();
@@ -130,7 +145,7 @@ class AdminController extends Controller
     public function index1($id)
 {
     $project = Project::with(['tasks' => function ($query) use ($id) {
-                          $query->where('project', $id)->with('assignedUser');
+                          $query->where('project_id', $id)->with('assignedUser');
                       }, 'users'])
                       ->where('id', $id)
                       ->firstOrFail();
@@ -138,19 +153,30 @@ class AdminController extends Controller
     if (!$project) {
         abort(404);
     }
-
-    $userTasks = User::with('tasks')->get();
+    $users = $project->users;
 
     return view('projects.show', [
         'project' => $project,
-        'userTasks' => $userTasks,
+        'users' => $users,
     ]);
 }
 
+public function destroyProject(Project $project)
+    {
+        $project->delete();
+
+        return redirect()->route('admin.projects.index')->with('success', 'Proje başarıyla silindi.');
+    }
 
 
+    public function getProjectUsers(Project $projectId)
+    {
+        // Belirli bir project_id'ye sahip user_id'leri project_user tablosunda bul ve döndür
+        $userIds = UserProject::where('project_id', $projectId->id)->pluck('user_id');
 
-
+        $users = User::whereIn('id', $userIds)->get();
+        return response()->json($users);
+    }
 
 
 

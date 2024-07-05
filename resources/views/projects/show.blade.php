@@ -45,6 +45,12 @@
                 <a href="{{ route('admin.users.show') }}" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"> <i class="fa-solid fa-users"></i> Kullanıcılar </a>
                 <a href="{{ route('admin.users.assaign') }}" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"> <i class="fa-solid fa-list-check"></i> Görev Ata </a>
 
+                <a href="{{ route('admin.workSessions') }}"
+                class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-green-600 transition-colors duration-200">
+                <i class="fa-solid fa-clock"></i> Mesai Takip
+            </a>
+        
+        
                 <a href="{{ route('projects.index') }}" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"> <i class="fa-solid fa-microchip"></i> Projeler </a>
 
                 <a href="" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"> <i class="fa-solid fa-file-pen"></i> Raporlar </a>
@@ -233,12 +239,13 @@
 
             if (response.ok) {
                 console.log("Görev durumu güncellendi.");
-                window.location.reload();
+                location.href = location.href;
             } else {
-                console.error("Görev durumu güncellenirken hata oluştu.");
+                location.href = location.href;
+                
             }
         } catch (error) {
-            console.error("Bir hata meydana geldi:", error);
+            location.href = location.href;
         }
     }
 </script>
