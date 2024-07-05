@@ -5,9 +5,20 @@
         </a>
     </div>
     <div class="flex flex-col mt-4 space-y-2">
+       
+       
         <a href="{{ route('user') }}" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-100 hover:text-blue-800">
             <i class="fas fa-home"></i> Anasayfa
         </a>
+
+        <a href="{{ route('user.workSessions') }}"
+        class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-100 hover:text-green-800 transition-colors duration-200">
+        <i class="fas fa-clock"></i> Mesai Giriş/Çıkış
+    </a>
+
+
+
+
 
         <div class="relative group" x-data="{ open: false }">
             <a href="#" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-100 hover:text-blue-800" @click="open = !open">
@@ -26,9 +37,6 @@
                     @csrf
                     <button type="submit" class="w-full text-left">Çıkış Yap</button>
                 </form>            </div>
-        </div> 
+        </div>
     </div>
-    <a href="{{ route('user') }}" class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-100 hover:text-blue-800">
-            <i class="fas fa-clock"></i> Mesai Takip
-    </a>
 </div>

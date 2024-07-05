@@ -13,10 +13,11 @@ class Task extends Model
         'title',
         'description',
         'user_id',
-        'project_id',
+        'project',
         'start_date',
         'due_date',
         'attachments',
+
     ];
 
     // Görevler bir kullanıcıya atanabilir
@@ -25,10 +26,22 @@ class Task extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Görevler bir projeye ait olabilir
-    public function project()
+    public function projectName()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'project', 'id'); // specify the foreign key and local key
     }
+
+
+
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'user_id');
+
+    }
+
+
+
+
+
 }
-?>

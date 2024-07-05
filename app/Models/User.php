@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -40,9 +41,17 @@ class User extends Authenticatable
 
     }
 
-    public function projects()
+//user modal 
+    public function workSessions()
 {
-    return $this->belongsToMany(Project::class, 'project_user', 'user_id', 'project_id');
+    return $this->hasMany(WorkSession::class);
 }
+
+
+
+
+
+
+
 
 }

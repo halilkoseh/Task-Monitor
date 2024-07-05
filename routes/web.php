@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+
 Route::get('/', function () {
     return view('auth.login'); // Burada view() fonksiyonundan '/auth.login' kısmını 'auth.login' olarak düzelttim.
 });
@@ -32,7 +33,7 @@ Route::get('/admin/users/create', [UserController::class, 'create'])->name('admi
 
 Route::get('/admin/users/show', [UserController::class, 'show'])->name('admin.users.show');
 
-    Route::get('/admin/users/assaign', [UserController::class, 'assaign'])->name('admin.users.assaign');
+Route::get('/admin/users/assaign', [UserController::class, 'assaign'])->name('admin.users.assaign');
 
 
 Route::get('/admin/users/index', [UserController::class, 'index'])->name('admin.users.index');
@@ -45,6 +46,9 @@ Route::post('/admin/tasks', [AdminController::class, 'storeTask'])->name('admin.
 
 
 Route::get('/users/{id}/tasks', [UserController::class, 'showTasks'])->name('admin.index');
+
+
+//yeni
 
 
 
@@ -96,10 +100,24 @@ Route::get('/admin/users/assaign', [UserController::class, 'assaign'])->name('ad
 
 
 
-Route::get('/admin/projects/{projectId}/users/assaign', [AdminController::class, 'getProjectUsers']);
+
+
+Route::get('projects/show/{id}', [AdminController::class, 'index1'])->name('projects.show');
 
 
 
 
+// yeni eklendi mesai
 
+// Kullanıcı işlemleri
+Route::post('/user/start-work-session', [UserController::class, 'startWorkSession'])->name('user.startWorkSession');
+Route::post('/user/start-break', [UserController::class, 'startBreak'])->name('user.startBreak');
+Route::post('/user/end-break', [UserController::class, 'endBreak'])->name('user.endBreak');
+Route::post('/user/end-work-session', [UserController::class, 'endWorkSession'])->name('user.endWorkSession');
+Route::get('/user/work-sessions', [UserController::class, 'showWorkSessions'])->name('user.workSessions');
 
+// Admin işlemleri
+Route::get('/admin/work-sessions', [AdminController::class, 'showWorkSessions'])->name('admin.workSessions');
+Route::get('/admin/work-sessions/{id}/edit', [AdminController::class, 'editWorkSession'])->name('admin.editWorkSession');
+Route::post('/admin/work-sessions/{id}', [AdminController::class, 'updateWorkSession'])->name('admin.updateWorkSession');
+Route::get('/admin/filter-work-sessions', [AdminController::class, 'filterWorkSessions'])->name('admin.filterWorkSessions');

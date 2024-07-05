@@ -212,6 +212,7 @@
                 @endforeach
             </div>
         </div>
+    
     </div>
 
     <script>
@@ -247,9 +248,9 @@
 
                 if (response.ok) {
                     console.log("Görev durumu güncellendi.");
-                    window.location.reload();
+                    window.location.href = "/admin";
                 } else {
-                    console.error("Görev durumu güncellenirken hata oluştu.");
+                    window.location.href = "/admin";
                 }
             } catch (error) {
                 console.error("Bir hata meydana geldi:", error);

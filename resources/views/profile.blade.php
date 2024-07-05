@@ -1,5 +1,6 @@
+<!-- resources/views/profile.blade.php -->
 
-@extends('userLayout.app')
+@extends('layout.app')
 
 @section('content')
 <div class="container mx-auto p-4">
@@ -52,5 +53,4 @@
         </form>
     </div>
 </div>
-
 @endsection

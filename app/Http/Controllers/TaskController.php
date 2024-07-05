@@ -4,32 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Models\User;
+use App\Mail\TaskStatusUpdated;
+use Illuminate\Support\Facades\Mail;
+
+
 
 class TaskController extends Controller
 {
+    
+public function updateStatus($id, Request $request)
+{
+    // Find the task by ID
+    $task = Task::findOrFail($id);
 
+    // Update the task status
+    $task->status = $request->status;
 
-    public function updateStatus($id, Request $request)
-    {
-        // Görevi ID ile bul
-        $task = Task::findOrFail($id);
+    // Save the changes
+    $task->save();
 
-        // Görev durumunu güncelle
-        $task->status = $request->status;
+    // Get the assigned user
+    $assignedUser = $task->assignedUser;
 
-        // Değişiklikleri kaydet
-        $task->save();
-
-        // Başarılı bir cevap dön
-        return response()->json(['success' => true, 'message' => 'Görev durumu güncellendi']);
+    // Send email to assigned user
+    if ($assignedUser && $assignedUser->username) {
+        Mail::to($assignedUser->username)->send(new TaskStatusUpdated($task));
     }
 
-    public function destroyTasks(Task $task)
-    {
-        $task->delete();
+    // Get admin users
+    $admins = User::where('is_admin', 1)->get();
 
-        return redirect()->route('projects.index')->with('success', 'Başarıyla silindi.');
+    // Send email to admins
+    foreach ($admins as $admin) {
+        Mail::to($admin->username)->send(new TaskStatusUpdated($task));
     }
+
+    // Return a success response
+    return response()->json(['success' => true, 'message' => 'Görev durumu güncellendi'], 200);
+}
+
+
 
 }
 

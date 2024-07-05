@@ -16,15 +16,6 @@
             <label for="taskDescription" class="block text-gray-700 font-bold mb-2">Görev Açıklaması</label>
             <textarea id="taskDescription" name="taskDescription" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Görev Açıklaması" required></textarea>
         </div>
-        
-        <div class="mb-4">
-            <label for="project" class="block text-gray-700 font-bold mb-2">Proje</label>
-            <select id="project" name="project" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                @foreach ($projects as $project)
-                    <option value="{{ $project->id }}">{{ $project->name }}</option>
-                @endforeach
-            </select>
-        </div>
 
         <div id="assignedUsers" class="space-y-4">
             <div class="mb-4">
@@ -38,6 +29,15 @@
         </div>
 
         <button type="button" id="addUserButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">Collaborator Ekle</button>
+
+        <div class="mb-4">
+            <label for="project" class="block text-gray-700 font-bold mb-2">Proje</label>
+            <select id="project" name="project" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                @foreach ($projects as $project)
+                    <option value="{{ $project->id }}">{{ $project->name }}</option>
+                @endforeach
+            </select>
+        </div>
 
         <div class="mb-4">
             <label for="startDate" class="block text-gray-700 font-bold mb-2">Başlangıç Tarihi</label>
@@ -64,7 +64,6 @@
     document.addEventListener("DOMContentLoaded", function() {
         const addUserButton = document.getElementById('addUserButton');
         const assignedUsersDiv = document.getElementById('assignedUsers');
-        const projectSelect = document.getElementById('project');
 
         addUserButton.addEventListener('click', function() {
             const userSelectGroup = document.createElement('div');
@@ -85,26 +84,6 @@
             userSelectGroup.appendChild(removeButton);
             assignedUsersDiv.appendChild(userSelectGroup);
         });
-
-        projectSelect.addEventListener('change', function() {
-            const projectId = this.value;
-            fetch(`/admin/projects/${projectId}/users/assaign`)
-                .then(response => response.json())
-                .then(users => {
-                    const userSelects = assignedUsersDiv.querySelectorAll('.assignedTo');
-                    userSelects.forEach(select => {
-                        select.innerHTML = '';               
-                        users.forEach(user => {
-                            const option = document.createElement('option');
-                            option.value = user.id;
-                            option.textContent = user.name;
-                            select.appendChild(option);
-                        });
-                    });
-                })
-                .catch(error => console.error('Error fetching project users:', error));
-        });
     });
 </script>
-
 @endsection

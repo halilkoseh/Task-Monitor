@@ -28,6 +28,12 @@
         </a>
 
 
+        <a href="{{ route('admin.workSessions') }}"
+        class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-green-600 transition-colors duration-200">
+        <i class="fa-solid fa-clock"></i> Mesai Takip
+    </a>
+
+
 
 
 
@@ -43,10 +49,15 @@
             <i class="fa-solid fa-file-pen"></i> Raporlar
         </a>
 
-        <a href=""
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
-            <i class="fa-solid fa-clock"></i> Mesai Takip
-        </a>
+
+
+
+
+
+
+
+
+
 
     </div>
 

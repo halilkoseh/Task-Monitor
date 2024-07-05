@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Task;
 use App\Models\Project;
+use App\Models\WorkSession;
+use Carbon\Carbon;
+
 
 
 class UserController extends Controller
@@ -33,7 +36,7 @@ class UserController extends Controller
 
         return view('admin.users.assaign', compact('users', 'projects', 'tasks'));
 
-        
+
 
 
     }
@@ -118,7 +121,164 @@ class UserController extends Controller
     }
 
 
+    // yeni eklenenler mesai
+ // Start a new work session
+ // Start a new work session
+
+ public function startWorkSession()
+{
+    $user = Auth::user();
+
+    // Kullanıcı zaten aktif bir mesai başlatmış mı kontrol et
+    $activeSession = $user->workSessions()->where('status', 'working')->orWhere('status', 'on_break')->first();
+
+    if ($activeSession) {
+        return response()->json(['message' => 'Halen aktif bir mesainiz var.'], 400);
+    }
+
+    // Yeni mesai başlat
+
+
+    $workSession = $user->workSessions()->create([
+        'start_time' => now()->format("Y-m-d H:i:s") ,
 
 
 
+        'status' => 'working'
+    ]);
+
+    return response()->json(['message' => 'Mesai başlatıldı', 'workSession' => $workSession]);
 }
+ 
+
+
+public function startBreak()
+{
+    $user = Auth::user();
+    $workSession = $user->workSessions()->where('status', 'working')->latest()->first();
+
+
+    if ($workSession) {
+        $workSession->breaks()->create([
+            'start_time' => now()->format("Y-m-d H:i:s"),
+        ]);
+
+        $workSession->status = 'on_break';
+        $workSession->save();
+
+        return response()->json(['message' => 'Mola başlatıldı', 'workSession' => $workSession]);
+    }
+
+    return response()->json(['message' => 'Şu anda molada değilsiniz veya aktif bir mesai yok.'], 400);
+}
+
+ // End the current break and resume work
+ public function endBreak()
+ {
+     $user = Auth::user();
+     $workSession = $user->workSessions()->where('status', 'on_break')->latest()->first();
+     $currentBreak = $workSession->breaks()->whereNull('end_time')->latest()->first();
+ 
+    
+
+     if ($workSession && $currentBreak) {
+         // $currentBreak->update(['end_time' => now()->format("Y-m-d H:i:s") ,
+          //  'start_time'=>$currentBreak->start_time ]);
+
+        $currentBreak->end_time=now()->format("Y-m-d H:i:s");
+        
+
+         $workSession->update(['status' => 'working']);
+ 
+         // dd(now()->format("Y-m-d H:i:s"), $currentBreak->end_time,$currentBreak->start_time);
+
+
+
+
+         return redirect()->back();
+
+
+     }
+ 
+     return response()->json(['message' => 'Aktif bir mola bulunamadı.'], 400);
+
+
+ }
+ 
+
+ public function endWorkSession()
+ {
+     $user = Auth::user();
+     $workSession = $user->workSessions()->where('status', 'working')->orWhere('status', 'on_break')->latest()->first();
+ 
+     if ($workSession) {
+         if ($workSession->status === 'on_break') {
+             // Mola bitirme
+             $this->endBreak();
+         }
+ 
+         $workSession->update([
+             'end_time' => now()->format("Y-m-d H:i:s"),
+             'status' => 'ended',
+         ]);
+ 
+         return response()->json(['message' => 'Mesai sona erdi', 'workSession' => $workSession]);
+     }
+ 
+     return response()->json(['message' => 'Aktif bir mesai bulunamadı.'], 400);
+ }
+ 
+
+ // Show all work sessions with breaks
+ public function showWorkSessions()
+{
+    $user = Auth::user();
+    $workSessions = $user->workSessions()->with('breaks')->get();
+
+    $totalWorkDuration = 0;
+
+    foreach ($workSessions as $session) {
+        $startTime = Carbon::parse($session->start_time);
+        $endTime = Carbon::parse($session->end_time ?? Carbon::now());
+
+        $workDuration = 0;
+        $currentStartTime = $startTime;
+
+        foreach ($session->breaks as $break) {
+            if ($break->start_time) {
+                $breakStartTime = Carbon::parse($break->start_time);
+                $breakEndTime = $break->end_time ? Carbon::parse($break->end_time) : $endTime;
+
+                $workDuration += $breakStartTime->diffInSeconds($currentStartTime);
+                $currentStartTime = $breakEndTime;
+            }
+        }
+
+        $workDuration += $endTime->diffInSeconds($currentStartTime);
+        $totalWorkDuration += $workDuration;
+    }
+
+    $hours = floor($totalWorkDuration / 3600);
+    $minutes = floor(($totalWorkDuration % 3600) / 60);
+    $seconds = $totalWorkDuration % 60;
+
+    $formattedTotalWorkDuration = '';
+
+    if ($hours > 0) {
+        $formattedTotalWorkDuration .= "$hours saat ";
+    }
+    if ($minutes > 0) {
+        $formattedTotalWorkDuration .= "$minutes dakika ";
+    }
+    if ($seconds > 0 || empty($formattedTotalWorkDuration)) {
+        $formattedTotalWorkDuration .= "$seconds saniye";
+    }
+
+    return view('user.workSessions', compact('workSessions', 'formattedTotalWorkDuration'));
+}
+
+
+
+
+
+ }

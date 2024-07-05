@@ -17,7 +17,6 @@
                     @method('DELETE')
                     <button type="submit" class="inline-block px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200">Sil</button>
                 </form>
-
             </div>
         </li>
         @endforeach
