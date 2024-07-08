@@ -27,16 +27,23 @@
 
 
         <a href="{{ route('admin.workSessions') }}"
-        class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-blue-600 transition-colors duration-200">
-        <i class="fa-solid fa-clock"></i> Mesai Takip
-    </a>
+            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-blue-600 transition-colors duration-200">
+            <i class="fa-solid fa-clock"></i> Mesai Takip
+        </a>
+
+
+        <a href="{{ route('tasks.index') }}"
+            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-blue-600 transition-colors duration-200">
+            <i class="fa-solid fa-clock"></i> Task Düzenle
+        </a>
 
 
 
-    <a href="{{ route('offdays.index') }}"
-    class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-green-600 transition-colors duration-200">
-    <i class="fa-solid fa-clock"></i> İzin Takip
-</a>
+
+        <a href="{{ route('offdays.index') }}"
+            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-green-600 transition-colors duration-200">
+            <i class="fa-solid fa-clock"></i> İzin Takip
+        </a>
 
 
 
@@ -59,7 +66,6 @@
     </div>
 
 
-    <!-- User Profile Section at the Bottom -->
     <div class="p-4 bg-gray-100 mt-auto flex items-center gap-2 border-t">
         <div>
             <div class="text-gray-800">{{ Auth::user()->name }}</div>

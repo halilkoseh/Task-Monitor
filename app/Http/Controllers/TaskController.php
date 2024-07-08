@@ -46,5 +46,54 @@ public function destroyTasks(Task $task)
 }
 
 
+
+
+
+public function index()
+{
+    $tasks = Task::all();
+    return view('tasks.index', compact('tasks'));
+    
+}
+
+public function edit($id)
+{
+    $task = Task::findOrFail($id);
+    return view('tasks.edit', compact('task'));
+}
+
+public function update(Request $request, $id)
+{
+    $task = Task::findOrFail($id);
+    $task->update($request->all());
+
+    return redirect()->route('tasks.index')->with('success', 'Task updated successfully');
+}
+
+public function destroy($id)
+{
+    $task = Task::findOrFail($id);
+    $task->delete();
+
+    return redirect()->route('tasks.index')->with('success', 'Task deleted successfully');
+}
+    
+
+
+
+
+public function index1()
+{
+    $tasks = Task::all();
+    return view('components.navbar', compact('tasks'));
+    
+}
+
+
+
+
+
+
+
 }
 

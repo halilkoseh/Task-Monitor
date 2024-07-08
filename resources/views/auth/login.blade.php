@@ -38,7 +38,7 @@
             @if ($errors->any())
                 <div class="mt-4">
                     @foreach ($errors->all() as $error)
-                        <p class="text-md text-black text-items:center" >{{ $error }}</p>
+                        <p class="text-md text-black text-items:center">{{ $error }}</p>
                     @endforeach
                 </div>
             @endif

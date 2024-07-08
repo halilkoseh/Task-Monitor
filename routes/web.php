@@ -124,15 +124,27 @@ Route::get('/user/work-sessions', [UserController::class, 'showWorkSessions'])->
 Route::get('/user/work-sessions', [UserController::class, 'showWorkSessions'])->name('user.workSessions');
 
 
-    Route::get('/user/offdays', [OffdayController::class, 'index1'])->name('offday.index');
-    Route::get('/offdays/create', [OffdayController::class, 'create'])->name('offday.create');
-    Route::post('/offdays', [OffdayController::class, 'store'])->name('offday.store');
-    Route::get('/offdays/{id}', [OffdayController::class, 'show'])->name('offday.show');
-    
+Route::get('/user/offdays', [OffdayController::class, 'index1'])->name('offday.index');
+Route::get('/offdays/create', [OffdayController::class, 'create'])->name('offday.create');
+Route::post('/offdays', [OffdayController::class, 'store'])->name('offday.store');
+Route::get('/offdays/{id}', [OffdayController::class, 'show'])->name('offday.show');
 
 
 
 
-     Route::get('/admin/offdays', [OffdayController::class, 'Index'])->name('offdays.index');
-     Route::post('/admin/offdays/{id}/approve', [OffdayController::class, 'approve'])->name('offdays.approve');
-     Route::post('/admin/offdays/{id}/reject', [OffdayController::class, 'reject'])->name('offdays.reject');
+
+Route::get('/admin/offdays', [OffdayController::class, 'Index'])->name('offdays.index');
+Route::post('/admin/offdays/{id}/approve', [OffdayController::class, 'approve'])->name('offdays.approve');
+Route::post('/admin/offdays/{id}/reject', [OffdayController::class, 'reject'])->name('offdays.reject');
+
+
+
+
+
+
+
+Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+Route::patch('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
+Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+Route::get('/navbar-tasks', [TaskController::class, 'index1'])->name('navbar.tasks');

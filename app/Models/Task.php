@@ -17,10 +17,8 @@ class Task extends Model
         'start_date',
         'due_date',
         'attachments',
-
     ];
 
-    // Görevler bir kullanıcıya atanabilir
     public function assignedUser()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -30,14 +28,4 @@ class Task extends Model
     {
         return $this->belongsTo(Project::class);
     }
-
-
-
-
-   
-
-
-
-
-
 }
