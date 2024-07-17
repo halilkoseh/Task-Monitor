@@ -1,256 +1,220 @@
 @extends('layout.app')
 
 @section('content')
-    <style>
-        body {
-            font-family: "Nunito", sans-serif;
-            background-color: #f3f4f6; 
-            color: #1f2937;
-        }
 
-        .sidebar {
-            background-color: #1e40af; 
-            color: #ffffff;
-        }
+<style>
+    #calendar {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    .content-container {
+        min-height: 100vh;
+        padding: 20px;
+    }
 
-        .sidebar a {
-            color: #ffffff;
-        }
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-        .sidebar a:hover {
-            background-color: #3b82f6; 
-            color: #ffffff;
-        }
+    
+    .user-info-container {
+        display: flex;
+        align-items: center;
+        margin-left: auto; 
+    }
 
-        /* Sütun ve Kart Stilleri */
-        .column {
-            min-height: 600px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
+    .user-info {
+        display: flex;
+        align-items: center;
+        position: relative;
+        background-color: #fff;
+        padding: 5px;
+        border-radius: 50%;
+    }
 
-        .column:hover {
-            background-color: #f9fafb; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
+    .user-info img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
 
-        .task-card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
+    .search-container {
+        position: relative;
+        width: 500px;
+    }
 
-        .task-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
+    .search-container .search-input {
+        padding-left: 35px; 
+    }
 
-        .bg-atandi {
-            background-color: #fee2e2; /* Red-100 */
-        }
+    .search-container .search-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+</style>
 
-        .bg-basladi {
-            background-color: #fef3c7; /* Yellow-100 */
-        }
+<body class="bg-gray-100">
 
-        .bg-devam-ediyor {
-            background-color: #dbeafe; /* Blue-100 */
-        }
-
-        .bg-test-ediliyor {
-            background-color: #ffedd5; /* Orange-100 */
-        }
-
-        .bg-tamamlandi {
-            background-color: #d1fae5; /* Green-100 */
-        }
-
-        .dragging {
-            opacity: 0.5;
-        }
-
-        .task-card + .task-card {
-            margin-top: 1rem;
-        }
-    </style>
-
-    <div class="container p-9">
-        <div class="flex flex-wrap gap-3">
-            <!-- Atandı Sütunu -->
-            <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="Atandı" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
-                <h2 class="text-xl font-bold mb-4 text-red-600">Atandı</h2>
-                @foreach ($userTasks as $user)
-                    @foreach ($user->tasks as $task)
-                        @if ($task->status == 'Atandı')
-                            <div class="task-card bg-atandi p-4 mb-4 rounded-lg shadow-md" draggable="true" data-task-id="{{ $task->id }}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
-                                <h3 class="font-bold mb-2">{{ $task->title }}</h3>
-                                <p class="text-sm text-gray-700 mb-1">Kime: {{ $user->name }}</p>
-                                <p class="text-sm text-gray-700 mb-1">Atanma Tarihi: {{ $task->start_date }}</p>
-                                <p class="text-sm text-gray-700 mb-1">Son Teslim Tarihi: {{ $task->due_date }}</p>
-                                <p class="text-sm text-gray-700 mb-2">Görev İçeriği: {{ $task->description }}</p>
-                                <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{ $task->projectName?->name  }}</p>
-
-                                <p class="text-sm text-gray-700">
-                                    Ek Materyaller: @if ($task->attachments)
-                                        <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı Görüntüle</a>
-                                    @else
-                                        Yok
-                                    @endif
-                                </p>
-                            </div>
-                        @endif
-                    @endforeach
-                @endforeach
+    <!-- Main Content -->
+    <div class="content-container">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8 p-2">
+            <div class="search-container relative">
+                <input type="text" placeholder="Ara.." class="search-input py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm w-full">
+                <i class="fas fa-search search-icon"></i>
             </div>
-            <!-- Başladı Sütunu -->
-            <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="basladi" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
-                <h2 class="text-xl font-bold mb-4 text-yellow-600">Başladı</h2>
-                @foreach ($userTasks as $user)
-                    @foreach ($user->tasks as $task)
-                        @if ($task->status == 'basladi')
-                            <div class="task-card bg-basladi p-4 mb-4 rounded-lg shadow-md" draggable="true" data-task-id="{{ $task->id }}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
-                                <h3 class="font-bold mb-2">{{ $task->title }}</h3>
-                                <p class="text-sm text-gray-700 mb-1">Kime: {{ $user->name }}</p>
-                                <p class="text-sm text-gray-700 mb-1">Atanma Tarihi: {{ $task->start_date }}</p>
-                                <p class="text-sm text-gray-700 mb-1">Son Teslim Tarihi: {{ $task->due_date }}</p>
-                                <p class="text-sm text-gray-700 mb-2">Görev İçeriği: {{ $task->description }}</p>
-                                <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{ $task->projectName?->name  }}</p>
-
-                                <p class="text-sm text-gray-700">
-                                    Ek Materyaller: @if ($task->attachments)
-                                        <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı Görüntüle</a>
-                                    @else
-                                        Yok
-                                    @endif
-                                </p>
-                            </div>
-                        @endif
-                    @endforeach
-                @endforeach
-            </div>
-            <!-- Devam Ediyor Sütunu -->
-            <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="Devam Ediyor" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
-                <h2 class="text-xl font-bold mb-4 text-blue-600">Devam Ediyor</h2>
-                @foreach ($userTasks as $user)
-                    @foreach ($user->tasks as $task)
-                        @if ($task->status == 'Devam Ediyor')
-                            <div class="task-card bg-devam-ediyor p-4 mb-4 rounded-lg shadow-md" draggable="true" data-task-id="{{ $task->id }}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
-                                <h3 class="font-bold mb-2">{{ $task->title }}</h3>
-                                <p class="text-sm text-gray-700 mb-1">Kime: {{ $user->name }}</p>
-                                <p class="text-sm text-gray-700 mb-1">Atanma Tarihi: {{ $task->start_date }}</p>
-                                <p class="text-sm text-gray-700 mb-1">Son Teslim Tarihi: {{ $task->due_date }}</p>
-                                <p class="text-sm text-gray-700 mb-2">Görev İçeriği: {{ $task->description }}</p>
-                                <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{ $task->projectName?->name  }}</p>
-
-                                <p class="text-sm text-gray-700">
-                                    Ek Materyaller: @if ($task->attachments)
-                                        <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı Görüntüle</a>
-                                    @else
-                                        Yok
-                                    @endif
-                                </p>
-                            </div>
-                        @endif
-                    @endforeach
-                @endforeach
-            </div>
-            <!-- Test Ediliyor Sütunu -->
-            <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="test ediliyor" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
-                <h2 class="text-xl font-bold mb-4 text-orange-600">Test Ediliyor</h2>
-                @foreach ($userTasks as $user)
-                    @foreach ($user->tasks as $task)
-                        @if ($task->status == 'test ediliyor')
-                            <div class="task-card bg-test-ediliyor p-4 mb-4 rounded-lg shadow-md" draggable="true" data-task-id="{{ $task->id }}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
-                                <h3 class="font-bold mb-2">{{ $task->title }}</h3>
-                                <p class="text-sm text-gray-700 mb-1">Kime: {{ $user->name }}</p>
-                                <p class="text-sm text-gray-700 mb-1">Atanma Tarihi: {{ $task->start_date }}</p>
-                                <p class="text-sm text-gray-700 mb-1">Son Teslim Tarihi: {{ $task->due_date }}</p>
-                                <p class="text-sm text-gray-700 mb-2">Görev İçeriği: {{ $task->description }}</p>
-                                <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{ $task->projectName?->name  }}</p>
-
-                                <p class="text-sm text-gray-700">
-                                    Ek Materyaller: @if ($task->attachments)
-                                        <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı Görüntüle</a>
-                                    @else
-                                        Yok
-                                    @endif
-                                </p>
-                            </div>
-                        @endif
-                    @endforeach
-                @endforeach
-            </div>
-            <!-- Tamamlandı Sütunu -->
-            <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="tamamlandi" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
-                <h2 class="text-xl font-bold mb-4 text-green-600">Tamamlandı</h2>
-                @foreach ($userTasks as $user)
-                    @foreach ($user->tasks as $task)
-                        @if ($task->status == 'tamamlandi')
-                            <div class="task-card bg-tamamlandi p-4 mb-4 rounded-lg shadow-md" draggable="true" data-task-id="{{ $task->id }}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
-                                <h3 class="font-bold mb-2">{{ $task->title }}</h3>
-                                <p class="text-sm text-gray-700 mb-1">Kime: {{ $user->name }}</p>
-                                <p class="text-sm text-gray-700 mb-1">Atanma Tarihi: {{ $task->start_date }}</p>
-                                <p class="text-sm text-gray-700 mb-1">Son Teslim Tarihi: {{ $task->due_date }}</p>
-                                <p class="text-sm text-gray-700 mb-2">Görev İçeriği: {{ $task->description }}</p>
-                                <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{ $task->projectName?->name  }}</p>
-
-                                <p class="text-sm text-gray-700">
-                                    Ek Materyaller: @if ($task->attachments)
-                                        <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı Görüntüle</a>
-                                    @else
-                                        Yok
-                                    @endif
-                                </p>
-                            </div>
-                        @endif
-                    @endforeach
-                @endforeach
+            <div class="flex items-center space-x-4">
+                <button class="text-red-200">
+                    <i class="fas fa-bell"></i> 
+                </button>
+                <div class="user-info-container relative">
+                    <div class="user-info">
+                        <img src="{{ asset('images/profile.jpg') }}" alt="Profile Image">
+                    </div>
+                    <div class="ml-4 text-gray-800">{{ Auth::user()->name }}</div>
+                </div>
             </div>
         </div>
-    
+
+        <!-- Projects -->
+        <div class="grid grid-cols-12 gap-6">
+            @php
+                $colors = ['bg-blue-100', 'bg-pink-100', 'bg-yellow-100', 'bg-green-50', 'bg-red-50'];
+            @endphp
+            @foreach($projects->take(3) as $index => $project)
+            @php
+                $color = $colors[$index % count($colors)];
+                $icon = $project->icon ?? 'project-diagram';
+            @endphp
+            <div class="card {{ $color }} col-span-12 sm:col-span-6 md:col-span-4 rounded-3xl shadow-lg p-6 transition duration-200 hover:shadow-xl relative">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-{{ $icon }} text-2xl text-gray-500"></i>
+                    </div>
+                    <div class="ml-4">
+                        <a href="{{ route('projects.show', $project->id) }}" class="text-2xl text-blue-600 hover:underline font-semibold">{{ $project->name }}</a>
+                        <p class="text-gray-500">{{ $project->type }}</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">{{ $project->description }}</p>
+                @if ($index == 2 && $projects->count() > 3)
+                <div class="absolute top-2 right-2">
+                    <a href="{{ route('projects.index') }}" class="text-blue-500 hover:text-blue-700">View All+</a>
+                </div>
+                @endif
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Activity and Schedule -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 mt-8">
+            <!-- Chart Section -->
+            <div class="card bg-white p-4 rounded-2xl shadow-md">
+                <h3 class="text-xl">Aktif Olduğu Saat</h3>
+                <div class="h-64">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+            <!-- Schedule Section -->
+            <div class="card bg-white p-4 rounded-2xl shadow-md">
+                <h3 class="text-xl">Günlük Görevler</h3>
+                <div class="mt-4">
+                    <p class="text-gray-600"><i class="fa-solid fa-file-code mr-2"></i>Proje İsmi - Araştırma İsmi</p>
+                    <p class="text-gray-600"><i class="fa-solid fa-file-code mr-2"></i>Proje İsmi - Araştırma İsmi</p>
+                    <p class="text-gray-600"><i class="fa-solid fa-file-code mr-2"></i>Proje İsmi - Araştırma İsmi</p>
+                    <p class="text-gray-600"><i class="fa-solid fa-file-code mr-2"></i>Proje İsmi - Araştırma İsmi</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar and Assignments -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Calendar Section -->
+            <div class="card bg-white p-4 rounded-2xl shadow-md">
+                <h3 class="text-xl">Takvim</h3>
+                <div id="calendar"></div>
+            </div>
+
+            <!-- Work Situation Section -->
+            <div class="card bg-white p-4 rounded-2xl shadow-md">
+                <h3 class="text-xl">Mesai Durumu</h3>
+                <div class="mt-4">
+                    <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg mb-2">
+                        <p class="text-gray-600">Başladı</p>
+                        <span class="inline-block h-4 w-4 rounded-full status-indicator" data-status="started"></span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg mb-2">
+                        <p class="text-gray-600">Mola</p>
+                        <span class="inline-block h-4 w-4 rounded-full status-indicator" data-status="break"></span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-100 p-2 rounded-lg mb-2">
+                        <p class="text-gray-600">Bitirdi</p>
+                        <span class="inline-block h-4 w-4 rounded-full status-indicator" data-status="finished"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Chart.js Script -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        function handleDragStart(event) {
-            event.dataTransfer.setData("text/plain", event.target.dataset.taskId);
-            event.currentTarget.classList.add("dragging");
-        }
-
-        function handleDragEnd(event) {
-            event.currentTarget.classList.remove("dragging");
-        }
-
-        function handleDrop(event) {
-            event.preventDefault();
-            const taskId = event.dataTransfer.getData("text/plain");
-            const newStatus = event.currentTarget.dataset.status;
-            const taskCard = document.querySelector(`[data-task-id='${taskId}']`);
-            if (taskCard) {
-                updateTaskStatus(taskId, newStatus);
-            }
-        }
-
-        async function updateTaskStatus(taskId, newStatus) {
-            try {
-                const response = await fetch(`/tasks/${taskId}/update-status`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({ status: newStatus })
-                });
-
-                if (response.ok) {
-                    console.log("Görev durumu güncellendi.");
-                    window.location.href = "/admin";
-                } else {
-                    window.location.href = "/admin";
+        var ctx = document.getElementById('activityChart').getContext('2d');
+        var activityChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Kişi-1", "Kişi-2", "Kişi-3"],
+                datasets: [{
+                    label: 'Aktif Olduğu Saat Sayısı',
+                    data: [55, 49, 44],
+                    backgroundColor: [
+                        "#b91d47",
+                        "#00aba9",
+                        "#2b5797"
+                    ]
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Aktif Olduğu Saat Sayısı"
                 }
-            } catch (error) {
-                console.error("Bir hata meydana geldi:", error);
             }
-        }
+        });
     </script>
+
+    <!-- FullCalendar -->
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.10.1/main.min.css' rel='stylesheet' />
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.10.1/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.10.1/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.10.1/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: [
+                    {
+                        title: 'Design Review',
+                        start: '2024-07-10'
+                    },
+                    {
+                        title: 'Sprint Planning',
+                        start: '2024-07-11'
+                    },
+                    {
+                        title: 'Project Deadline',
+                        start: '2024-07-15'
+                    }
+                ]
+            });
+            calendar.render();
+        });
+    </script>
+
+</body>
 @endsection

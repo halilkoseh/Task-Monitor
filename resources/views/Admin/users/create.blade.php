@@ -38,7 +38,7 @@
             </form>
 
             {{ $errors }}
-
+            
 
             @if (session('success'))
                 <p class="mt-4 text-green-500">{{ session('success') }}</p>

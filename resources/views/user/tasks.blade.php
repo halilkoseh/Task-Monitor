@@ -3,14 +3,14 @@
 @section('content')
 <body class="flex">
     <style>
-        /* Genel Stiller */
+
         body {
             font-family: "Nunito", sans-serif;
             background-color: #f3f4f6;
             color: #1f2937;
         }
 
-        /* Navbar Stilleri */
+     
         .sidebar {
             background-color: #1e40af;
             color: #ffffff;
@@ -25,7 +25,7 @@
             color: #ffffff;
         }
 
-        /* Sütun ve Kart Stilleri */
+  
         .column {
             min-height: 600px;
             background-color: #ffffff;
@@ -49,7 +49,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* Kartların Durumlarına Göre Renkler */
+     
         .bg-atandi {
             background-color: #fee2e2;
         }
@@ -70,7 +70,6 @@
             background-color: #d1fae5;
         }
 
-        /* Diğer Stiller */
         .dragging {
             opacity: 0.5;
         }

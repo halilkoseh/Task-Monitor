@@ -1,87 +1,96 @@
-<div class="bg-white w-64 min-h-screen shadow-lg flex flex-col">
-    <div class="p-6 flex items-center gap-2 border-b">
-        <span class="text-xl font-bold text-gray-800">Task Monitor</span>
-    </div>
+<style>
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar-item:hover {
+        background-color: #f2e4f9;
+        color: #4a5568; 
+        border-radius: 9999px; 
+        transition: all 0.2s;
+    }
+    .sidebar-item {
+        transition: all 0.2s;
+    }
+</style>
 
-    <div class="flex flex-col mt-4 space-y-2 flex-grow">
-        <a href="{{ route('admin') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
-            <i class="fas fa-th-large"></i> Ana Sayfa
-        </a>
-        <a href="#"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-green-600 transition-colors duration-200">
-            <i class="fas fa-calendar-alt"></i> Takvim
-        </a>
-        <a href="{{ route('admin.users.create') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-red-600 transition-colors duration-200">
-            <i class="fa-solid fa-user-plus"></i> Kullanıcı Ekle
-        </a>
-        <a href="{{ route('admin.users.show') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-yellow-600 transition-colors duration-200">
-            <i class="fa-solid fa-users"></i> Kullanıcılar
-        </a>
-        <a href="{{ route('admin.users.assaign') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-orange-600 transition-colors duration-200">
-            <i class="fa-solid fa-list-check"></i> Görev Ata
-        </a>
-
-
-        <a href="{{ route('admin.workSessions') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-blue-600 transition-colors duration-200">
-            <i class="fa-solid fa-clock"></i> Mesai Takip
-        </a>
-
-
-        <a href="{{ route('tasks.index') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-blue-600 transition-colors duration-200">
-            <i class="fa-solid fa-clock"></i> Task Düzenle
-        </a>
-
-
-
-
-        <a href="{{ route('offdays.index') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-green-50 hover:text-green-600 transition-colors duration-200">
-            <i class="fa-solid fa-clock"></i> İzin Takip
-        </a>
-
-
-
-
-
-
-        <a href="{{ route('projects.index') }}"
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
-            <i class="fa-solid fa-microchip"></i> Projeler
-        </a>
-
-
-
-        <a href=""
-            class="flex items-center gap-2 px-6 py-3 text-gray-800 hover:bg-blue-50 hover:text-red-600 transition-colors duration-200">
-            <i class="fa-solid fa-file-pen"></i> Raporlar
-        </a>
-
-
-    </div>
-
-
-    <div class="p-4 bg-gray-100 mt-auto flex items-center gap-2 border-t">
-        <div>
-            <div class="text-gray-800">{{ Auth::user()->name }}</div>
-            <div class="text-xs text-gray-500">{{ Auth::user()->gorev }}</div>
+<!-- Sidebar -->
+<div class="flex">
+    <div class="w-64 bg-gray-700 h-screen p-5 text-white rounded-3xl">
+        <div class="flex items-center mb-20">
+            <a href="{{ asset('admin') }}" class="flex items-center">
+                <img src="{{ asset('images/logo1.png') }}" alt="logo" class="w-12 mr-1" /> 
+                <div>
+                    <span class="font-quicksand text-2xl">TaskManager</span> 
+                </div>
+            </a>
         </div>
-        <a href="{{ route('profile') }}"
-            class="ml-auto text-gray-500 hover:text-gray-800 transition-colors duration-200">
-            <i class="fas fa-cog"></i>
-        </a>
-        <form action="{{ route('logout') }}" method="POST" class="ml-2">
-            @csrf
-            <button type="submit" class="text-gray-500 hover:text-gray-800 transition-colors duration-200">
-                <i class="fas fa-sign-out-alt"></i>
-            </button>
-        </form>
+
+        <ul class="space-y-3.5">
+            <li>
+                <a href="{{ route('admin') }}" class="sidebar-item flex items-center text-lg">
+                    <i class="fas fa-th-large mr-3"></i> 
+                     Admin Paneli
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.users.show') }}" class="sidebar-item flex items-center text-lg">
+                    <i class="fa-solid fa-users mr-2"></i> 
+                    Kullanıcılar
+                </a>
+            </li>
+           <!-- <li>
+                <a href="{{ route('admin.users.assaign') }}" class="sidebar-item flex items-center text-lg">
+                    <i class="fa-solid fa-list-check mr-3"></i>
+                    Görev Ata
+                </a>
+            </li>-->
+            <li>
+                <a href="{{ route('tasks.index') }}" class="sidebar-item flex items-center text-lg">
+                    <i class="fa-solid fa-file mr-4"></i> 
+                    Görev Düzenle
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.workSessions') }}" class="sidebar-item flex items-center text-lg">
+                    <i class="fa-solid fa-clock mr-3"></i> 
+                    Mesai Takip
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('projects.index') }}" class="sidebar-item flex items-center text-lg">
+                    <i class="fa-solid fa-file-code mr-4"></i> 
+                    Projeler
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-item flex items-center text-lg">
+                    <i class="fa-solid fa-copy mr-3"></i> 
+                    Raporlar
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('offdays.index') }}" class="sidebar-item flex items-center text-lg">
+                    <i class="fa-solid fa-copy mr-3"></i> 
+                    İzin Takip
+                </a>
+            </li>
+        </ul>
+
+
+        <div class="flex flex-col justify-center mt-40 gap-1 border-t border-white pt-2">
+            <a href="{{ route('profile') }}" class="text-white hover:text-blue-800 transition-colors duration-200 flex items-center gap-2 pl-2">
+                <i class="fas fa-cog text-md mr-1"></i> 
+                <span class="text-md">Ayarlar</span>
+            </a>
+
+            <form action="{{ route('logout') }}" method="POST" class="flex items-center gap-4 pl-2">
+                @csrf
+                <button type="submit" class="text-white hover:text-blue-800 transition-colors duration-200 flex items-center gap-2">
+                    <i class="fas fa-sign-out-alt text-md mb-1 mr-1"></i> 
+                    <span class="text-md mb-1">Çıkış Yap</span>
+                </button>
+            </form>
+        </div>
     </div>
-
-
 </div>

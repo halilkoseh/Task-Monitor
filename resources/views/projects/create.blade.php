@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-8 mt-12">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">Proje Oluştur</h1>
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">+Proje Oluştur</h1>
     <form action="{{ route('projects.store') }}" method="POST">
         @csrf
         <div class="mb-5">

@@ -9,6 +9,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\OffdayController;
 
+
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -28,6 +29,9 @@ Route::middleware('auth')->group(function () {
 
 
 });
+
+
+
 
 
 Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.users.create');
@@ -148,3 +152,4 @@ Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('tasks.edi
 Route::patch('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
 Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 Route::get('/navbar-tasks', [TaskController::class, 'index1'])->name('navbar.tasks');
+
