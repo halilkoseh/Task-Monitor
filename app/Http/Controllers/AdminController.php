@@ -23,14 +23,18 @@ class AdminController extends Controller
 
         $users = User::all();
         $userTasks = User::with('tasks')->get();
-        $tasks = Task::all(); 
+        $tasks = Task::all();
 
         return view('admin.index', [
             'users' => $users,
             'userTasks' => $userTasks,
-            'tasks' => $tasks 
+            'tasks' => $tasks
         ]);
     }
+
+
+
+
 
     public function store(Request $request)
     {
@@ -38,18 +42,46 @@ class AdminController extends Controller
             'name' => 'required',
             'username' => 'required|unique:users',
             'password' => 'required|min:6',
+            'email' => 'required|email',
             'gorev' => 'required',
+            'phoneNumber' => 'required',
+            'linkedinAddress' => 'required',
+            'portfolioLink' => 'required',
+            'profilePic' => 'required',
         ]);
 
         $user = new User();
         $user->name = $request->name;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
+        $user->email = $request->email;
         $user->gorev = $request->gorev;
+        $user->phoneNumber = $request->phoneNumber;
+        $user->linkedinAddress = $request->linkedinAddress;
+        $user->portfolioLink = $request->portfolioLink;
+
+        if ($request->hasFile('profilePic')) {
+            $profilePicPath = $request->file('profilePic')->store('profile_pics', 'public');
+            $profilePicName = basename($profilePicPath);
+            $user->profilePic = $profilePicName;
+        }
+
         $user->save();
 
         return redirect()->back()->with('success', 'Kullanıcı başarıyla eklendi!');
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function edit($id)
     {
@@ -57,32 +89,49 @@ class AdminController extends Controller
         return view('admin.users.edit', compact('user'));
     }
 
+
+
+
+
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'gorev' => 'required',
-        ]);
-    
+
+
+
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->gorev = $request->gorev;
-        $user->save();
-    
-        return redirect()->route('admin.users.show')->with('success', 'Kullanıcı başarıyla güncellendi!');
-    }
-    
-    
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+        $user->email = $request->email;
+        $user->phoneNumber = $request->phoneNumber;
+        $user->linkedinAddress = $request->linkedinAddress;
+        $user->portfolioLink = $request->portfolioLink;
 
-    
-  
+        if ($request->hasFile('profilePic')) {
+            $profilePic = $request->file('profilePic')->store('profile_pics', 'public');
+            $user->profilePic = $profilePic;
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.users.show', $user->id)->with('success', 'Kullanıcı başarıyla güncellendi!');
+    }
+
+
+
+
+
+
+
+
     public function storeTask(Request $request)
     {
         $attachmentPath = null;
         if ($request->hasFile('attachments')) {
             $attachmentPath = $request->file('attachments')->store('attachments', 'public');
         }
-    
+
         foreach ($request->input('assignedTo') as $userId) {
             $task = Task::create([
                 'title' => $request->taskTitle,
@@ -99,33 +148,32 @@ class AdminController extends Controller
 
 
 
-            // UserProject tablosuna ekleme yap
             UserProject::create([
                 'user_id' => $userId,
                 'project_id' => $request->project,
             ]);
 
 
-    
+
             $user = User::find($userId);
             $users = User::all();
-            $projects = Project::all(); 
+            $projects = Project::all();
             $tasks = Task::all();
 
-            
-            if ($user && $user->username) { 
-                Mail::to($user->username)->send(new TaskAssigned($task, $user,));
+
+            if ($user && $user->username) {
+                Mail::to($user->username)->send(new TaskAssigned($task, $user, ));
             } else {
-       
+
 
                 return redirect()->back()->with('error', 'Kullanıcı e-posta adresi bulunamadı!');
             }
         }
-    
+
         return redirect()->back()->with('success', 'Görevler başarıyla atandı!');
     }
-    
-    
+
+
 
 
 
@@ -142,25 +190,28 @@ class AdminController extends Controller
 
 
     public function index1($id)
-{
-    $project = Project::with(['tasks' => function ($query) use ($id) {
-                          $query->where('project_id', $id)->with('assignedUser');
-                      }, 'users'])
-                      ->where('id', $id)
-                      ->firstOrFail();
+    {
+        $project = Project::with([
+            'tasks' => function ($query) use ($id) {
+                $query->where('project_id', $id)->with('assignedUser');
+            },
+            'users'
+        ])
+            ->where('id', $id)
+            ->firstOrFail();
 
-    if (!$project) {
-        abort(404);
+        if (!$project) {
+            abort(404);
+        }
+        $users = $project->users;
+
+        return view('projects.show', [
+            'project' => $project,
+            'users' => $users,
+        ]);
     }
-    $users = $project->users;
 
-    return view('projects.show', [
-        'project' => $project,
-        'users' => $users,
-    ]);
-}
-
-public function destroyProject(Project $project)
+    public function destroyProject(Project $project)
     {
         $project->delete();
 
@@ -179,62 +230,62 @@ public function destroyProject(Project $project)
 
 
 
-public function showWorkSessions()
-{
-    $users = User::all();
-    $workSessions = WorkSession::with(['user', 'breaks'])->get();
+    public function showWorkSessions()
+    {
+        $users = User::all();
+        $workSessions = WorkSession::with(['user', 'breaks'])->get();
 
-    return view('admin.work_sessions', compact('users', 'workSessions'));
-}
+        return view('admin.work_sessions', compact('users', 'workSessions'));
+    }
 
-public function editWorkSession($id)
-{
-    $workSession = WorkSession::with('breaks')->findOrFail($id);
-    return view('admin.edit_work_session', compact('workSession'));
-}
+    public function editWorkSession($id)
+    {
+        $workSession = WorkSession::with('breaks')->findOrFail($id);
+        return view('admin.edit_work_session', compact('workSession'));
+    }
 
 
-public function updateWorkSession(Request $request, $id)
-{
-    $request->validate([
-        'start_time' => 'required|date',
-        'end_time' => 'required|date',
-        'status' => 'required|string',
-        'breaks.*.start_time' => 'required|date',
-        'breaks.*.end_time' => 'required|date'
-    ]);
-
-    $workSession = WorkSession::findOrFail($id);
-    $workSession->update([
-        'start_time' => $request->start_time,
-        'end_time' => $request->end_time,
-        'status' => $request->status,
-    ]);
-
-    foreach ($request->breaks as $breakId => $breakData) {
-        $break = WorkBreak::findOrFail($breakId);
-        $break->update([
-            'start_time' => $breakData['start_time'],
-            'end_time' => $breakData['end_time'],
+    public function updateWorkSession(Request $request, $id)
+    {
+        $request->validate([
+            'start_time' => 'required|date',
+            'end_time' => 'required|date',
+            'status' => 'required|string',
+            'breaks.*.start_time' => 'required|date',
+            'breaks.*.end_time' => 'required|date'
         ]);
+
+        $workSession = WorkSession::findOrFail($id);
+        $workSession->update([
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'status' => $request->status,
+        ]);
+
+        foreach ($request->breaks as $breakId => $breakData) {
+            $break = WorkBreak::findOrFail($breakId);
+            $break->update([
+                'start_time' => $breakData['start_time'],
+                'end_time' => $breakData['end_time'],
+            ]);
+        }
+
+        return redirect()->route('admin.workSessions')->with('success', 'Work session updated.');
     }
 
-    return redirect()->route('admin.workSessions')->with('success', 'Work session updated.');
-}
+    public function filterWorkSessions(Request $request)
+    {
+        $users = User::all();
+        $userId = $request->input('user_id');
 
-public function filterWorkSessions(Request $request)
-{
-    $users = User::all();
-    $userId = $request->input('user_id');
+        if (!$userId) {
+            return redirect()->route('admin.workSessions');
+        }
 
-    if (!$userId) {
-        return redirect()->route('admin.workSessions');
+        $workSessions = WorkSession::where('user_id', $userId)->with(['user', 'breaks'])->get();
+
+        return view('admin.work_sessions', compact('workSessions', 'users'));
     }
-
-    $workSessions = WorkSession::where('user_id', $userId)->with(['user', 'breaks'])->get();
-
-    return view('admin.work_sessions', compact('workSessions', 'users'));
-}
 
 
 

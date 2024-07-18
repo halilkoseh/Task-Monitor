@@ -50,7 +50,17 @@ Route::put('/admin/users/{id}', [AdminController::class, 'update'])->name('admin
 Route::post('/admin/tasks', [AdminController::class, 'storeTask'])->name('admin.tasks.store');
 
 
+
+
+
+
+
+
+
+
 Route::get('/users/{id}/tasks', [UserController::class, 'showTasks'])->name('admin.index');
+
+
 
 
 
@@ -153,3 +163,6 @@ Route::patch('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.upda
 Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 Route::get('/navbar-tasks', [TaskController::class, 'index1'])->name('navbar.tasks');
 
+
+
+Route::get('/admin/users/search1', [UserController::class, 'search1'])->name('admin.users.search1');

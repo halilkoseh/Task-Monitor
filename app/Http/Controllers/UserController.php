@@ -296,5 +296,26 @@ public function showWorkSessions()
 
         return redirect()->route('admin.users.index')->with('success', 'Kullanıcı başarıyla silindi.');
     }
+
+
+
+    public function search1(Request $request)
+    {
+        $query = User::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        $users = $query->get();
+
+        return view('admin.users.show', compact('users'));
+    }
+
+
+
+
+
 }
 
