@@ -1,10 +1,23 @@
+<style>
+.card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .content-container {
+        min-height: 100vh;
+        margin-left: 16rem; 
+        padding: 20px;
+        box-sizing: border-box; 
+    }
+</style>
 @extends('layout.app')
 
 @section('content')
-    <div class="flex-1 p-8 mt-24">
+    <div class="flex-1 p-8 mt-24 content-container">
         <div class="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">
             <div class="mt-6 mb-6">
-                <a href="{{ route('admin.users.show') }}" class="text-blue-500 hover:text-blue-800"><i class="fa-solid fa-chevron-left"></i> Geri Dön</a>
+                <a href="{{ route('admin.users.show') }}" class="text-sky-500 hover:text-blue-800"><i class="fa-solid fa-chevron-left"></i> Geri Dön</a>
             </div>
             <h1 class="text-3xl font-semibold text-center mb-8">Kullanıcı Ekle</h1>
 
@@ -69,7 +82,7 @@
                 </div>
 
                 <button type="submit"
-                    class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Kullanıcı
+                    class="w-full bg-sky-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Kullanıcı
                     Ekle</button>
             </form>
 

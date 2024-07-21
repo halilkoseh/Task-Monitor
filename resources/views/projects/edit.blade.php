@@ -1,7 +1,21 @@
+<style>
+.card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .content-container {
+        min-height: 100vh;
+        margin-left: 16rem; 
+        padding: 20px;
+        box-sizing: border-box; 
+    }
+</style>
+
 @extends('layout.app')
 
 @section('content')
-<div class="container mx-auto p-4">
+<div class="content-container mx-auto p-4">
     <h1 class="text-3xl font-bold mb-6">Proje Düzenle</h1>
     <form action="{{ route('projects.update', $project->id) }}" method="POST" class="space-y-6">
         @csrf

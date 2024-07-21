@@ -2,8 +2,73 @@
 
 @section('content')
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 <style>
-    /* Custom styles for the page */
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow-x: hidden; 
+    }
+
+    .content-container {
+        min-height: 100vh;
+        margin-left: 16rem; 
+        padding: 20px;
+        box-sizing: border-box; 
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info-container {
+        display: flex;
+        align-items: center;
+        margin-left: auto; 
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        position: relative;
+        background-color: #fff;
+        padding: 5px;
+        border-radius: 50%;
+    }
+
+    .user-info img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .search-container {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .search-container .search-input {
+        padding-left: 35px; 
+        width: 100%; /* Genişliği tam yap */
+    }
+
+    .search-container .search-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+
+    .text-stroke {
+        -webkit-text-stroke: 1px black;
+        text-stroke: 1px black;
+    }
+
     .bg-sidebar {
         background-color: #3A6EA5;
     }
@@ -12,282 +77,313 @@
         background-color: #EBEBEB;
     }
 
-    /* Form modal styles */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-        justify-content: center;
-        align-items: center;
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 50%;
+    .task-card {
+        background-color: #ffffff;
+        padding: 10px;
         border-radius: 10px;
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    /* Button enlarge animation */
-    #add-task-btn {
-        transition: transform 0.3s ease;
-    }
-
-    #add-task-btn:active {
-        transform: scale(1.1);
-    }
-
-    /* Input group styles */
-    .input-group {
-        display: flex;
-        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+        cursor: move;
         position: relative;
     }
 
-    .input-group i {
+    .badge {
+        color: #4b5563; /* text-gray-600 */
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        display: inline-block;
+    }
+
+    .task-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #A0A0A0;
+        margin-top: 10px;
+    }
+
+    .task-dates {
+        font-size: 12px;
+        color: #A0A0A0;
+        text-align: left;
+        margin-top: 10px;
+    }
+
+    .profile-picture {
         position: absolute;
-        left: 10px;
-        color: #6b7280;
+        bottom: 10px;
+        right: 10px;
+        border-radius: 50%;
+        border: 2px solid white;
     }
 
-    .form-input {
-        padding-left: 2.5rem;
+    .dragging {
+        opacity: 0.5;
     }
 
-    /* Input and button spacing */
-    .mb-2 {
-        margin-bottom: 1rem;
+    .project-box {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
 
-    .space-y-2>*+* {
-        margin-top: 1rem;
-    }
-
-    .task-card {
-        background-color: #fff;
-        padding: 1rem;
-        border-radius: 0.75rem;
+    .project-card {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        border-radius: 0.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin-bottom: 1rem;
+        padding: 1rem;
+        transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .task-card h3 {
-        margin: 0 0 0.5rem;
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
     }
 
-    .task-card span {
+    .project-card .icon-container {
+        flex: 0 0 auto;
+        margin-right: 1rem;
+    }
+
+    .project-card .text-container {
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .see-all-link {
+        color: #0284c7; /* text-sky-500 */
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .dropdown {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        z-index: 1;
+        background-color: #ffffff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        border-radius: 0.25rem;
+    }
+
+    .dropdown.show .dropdown-content {
         display: block;
-        margin-top: 0.5rem;
-        color: #6b7280;
+    }
+
+    .dropdown-content a, .dropdown-content form button {
+        color: #000000;
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+    }
+
+    .dropdown-content a:hover, .dropdown-content form button:hover {
+        background-color: #f1f1f1;
     }
 </style>
 
-<div class="flex">
-    <!-- Main content -->
-    <div class="flex-1 p-6">
+<body class="bg-gray-100">
+
+    <!-- Main Content -->
+    <div class="content-container mx-auto">
         <!-- Header -->
-        <div class="flex items-center justify-between">
-            <h1 class="text-3xl">
-                <i class="fa-solid fa-list-check mr-3 text-blue-500"></i> Görev Listesi
-            </h1>
-            <div class="flex items-center">
-                <span id="current-date">Temmuz 16, 2024</span>
-                <button id="date-picker-btn" class="ml-4 p-2 bg-gray-200 rounded-full">
-                    <i class="fas fa-calendar-alt"></i>
-                </button>
-                <button id="add-task-btn" class="ml-4 p-2 bg-blue-500 text-white rounded-full">+ Görev Ata</button>
+        <div class="flex justify-between items-center mb-8 p-2">
+            <div class="search-container relative">
+                <input type="text" placeholder="Ara.." class="search-input py-2 px-4 border border-sky-500 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                <i class="fas fa-search search-icon"></i>
             </div>
-        </div>
-        <!-- Stats -->
-        <div class="grid grid-cols-2 gap-4 mt-6">
-            <div class="bg-white p-6 rounded-2xl shadow card">
-                <h2 class="text-lg font-bold">Katılımcılar</h2>
-                <div class="flex items-center mt-2">
-                    <img src="avatar1.jpg" class="w-8 h-8 rounded-full mr-2">
-                    <img src="avatar2.jpg" class="w-8 h-8 rounded-full mr-2">
-                    <img src="avatar3.jpg" class="w-8 h-8 rounded-full mr-2">
-                    <span class="ml-2">+12</span>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow card">
-                <h2 class="text-lg font-bold">Zaman</h2>
-                <div class="flex items-center mt-2">
-                    <span class="text-2xl font-bold">1:40</span>
+            <div class="flex items-center space-x-4">
+                <span id="current-date" class="mr-4">{{ \Carbon\Carbon::now()->locale('tr')->isoFormat('D MMMM YYYY') }}</span>
+                <div class="user-info-container relative">
+                    <div class="user-info">
+                        <img src="{{ asset('images/profile.jpg') }}" alt="Profile Image">
+                    </div>
+                    <div class="ml-4 text-gray-800">Hoşgeldin, {{ Auth::user()->name }}</div>
                 </div>
             </div>
         </div>
-        <!-- Task columns -->
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-6">
-            <div class="bg-assigned p-4 rounded-2xl shadow card bg-yellow-100">
-                <h2 class="text-lg font-bold text-yellow-600">Atandı</h2>
-                <div class="mt-2">
-                    <div class="task-card">
-                        <h3>Extra Sistem</h3>
-                        <span>Mobil</span>
-                        <span>Mayıs 10, 2023</span>
+
+        
+        <div class="container mx-auto p-4">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-white p-10 rounded-lg shadow-lg relative">
+                    <a href="{{ route('admin.users.show') }}" class="see-all-link absolute top-2 right-2 text-sky-500 hover:text-blue-600">Tümünü Gör</a>
+                    <h2 class="text-xl text-gray-600 font-semibold mb-5">Tüm Kullanıcılar</h2>
+                    <div class="flex -space-x-2 overflow-hidden">
+                        @foreach ($users->take(10) as $user)
+                            <img src="{{ $user->profile_photo_url }}" class="inline-block h-10 w-10 rounded-full ring-2 ring-white">
+                        @endforeach
+                        @if ($users->count() > 10)
+                            <div class="inline-block h-10 w-10 rounded-full ring-2 ring-white bg-gray-300 flex items-center justify-center text-xs font-medium text-gray-700">
+                                +{{ $users->count() - 10 }}
+                            </div>
+                        @endif
                     </div>
-                    <div class="task-card">
-                        <h3>Kurummsal İK</h3>
-                        <span>Web</span>
-                        <span>Eylül 16, 2024</span>
+                </div>
+
+                <div class="bg-white p-10 rounded-lg shadow-lg relative">
+                    <a href="{{ route('projects.index') }}" class="see-all-link absolute top-2 right-2 text-sky-500 hover:text-blue-600">Tümünü Gör</a>
+                    @if($projects && count($projects) > 0)
+                    <div class="relative">
+                        <div class="project-box">
+                            <h2 class="text-xl text-gray-600 font-semibold">Projeler</h2>
+                            @foreach($projects->take(3) as $index => $project)
+                            @php
+                                $iconBackgroundColors = ['bg-orange-100', 'bg-purple-100', 'bg-sky-100'];
+                                $iconColors = ['text-orange-600', 'text-purple-500', 'text-sky-500'];
+                                $iconData = [
+                                    ['icon' => 'fa-code'],
+                                    ['icon' => 'fa-project-diagram'],
+                                    ['icon' => 'fa-tasks'],
+                                ];
+                                $bgColor = $iconBackgroundColors[$index % count($iconBackgroundColors)];
+                                $iconColor = $iconColors[$index % count($iconColors)];
+                                $icon = $iconData[$index % count($iconData)];
+                            @endphp
+                            <div class="project-card">
+                                <div class="icon-container w-7 h-7 rounded-full {{ $bgColor }} flex items-center justify-center transform transition-transform duration-200 hover:scale-110">
+                                    <i class="fa-solid {{ $icon['icon'] }} text-xs {{ $iconColor }}"></i>
+                                </div>
+                                <div class="text-container">
+                                    <div>
+                                        <a href="{{ route('projects.show', $project->id) }}" class="text-lg text-gray-600 hover:underline font-semibold">{{ $project->name }}</a>
+                                    </div>
+                                    <div>
+                                        <span class="badge {{ $bgColor }} text-gray-600">{{ $project->type }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
+                    @else
+                    <p>Henüz proje yok.</p>
+                    @endif
                 </div>
             </div>
-            <div class="bg-started p-4 rounded-2xl shadow card bg-blue-100">
-                <h2 class="text-lg font-bold text-blue-600">Başladı</h2>
-                <div class="mt-2">
-                 
+
+            <div class="bg-transparent py-3 px-3">
+            <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl text-gray-600 font-semibold">Görevler</h2>
+                <a href="{{ route('admin.users.assaign') }}">
+                    <button id="add-task-btn" class="p-1 px-3 bg-sky-500 text-white text-sm rounded-full hover:bg-blue-500"><i class="fa-solid fa-circle-plus"></i> Görev Ata</button>
+                </a>
                 </div>
-            </div>
-            <div class="bg-in-progress p-4 rounded-2xl shadow card bg-green-100">
-                <h2 class="text-lg font-bold text-green-600">Devam Ediyor</h2>
-                <div class="mt-2">
-                   
-                </div>
-            </div>
-            <div class="bg-testing p-4 rounded-2xl shadow card bg-purple-100">
-                <h2 class="text-lg font-bold text-purple-600">Test Ediliyor</h2>
-                <div class="mt-2">
-             
-                </div>
-            </div>
-            <div class="bg-completed p-4 rounded-2xl shadow card bg-red-100">
-                <h2 class="text-lg font-bold text-red-600">Tamamlandı</h2>
-                <div class="mt-2">
-               
-                </div>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 task-board text-gray-600">
+                @foreach (['Atandı', 'Başladı', 'Devam Ediyor', 'Test Ediliyor', 'Tamamlandı'] as $index => $status)
+                    <div class="p-4 rounded-lg shadow-lg min-h-[300px]" style="background-color: {{ ['#e0f2fe', '#f3e8ff', '#ffedd5', '#e0f2fe', '#f3e8ff'][$index % 5] }}" data-status="{{ $status }}" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+                        <h2 class="text-xl font-semibold mb-4">{{ $status }}</h2>
+                        @foreach ($userTasks as $user)
+                            @foreach ($user->tasks as $task)
+                                @if ($task->status == $status)
+                                    <div class="task-card p-4 mb-4 rounded-lg shadow-md" draggable="true" data-task-id="{{ $task->id }}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
+                                        <h3 class="font-semibold mb-2">{{ $task->title }}</h3>
+                                        <span class="badge {{ ['bg-orange-100', 'bg-purple-100', 'bg-sky-100'][$index % 3] }} text-gray-600">{{ $task->projectName?->name }}</span>
+                                        <p class="text-sm text-gray-700 mb-1">Görev İçeriği: {{ $task->description }}</p>
+                                        <div class="task-dates">
+                                            <p>{{ $task->start_date }} / {{ $task->due_date }}</p>
+                                        </div>
+                                        <img src="{{ $user->profile_photo_url }}" class="profile-picture h-6 w-6">
+                                        <div class="dropdown">
+                                            <button class="text-gray-300 focus:outline-none dropdown-button">
+                                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                                            </button>
+                                            <div class="dropdown-content">
+                                                <a href="{{ route('tasks.edit', $task->id) }}">Düzenle</a>
+                                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" onsubmit="return confirm('Bu görevi silmek istediğinize emin misiniz?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit">Sil</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        @endforeach
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
-</div>
-
-<!-- Add Task Modal -->
-<div id="add-task-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="close-modal">&times;</span>
-        <h2 class="text-2xl font-bold mb-4">Görev Atama</h2>
-        <form id="add-task-form" class="space-y-4">
-            <div class="input-group mb-2">
-                <i class="fas fa-heading"></i>
-                <input type="text" id="taskTitle" name="taskTitle" class="form-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Görev Başlığı" required>
-            </div>
-            <div class="input-group mb-2">
-                <i class="fas fa-align-left"></i>
-                <textarea id="taskDescription" name="taskDescription" class="form-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Görev Açıklaması" required></textarea>
-            </div>
-            <div class="input-group mb-2">
-                <i class="fas fa-clipboard-list"></i>
-                <input type="text" id="project" name="project" class="form-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Proje" required>
-            </div>
-            <div id="assignedUsers" class="space-y-2">
-                <div class="input-group mb-2">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="assignedTo" name="assignedTo[]" class="form-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Atanacak Kişi" required>
-                </div>
-            </div>
-            <button type="button" id="addUserButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">Collaborator Ekle</button>
-            <div class="input-group mb-2">
-                <i class="fas fa-calendar-alt"></i>
-                <input type="date" id="startDate" name="startDate" class="form-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-            </div>
-            <div class="input-group mb-2">
-                <i class="fas fa-calendar-check"></i>
-                <input type="date" id="dueDate" name="dueDate" class="form-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-            </div>
-            <div class="input-group mb-2">
-                <i class="fas fa-paperclip"></i>
-                <input type="file" id="attachments" name="attachments" class="form-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
-            <div class="flex items-center justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">Görevi Ata</button>
-            </div>
-        </form>
     </div>
-</div>
 
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Add task modal
-        const addTaskBtn = document.getElementById('add-task-btn');
-        const addTaskModal = document.getElementById('add-task-modal');
-        const closeModal = document.getElementById('close-modal');
-        const addTaskForm = document.getElementById('add-task-form');
-        const addUserButton = document.getElementById('addUserButton');
-        const assignedUsersDiv = document.getElementById('assignedUsers');
+    function handleDragStart(event) {
+        event.dataTransfer.setData("text/plain", event.target.dataset.taskId);
+        event.currentTarget.classList.add("dragging");
+    }
 
-        addTaskBtn.addEventListener('click', () => {
-            addTaskModal.style.display = 'flex';
-        });
+    function handleDragEnd(event) {
+        event.currentTarget.classList.remove("dragging");
+    }
 
-        closeModal.addEventListener('click', () => {
-            addTaskModal.style.display = 'none';
-        });
+    function handleDrop(event) {
+        event.preventDefault();
+        const taskId = event.dataTransfer.getData("text/plain");
+        const newStatus = event.currentTarget.dataset.status;
+        const taskCard = document.querySelector(`[data-task-id='${taskId}']`);
+        if (taskCard) {
+            updateTaskStatus(taskId, newStatus);
+            event.currentTarget.appendChild(taskCard);
+        }
+    }
 
-        window.addEventListener('click', (event) => {
-            if (event.target === addTaskModal) {
-                addTaskModal.style.display = 'none';
-            }
-        });
-
-        addTaskForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            addTaskModal.style.display = 'none';
-            alert('Görev atandı!');
-        });
-
-   
-        const datePickerBtn = document.getElementById('date-picker-btn');
-        const currentDate = document.getElementById('current-date');
-
-        datePickerBtn.addEventListener('click', () => {
-            const date = prompt('Tarih girin (YYYY-MM-DD):');
-            if (date) {
-                currentDate.textContent = new Date(date).toLocaleDateString();
-            }
-        });
-
-        addUserButton.addEventListener('click', () => {
-            const userSelectGroup = document.createElement('div');
-            userSelectGroup.classList.add('space-y-2');
-
-            const selectClone = document.createElement('div');
-            selectClone.classList.add('input-group', 'mb-2');
-            selectClone.innerHTML = `
-                <i class="fas fa-user"></i>
-                <input type="text" name="assignedTo[]" class="form-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Atanacak Kişi" required>
-                <button type="button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2 w-full">Kullanıcıyı Çıkar</button>
-            `;
-
-            userSelectGroup.appendChild(selectClone);
-
-            assignedUsersDiv.appendChild(userSelectGroup);
-
-            selectClone.querySelector('button').addEventListener('click', () => {
-                assignedUsersDiv.removeChild(userSelectGroup);
+    async function updateTaskStatus(taskId, newStatus) {
+        try {
+            const response = await fetch(`/tasks/${taskId}/update-status`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ status: newStatus })
             });
+
+            if (response.ok) {
+                console.log("Görev durumu güncellendi.");
+            } else {
+                console.error("Görev durumu güncellenemedi.");
+            }
+        } catch (error) {
+            console.error("Bir hata meydana geldi:", error);
+        }
+    }
+
+
+    document.addEventListener('click', function(event) {
+        const dropdowns = document.querySelectorAll('.dropdown-content');
+        dropdowns.forEach(dropdown => {
+            if (!dropdown.parentElement contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    });
+
+    document.querySelectorAll('.dropdown-button').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const dropdown = this.nextElementSibling;
+            document.querySelectorAll('.dropdown-content').forEach(content => {
+                if (content !== dropdown) {
+                    content.classList.remove('show');
+                }
+            });
+            dropdown.classList.toggle('show');
         });
     });
 </script>

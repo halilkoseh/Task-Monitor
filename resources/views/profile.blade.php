@@ -1,8 +1,17 @@
-
 @extends('layout.app')
+<style>
+
+.content-container {
+        min-height: 100vh;
+        margin-left: 50rem; 
+        padding: 20px;
+        box-sizing: border-box; 
+    }
+</style>
+
 
 @section('content')
-<div class="container mx-auto p-4">
+<div class="content-container mx-auto p-4">
     <h2 class="text-2xl font-bold mb-4">Profilim</h2>
 
     <div class="bg-white p-6 rounded shadow-md">
@@ -48,7 +57,7 @@
                 <input type="password" id="new_password_confirmation" name="new_password_confirmation" class="w-full p-2 border rounded" required>
             </div>
 
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Parolayı Güncelle</button>
+            <button type="submit" class="bg-sky-500 text-white p-2 rounded">Parolayı Güncelle</button>
         </form>
     </div>
 </div>

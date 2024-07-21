@@ -1,6 +1,16 @@
+<style>
+    .main-content {
+        min-height: 100vh;
+        margin-left: 16rem; 
+        padding: 20px;
+        box-sizing: border-box; 
+    }
+</style>
+
 @extends('layout.app')
+
 @section('content')
-    <div class="container mx-auto p-4 mt-32">
+    <div class="main-content">
         <div class="max-w-4xl mx-auto bg-white rounded-lg overflow-hidden shadow-md">
             <div class="p-6">
                 <div class="mt-6 mb-6">

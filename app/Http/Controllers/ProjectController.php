@@ -15,10 +15,10 @@ class ProjectController extends Controller
         $user = Auth::user();
 
         // Get projects where the user is associated or is an admin
-        if ($user->role == 'admin') {
+        if ($user && $user ->role == 'admin') {
             $projects = Project::all();
         } else {
-            $projects = $user->projects;
+            $projects = $user ? $user->projects : collect();
         }
         return view('projects.index', compact('projects'));
 
@@ -62,7 +62,7 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        if (Auth::user()->role != 'admin' && !$project->users->contains(Auth::user()->id)) {
+        if ($user && $user->role != 'admin' && !$project->users->contains($user->id)) {
             abort(403, 'Bu projeye erişim izniniz yok.');
         }
         return view('projects.index', compact('project'));    }

@@ -24,15 +24,39 @@ class AdminController extends Controller
         $users = User::all();
         $userTasks = User::with('tasks')->get();
         $tasks = Task::all();
+       
 
-        return view('admin.index', [
+        return view('tasks.index', [
             'users' => $users,
             'userTasks' => $userTasks,
             'tasks' => $tasks
         ]);
     }
 
+    public function getChartData()
+    {
+        $tasks = Task::with('project')->get();
+        $chartData = $tasks->map(function($task) {
+            return [
+                'projectName' => $task->projectName,
+                'progress' => $task->status === 'Tamamlandı' ? 100 :
+                               ($task->status === 'Test Ediliyor' ? 80 :
+                               ($task->status === 'Devam Ediyor' ? 60 :
+                               ($task->status === 'Başladı' ? 40 : 20)))
+            ];
+        });
 
+        return response()->json($chartData);
+    }
+
+    public function updateTaskStatus($id, Request $request)
+    {
+        $task = Task::findOrFail($id);
+        $task->status = $request->status;
+        $task->save();
+
+        return response()->json(['success' => true, 'message' => 'Task status updated successfully']);
+    }
 
 
 
@@ -286,6 +310,15 @@ class AdminController extends Controller
 
         return view('admin.work_sessions', compact('workSessions', 'users'));
     }
+
+    public function destroyWorkSession($id)
+    {
+        $workSession = WorkSession::findOrFail($id);
+        $workSession->delete();
+
+        return redirect()->route('admin.workSessions')->with('success', 'Çalışma oturumu başarıyla silindi.');
+    }
+
 
 
 

@@ -47,7 +47,7 @@
     }
 </style>
 
-<body class="bg-gray-100 text-gray-900 flex ">
+<body class="bg-slate-100 flex ">
 </head>
 
 

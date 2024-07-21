@@ -1,7 +1,21 @@
+<style>
+.card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .content-container {
+        min-height: 100vh;
+        margin-left: 16rem; 
+        padding: 20px;
+        box-sizing: border-box; 
+    }
+</style>
+
 @extends('layout.app')
 
 @section('content')
-<div class="flex-1 p-8 mt-8">
+<div class="flex-1 p-8 mt-8 content-container">
     <h1 class="text-3xl font-semibold text-center mb-8 text-gray-900">Görev Atama</h1>
 
     <form class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg space-y-6" action="{{ route('admin.tasks.store') }}" method="POST" enctype="multipart/form-data">
@@ -43,7 +57,7 @@
             </div>
         </div>
 
-        <button type="button" id="addUserButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">Collaborator Ekle</button>
+        <button type="button" id="addUserButton" class="bg-sky-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">Collaborator Ekle</button>
 
     
 
@@ -63,7 +77,7 @@
         </div>
 
         <div class="flex items-center justify-between">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">Görevi Ata</button>
+            <button type="submit" class="bg-gray-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">Görevi Ata</button>
         </div>
     </form>
 </div>

@@ -51,8 +51,8 @@ class UserController extends Controller
 
     public function showTasks($id)
     {
-        $user = User::with('tasks')->findOrFail($id);
-        return view('admin.index', compact('user'));
+        $users = User::with('tasks')->findOrFail($id);
+        return view('tasks.index', compact('users'));
     }
 
     public function showProfile()

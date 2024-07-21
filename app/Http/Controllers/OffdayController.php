@@ -8,18 +8,46 @@ use Illuminate\Support\Facades\Auth;
 
 class OffdayController extends Controller
 {
+    // Admin tarafındaki index metodu
     public function index()
     {
         $offdays = Offday::all();
         return view('admin.offdays.index', compact('offdays'));
     }
 
+    // Admin tarafındaki create metodu
     public function create()
+    {
+        return view('admin.offdays.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'reason' => 'required|string|max:255',
+            'document' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+        ]);
+
+        $documentPath = $request->file('document') ? $request->file('document')->store('documents') : null;
+
+        Offday::create([
+            'user_id' => Auth::id(),
+            'reason' => $request->reason,
+            'document' => $documentPath,
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('admin.offdays.index')->with('success', 'İzin talebiniz oluşturuldu.');
+    }
+
+    // Kullanıcı tarafındaki create metodu
+    public function createUser()
     {
         return view('offday.create');
     }
 
-    public function store(Request $request)
+    // Kullanıcı tarafındaki store metodu
+    public function storeUser(Request $request)
     {
         $request->validate([
             'reason' => 'required|string|max:255',
@@ -41,7 +69,7 @@ class OffdayController extends Controller
     public function show($id)
     {
         $offday = Offday::findOrFail($id);
-        return view('offdays.show', compact('offday'));
+        return view('admin.offdays.show', compact('offday'));
     }
 
     public function approve($id)
@@ -49,7 +77,7 @@ class OffdayController extends Controller
         $offday = Offday::findOrFail($id);
         $offday->update(['status' => 'approved']);
 
-        return redirect()->route('offdays.index')->with('success', 'İzin talebi onaylandı.');
+        return redirect()->route('admin.offdays.index')->with('success', 'İzin talebi onaylandı.');
     }
 
     public function reject($id)
@@ -57,16 +85,45 @@ class OffdayController extends Controller
         $offday = Offday::findOrFail($id);
         $offday->update(['status' => 'rejected']);
 
-        return redirect()->route('offdays.index')->with('success', 'İzin talebi reddedildi.');
+        return redirect()->route('admin.offdays.index')->with('success', 'İzin talebi reddedildi.');
     }
 
+    public function edit($id)
+    {
+        $offday = Offday::findOrFail($id);
+        return view('admin.offdays.edit', compact('offday'));
+    }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'reason' => 'required|string|max:255',
+            'document' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+        ]);
 
-    public function index1()
+        $offday = Offday::findOrFail($id);
+        $documentPath = $request->file('document') ? $request->file('document')->store('documents') : $offday->document;
+
+        $offday->update([
+            'reason' => $request->reason,
+            'document' => $documentPath,
+        ]);
+
+        return redirect()->route('admin.offdays.index')->with('success', 'İzin talebi güncellendi.');
+    }
+
+    public function destroy($id)
+    {
+        $offday = Offday::findOrFail($id);
+        $offday->delete();
+
+        return redirect()->route('admin.offdays.index')->with('success', 'İzin talebi silindi.');
+    }
+
+    // Kullanıcı tarafındaki index metodu
+    public function indexUser()
     {
         $offdays = Offday::where('user_id', Auth::id())->get();
         return view('offday.index', compact('offdays'));
     }
-
-
 }
