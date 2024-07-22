@@ -7,22 +7,28 @@ use App\Models\User;
 use App\Models\Project;
 use App\Mail\TaskStatusUpdated;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
+use App\Models\Offday;
 
 class TaskController extends Controller
 {
     public function index()
     {
-
         $users = User::all();
         $userTasks = User::with('tasks')->get();
         $tasks = Task::all();
-       
 
-        return view('tasks.index', [
-            'users' => $users,
-            'userTasks' => $userTasks,
-            'tasks' => $tasks
-        ]);
+        return view('tasks.index', compact('users', 'userTasks', 'tasks'));
+    }
+
+    public function getStatusCounts()
+    {
+        $statusCounts = Task::select('status', DB::raw('count(*) as count'))
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->all();
+
+        return response()->json($statusCounts);
     }
 
     public function edit($id)
@@ -46,6 +52,25 @@ class TaskController extends Controller
 
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully');
     }
+
+
+
+    public function index1()
+    {
+        $users = User::all();
+        $userTasks = User::with('tasks')->get();
+        $tasks = Task::all();
+
+        return view('mission.index', compact('users', 'userTasks', 'tasks'));
+    }
+
+
+
+
+
+
+
+
 
     public function updateStatus($id, Request $request)
     {
@@ -71,4 +96,29 @@ class TaskController extends Controller
         $users = Project::findOrFail($projectId)->users;
         return response()->json($users);
     }
+
+
+
+
+    public function monthlyLeaveCounts()
+{
+    $leaveCounts = Offday::selectRaw('MONTH(offday_date) as month, COUNT(*) as count')
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+    return response()->json($leaveCounts);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 }

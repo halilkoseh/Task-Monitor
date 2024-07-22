@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Offday;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 
 class OffdayController extends Controller
 {
@@ -26,6 +29,9 @@ class OffdayController extends Controller
         $request->validate([
             'reason' => 'required|string|max:255',
             'document' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+            'offday_date' => 'required|date',
+
+
         ]);
 
         $documentPath = $request->file('document') ? $request->file('document')->store('documents') : null;
@@ -35,6 +41,8 @@ class OffdayController extends Controller
             'reason' => $request->reason,
             'document' => $documentPath,
             'status' => 'pending',
+            'offday_date' => $request->offday_date,
+
         ]);
 
         return redirect()->route('admin.offdays.index')->with('success', 'İzin talebiniz oluşturuldu.');
@@ -52,6 +60,8 @@ class OffdayController extends Controller
         $request->validate([
             'reason' => 'required|string|max:255',
             'document' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+            'offday_date' => 'required|date',
+
         ]);
 
         $documentPath = $request->file('document') ? $request->file('document')->store('documents') : null;
@@ -61,6 +71,8 @@ class OffdayController extends Controller
             'reason' => $request->reason,
             'document' => $documentPath,
             'status' => 'pending',
+            'offday_date' => $request->offday_date,
+
         ]);
 
         return redirect()->route('offday.index')->with('success', 'İzin talebiniz oluşturuldu.');
@@ -126,4 +138,21 @@ class OffdayController extends Controller
         $offdays = Offday::where('user_id', Auth::id())->get();
         return view('offday.index', compact('offdays'));
     }
+
+
+    public function getMonthlyOffdayData()
+{
+    $data = Offday::select(DB::raw('MONTH(offday_date) as month, COUNT(*) as count'))
+        ->whereYear('offday_date', Carbon::now()->year)
+        ->groupBy(DB::raw('MONTH(offday_date)'))
+        ->get();
+
+    return response()->json($data);
+}
+
+
+
+
+
+
 }

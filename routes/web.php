@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -40,6 +41,9 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin/offdays/{id}/edit', [OffdayController::class, 'edit'])->name('admin.offdays.edit');
     Route::put('/admin/offdays/{id}', [OffdayController::class, 'update'])->name('admin.offdays.update');
     Route::delete('/admin/offdays/{id}', [OffdayController::class, 'destroy'])->name('admin.offdays.destroy');
+
+    Route::get('/admin/reports/index', [ReportController::class, 'index'])->name('admin.reports.index');
+
 });
 
 // Authenticated User Routes
@@ -76,3 +80,24 @@ Route::patch('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.upda
 Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 Route::get('/navbar-tasks', [TaskController::class, 'index1'])->name('navbar.tasks');
 Route::get('/admin/users/search1', [UserController::class, 'search1'])->name('admin.users.search1');
+
+
+
+Route::get('/tasks/status-counts', [TaskController::class, 'getStatusCounts']);
+Route::get('/tasks', [TaskController::class, 'index']);
+
+
+
+
+
+Route::get('/mission', [TaskController::class, 'index1'])->name('mission.index');
+Route::get('/mission/{id}/edit', [TaskController::class, 'edit'])->name('mission.edit');
+Route::patch('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
+Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+Route::get('/navbar-tasks', [TaskController::class, 'index1'])->name('navbar.tasks');
+
+
+
+
+// web.php
+Route::get('/offday/monthly-data', [OffdayController::class, 'getMonthlyOffdayData']);

@@ -13,6 +13,12 @@
             </div>
             
             <div class="space-y-1">
+                <label for="offday_date" class="block text-sm font-medium text-gray-700">İzin Günü:</label>
+                <input type="date" id="offday_date" name="offday_date" required 
+                       class="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-2">
+            </div>
+            
+            <div class="space-y-1">
                 <label for="document" class="block text-sm font-medium text-gray-700">Belge (opsiyonel):</label>
                 <input type="file" id="document" name="document" 
                        class="block w-full text-sm text-gray-500 rounded-lg border border-gray-300 bg-white text-indigo-600 hover:bg-indigo-50 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

@@ -36,6 +36,13 @@
             </div>
 
             <div>
+                <label for="offday_date" class="block text-sm font-medium text-gray-700">İzin Günü</label>
+                <input type="date" name="offday_date" id="offday_date" value="{{ $offday->offday_date }}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+
+
+
+
+            <div>
                 <label for="document" class="block text-sm font-medium text-gray-700">Belge</label>
                 <input type="file" name="document" id="document" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 @if ($offday->document)

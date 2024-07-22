@@ -1,4 +1,6 @@
 <?php
+
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +15,7 @@ class Offday extends Model
         'reason',
         'document',
         'status',
+        'offday_date',
     ];
 
     public function user()
@@ -20,3 +23,4 @@ class Offday extends Model
         return $this->belongsTo(User::class);
     }
 }
+

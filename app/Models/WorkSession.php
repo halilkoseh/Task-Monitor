@@ -31,7 +31,7 @@ class WorkSession extends Model
         $translations = [
             'working' => 'Çalışıyor',
             'ended' => 'Bitti',
-             'on-break' => 'Mola'
+            'on-break' => 'Mola'
         ];
 
         return $translations[$this->status] ?? $this->status;

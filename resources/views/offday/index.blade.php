@@ -19,8 +19,13 @@
                             Durum
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Tarih
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Belge
                         </th>
+
+                        
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             İşlemler
                         </th>
@@ -40,6 +45,8 @@
                                 {{ $offday->status }}
                             </span>
                         </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ $offday->offday_date }}
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             @if ($offday->document)
                                 <a href="{{ asset('storage/' . $offday->document) }}" target="_blank" class="text-blue-600 hover:underline">Belgeyi Görüntüle</a>

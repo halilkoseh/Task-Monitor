@@ -34,12 +34,21 @@
         integrity="sha512-3NDgm8En5yDN9qF8x6cSwpKXoJd/U1kK6Ma4McYAcj3PP5U5cF8NyM4NlbKQ3n8U9sGFAZR/w/lD1fxT8J2N2w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
         <!--font-family-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
 
 <style>
     body {
