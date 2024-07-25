@@ -19,6 +19,10 @@ class TaskController extends Controller
         $tasks = Task::all();
 
         return view('tasks.index', compact('users', 'userTasks', 'tasks'));
+
+
+
+
     }
 
     public function getStatusCounts()
@@ -43,6 +47,7 @@ class TaskController extends Controller
         $task->update($request->all());
 
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully');
+        
     }
 
     public function destroy($id)
@@ -101,14 +106,14 @@ class TaskController extends Controller
 
 
     public function monthlyLeaveCounts()
-{
-    $leaveCounts = Offday::selectRaw('MONTH(offday_date) as month, COUNT(*) as count')
-        ->groupBy('month')
-        ->orderBy('month')
-        ->get();
+    {
+        $leaveCounts = Offday::selectRaw('MONTH(offday_date) as month, COUNT(*) as count')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
 
-    return response()->json($leaveCounts);
-}
+        return response()->json($leaveCounts);
+    }
 
 
 

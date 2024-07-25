@@ -60,12 +60,15 @@ class ProjectController extends Controller
         return redirect()->route('projects.index')->with('success', 'Proje başarıyla oluşturuldu.');
     }
 
-    public function show(Project $project)
+        public function show(Project $project)
     {
+        $user = Auth::user();
+
+
         if ($user && $user->role != 'admin' && !$project->users->contains($user->id)) {
             abort(403, 'Bu projeye erişim izniniz yok.');
         }
-        return view('projects.index', compact('project'));    }
+        return view('projects.show', compact('project'));    }
 
     public function edit(Project $project)
     {

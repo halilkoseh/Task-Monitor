@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\WorkSession;
 use App\Models\WorkBreak;
 use App\Models\UserProject;
+use Illuminate\Support\Facades\Storage;
+
+
 
 
 
@@ -20,29 +23,38 @@ class AdminController extends Controller
 {
     public function index()
     {
-
+        // Get all users
         $users = User::all();
-        $userTasks = User::with('tasks')->get();
-        $tasks = Task::all();
-       
 
+        // Get tasks for each user
+        $userTasks = User::with('tasks')->get();
+
+        // Get all tasks
+        $tasks = Task::all();
+
+        // Get the logged-in user
+        $loggedInUser = auth()->user();
+
+        // Pass data to the view
         return view('tasks.index', [
             'users' => $users,
             'userTasks' => $userTasks,
-            'tasks' => $tasks
+            'tasks' => $tasks,
+            'loggedInUser' => $loggedInUser,  // Pass the logged-in user to the view
         ]);
     }
+
 
     public function getChartData()
     {
         $tasks = Task::with('project')->get();
-        $chartData = $tasks->map(function($task) {
+        $chartData = $tasks->map(function ($task) {
             return [
                 'projectName' => $task->projectName,
                 'progress' => $task->status === 'Tamamlandı' ? 100 :
-                               ($task->status === 'Test Ediliyor' ? 80 :
-                               ($task->status === 'Devam Ediyor' ? 60 :
-                               ($task->status === 'Başladı' ? 40 : 20)))
+                    ($task->status === 'Test Ediliyor' ? 80 :
+                        ($task->status === 'Devam Ediyor' ? 60 :
+                            ($task->status === 'Başladı' ? 40 : 20)))
             ];
         });
 
@@ -84,11 +96,20 @@ class AdminController extends Controller
         $user->linkedinAddress = $request->linkedinAddress;
         $user->portfolioLink = $request->portfolioLink;
 
+
         if ($request->hasFile('profilePic')) {
-            $profilePicPath = $request->file('profilePic')->store('profile_pics', 'public');
-            $profilePicName = basename($profilePicPath);
-            $user->profilePic = $profilePicName;
+
+            $file = $request->file('profilePic');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path() . '/images';
+            $file->move($destinationPath, $fileName);
+
+            $user->profilePic = $fileName;
         }
+
+
+
+
 
         $user->save();
 
@@ -110,7 +131,10 @@ class AdminController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+        $profilePic = $user->profilePic;
+
         return view('admin.users.edit', compact('user'));
+
     }
 
 
@@ -131,11 +155,20 @@ class AdminController extends Controller
         $user->phoneNumber = $request->phoneNumber;
         $user->linkedinAddress = $request->linkedinAddress;
         $user->portfolioLink = $request->portfolioLink;
+        $user->profilePic = $request->profilePic;
+
 
         if ($request->hasFile('profilePic')) {
-            $profilePic = $request->file('profilePic')->store('profile_pics', 'public');
-            $user->profilePic = $profilePic;
+
+            $file = $request->file('profilePic');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path() . '/images';
+            $file->move($destinationPath, $fileName);
+
+            $user->profilePic = $fileName;
         }
+
+
 
         $user->save();
 
@@ -152,9 +185,38 @@ class AdminController extends Controller
     public function storeTask(Request $request)
     {
         $attachmentPath = null;
+        $request->validate([
+            'taskTitle' => 'required',
+            'taskDescription' => 'required',
+            'assignedTo' => 'required',
+            'startDate' => 'required',
+            'dueDate' => 'required',
+            'attachments' => 'required',
+            'project' => 'required',
+        ]);
+
+
+
+
+
         if ($request->hasFile('attachments')) {
-            $attachmentPath = $request->file('attachments')->store('attachments', 'public');
+            $task = new Task(); // Declare the $task variable
+            $file = $request->file('attachments');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path() . '/images';
+            $file->move($destinationPath, $fileName);
+        
+            $task->attachments = $fileName;
         }
+
+
+
+
+
+
+
+
+
 
         foreach ($request->input('assignedTo') as $userId) {
             $task = Task::create([
@@ -192,7 +254,11 @@ class AdminController extends Controller
 
                 return redirect()->back()->with('error', 'Kullanıcı e-posta adresi bulunamadı!');
             }
+
+
         }
+
+
 
         return redirect()->back()->with('success', 'Görevler başarıyla atandı!');
     }

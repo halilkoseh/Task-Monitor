@@ -22,7 +22,7 @@
             <h1 class="text-3xl font-semibold text-center mb-8">Kullanıcı Ekle</h1>
 
            
-            <form id="userForm" action="{{ route('admin.users.store') }}" method="POST">
+            <form id="userForm" action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="mb-4">

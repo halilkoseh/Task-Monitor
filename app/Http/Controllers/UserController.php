@@ -53,6 +53,8 @@ class UserController extends Controller
     {
         $users = User::with('tasks')->findOrFail($id);
         return view('tasks.index', compact('users'));
+
+            
     }
 
     public function showProfile()

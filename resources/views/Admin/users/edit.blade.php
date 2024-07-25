@@ -19,7 +19,7 @@
                 </div>
 
                 <form action="{{ route('admin.users.update', $user->id) }}" method="POST" class="grid grid-cols-2 gap-6"
-                    id="updateForm">
+                    id="updateForm"  enctype="multipart/form-data"> 
                     @csrf @method('PUT')
 
                     <div class="col-span-1">
@@ -82,21 +82,29 @@
                             required />
                     </div>
 
-                    <div class="col-span-1">
-                        <label for="profilePic" class="block text-sm font-medium text-gray-700">Profil Resmi</label>
-                        <input type="file" name="profilePic" id="profilePic" placeholder="Profil Resmi"
-                            class="form-input mt-1 block w-full h-12 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 border-2 border-black" />
+                    <div class="mb-4 md:col-span-2">
+                        <label for="profilePic" class="block text-sm font-medium text-gray-700">Profil Resmi:</label>
+                        <input type="file" id="profilePic" name="profilePic" accept="*"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-white text-gray-900">
                     </div>
                 </form>
 
                 <div class="col-span-2 flex justify-end items-center mt-6 mx-2 ">
+                    
                     <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" id="deleteForm"
                         onsubmit="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?');">
                         @csrf @method('DELETE')
+
+                      
+                        @if ($user->name !== 'admin')
+
+
                         <button type="submit" form="deleteForm"
                             class="px-4 py-2 text-red-400 hover:text-black rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 border-2 border-red-400">
                             Sil
                         </button>
+                        @endif
+
                     </form> <button type="submit" form="updateForm"
                         class="px-4 py-2 text-white bg-blue-400 hover:text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border-2 border-blue-400 ml-4">
                         Güncelle
