@@ -1,7 +1,17 @@
+<style>
+
+.content-container {
+        min-height: 100vh;
+        margin-left: 16rem;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+</style>
+
 @extends('layout.app')
 
 @section('content')
-    <div class="container mx-auto p-4">
+    <div class="content-container mx-auto p-4">
         <h2 class="text-2xl font-bold mb-4">Düzenle</h2>
         <form action="{{ route('tasks.update', $task->id) }}" method="POST">
             @csrf

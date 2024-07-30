@@ -25,6 +25,8 @@ class TaskController extends Controller
 
     }
 
+
+
     public function getStatusCounts()
     {
         $statusCounts = Task::select('status', DB::raw('count(*) as count'))

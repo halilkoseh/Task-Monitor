@@ -52,7 +52,7 @@
             <div class="mb-4 input-container">
                 <label for="username" class="sr-only">Kullanıcı Adı:</label>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 input-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 01-8 0m4 4v2m0-6V8a4 4 0 10-8 0v4m12 0v6m0-6V8a4 4 0 10-8 0v4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4c-3.866 0-7 3.134-7 7s3.134 7 7 7 7-3.134 7-7-3.134-7-7-7zm0 14c-3.866 0-7 3.134-7 7s3.134 7 7 7 7-3.134 7-7-3.134-7-7-7z" />
                 </svg>
                 <input type="text" id="username" name="username" required
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm input-field"
@@ -62,7 +62,7 @@
             <div class="mb-4 input-container">
                 <label for="password" class="sr-only">Şifre:</label>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 input-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12V6a4 4 0 00-8 0v6H6a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2v-6a2 2 0 00-2-2h-2z" />
                 </svg>
                 <input type="password" id="password" name="password" required
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm input-field"

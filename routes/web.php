@@ -79,6 +79,10 @@ Route::get('/tasks/{id}/edit', [TaskController::class, 'edit'])->name('tasks.edi
 Route::patch('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
 Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 Route::get('/navbar-tasks', [TaskController::class, 'index1'])->name('navbar.tasks');
+
+Route::get('/tasks/{task}/attachments', [TaskController::class, 'getAttachments']);
+
+
 Route::get('/admin/users/search1', [UserController::class, 'search1'])->name('admin.users.search1');
 
 

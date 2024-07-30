@@ -11,6 +11,16 @@
 
         .dropdown-content {
             display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            z-index: 1000; /* Yüksek z-index değeri dropdown'ın üstte görünmesini sağlar */
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+            overflow: visible; /* Dropdown menüsünün tam görünmesini sağlar */
         }
 
         .dropdown-content.show {
@@ -22,10 +32,8 @@
             border-collapse: separate;
             border-spacing: 0;
             border-radius: 0.5rem;
-            /* Tabloyu oval yap */
             overflow: hidden;
             background-color: #f8f9fa;
-            /* Açık gri arka plan rengi */
         }
 
         .table-container th,
@@ -33,12 +41,10 @@
             padding: 0.75rem;
             text-align: left;
             white-space: nowrap;
-            /* Metin kaymasını önler */
         }
 
         .table-container th {
             background-color: #e9ecef;
-            /* Biraz daha koyu açık gri arka plan rengi */
             font-weight: 600;
         }
 
@@ -58,35 +64,29 @@
         .table-container tr:first-child th:first-child,
         .table-container tr:first-child td:first-child {
             border-top-left-radius: 0.75rem;
-            /* Üst sol köşeyi oval yap */
         }
 
         .table-container tr:first-child th:last-child,
         .table-container tr:first-child td:last-child {
             border-top-right-radius: 0.75rem;
-            /* Üst sağ köşeyi oval yap */
         }
 
         .table-container tr:last-child th:first-child,
         .table-container tr:last-child td:first-child {
             border-bottom-left-radius: 0.75rem;
-            /* Alt sol köşeyi oval yap */
         }
 
         .table-container tr:last-child th:last-child,
         .table-container tr:last-child td:last-child {
             border-bottom-right-radius: 0.75rem;
-            /* Alt sağ köşeyi oval yap */
         }
 
         .icon-container {
             display: flex;
             align-items: center;
             background-color: #ffffff;
-            /* Beyaz arka plan rengi */
             padding: 0.5rem;
             border-radius: 0.50rem;
-            /* Köşeleri yuvarlama */
         }
 
         .icon-container img {
@@ -111,11 +111,17 @@
             position: absolute;
             right: 0;
             top: 100%;
-            z-index: 10;
+            z-index: 1000;
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 0.25rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+            overflow: visible;
+        }
+
+        .dropdown-content.show {
+            display: block;
         }
 
         .dropdown-content a,
@@ -148,7 +154,7 @@
         </div>
 
         <div class="flex justify-between items-center mb-5">
-            <form action="{{ route('admin.users.search1') }}" method="GET" class="flex items-center w-full">
+            <form action="{{ route('admin.users.search1') }}" method="GET" class="flex items-center">
                 <input type="text" name="search" value="{{ request()->query('search') }}"
                     class="border rounded-lg px-4 py-2 w-80" placeholder="Kullanıcı adı ile ara...">
                 <button type="submit"
@@ -157,15 +163,18 @@
                 </button>
             </form>
 
-            <a href="{{ route('admin.users.create') }}"
-                class="ml-4 bg-sky-500 text-white px-4 py-1 rounded-full hover:bg-blue-500 transform hover:scale-100 transition duration-200">
-                <button class="text-md font-semibold"><i class="fa-solid fa-circle-plus"></i> Kullanıcı Ekle</button>
-            </a>
+            <div class="flex items-center ml-4">
+                <p class="text-gray-600 underline">{{ $users->count() }} kullanıcı listeleniyor..</p>
+                <a href="{{ route('admin.users.create') }}"
+                    class="ml-4 bg-sky-500 text-white px-4 py-1 rounded-full hover:bg-blue-500 transform hover:scale-100 transition duration-200">
+                    <button class="text-md font-semibold"><i class="fa-solid fa-circle-plus"></i> Kullanıcı Ekle</button>
+                </a>
+            </div>
         </div>
 
         @if ($users->isEmpty())
-            <p class="text-gray-500">Hiç kullanıcı bulunamadı. <a href="{{ route('admin.users.index') }}"
-                    class="text-blue-500 underline">Listeye geri dön</a></p>
+            <p class="text-gray-500"> Hiç kullanıcı bulunamadı. <a href="{{ route('admin.users.index') }}"
+                    class="text-blue-500 underline"> Listeye geri dön </a></p>
         @endif
         <div class="overflow-x-auto">
             <table class="table-container">
@@ -185,7 +194,7 @@
                     @php
                         $badgeColors = [
                             'bg-orange-100 text-gray-600',
-                            'bg-purple-100 text-gray-600',
+                            'bg-[#dcedc8] text-gray-600',
                             'bg-sky-100 text-gray-600',
                         ];
                     @endphp

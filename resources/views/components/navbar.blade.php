@@ -21,7 +21,8 @@
             padding: 10px;
         }
 
-        .sidebar-item:hover {
+        .sidebar-item:hover,
+        .sidebar-item.active {
             background-color: #e0f2fe;
             color: #075985;
         }
@@ -54,7 +55,7 @@
                 </a>
             </div>
 
-            <ul class="space-y-4"> <!-- Increased space between items -->
+            <ul id="sidebar-menu" class="space-y-4">
                 <li>
                     <a href="{{ route('admin') }}" class="sidebar-item flex items-center text-lg text-gray-600">
                         <i class="fas fa-th-large mr-3"></i>
@@ -62,87 +63,89 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.users.show') }}"
-                        class="sidebar-item flex items-center text-lg text-gray-600">
+                    <a href="{{ route('admin.users.show') }}" class="sidebar-item flex items-center text-lg text-gray-600">
                         <i class="fa-regular fa-id-card mr-3"></i>
                         Kullanıcılar
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.workSessions') }}"
-                        class="sidebar-item flex items-center text-lg text-gray-600">
+                    <a href="{{ route('admin.workSessions') }}" class="sidebar-item flex items-center text-lg text-gray-600">
                         <i class="fa-regular fa-clock mr-3"></i>
                         Mesai Takip
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('projects.index') }}"
-                        class="sidebar-item flex items-center text-lg text-gray-600">
+                    <a href="{{ route('projects.index') }}" class="sidebar-item flex items-center text-lg text-gray-600">
                         <i class="fa-regular fa-file-code mr-4"></i>
                         Projeler
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.reports.index') }}"
-                        class="sidebar-item flex items-center text-lg text-gray-600">
+                    <a href="{{ route('admin.reports.index') }}" class="sidebar-item flex items-center text-lg text-gray-600">
                         <i class="fa-regular fa-copy mr-3"></i>
                         Raporlar
                     </a>
                 </li>
-
                 <li>
-                    <a href="{{ route('admin.offdays.index') }}"
-                        class="sidebar-item flex items-center text-lg text-gray-600">
+                    <a href="{{ route('admin.offdays.index') }}" class="sidebar-item flex items-center text-lg text-gray-600">
                         <i class="fa-regular fa-pen-to-square mr-3"></i>
                         İzin Takip
                     </a>
                 </li>
+                <!--
                 <li>
-                <a href="{{ route('admin.users.assaign') }}"
-                    class="sidebar-item flex items-center text-lg text-gray-600">
-                    <i class="fa-solid fa-list-check"></i> Görev Ata
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('mission.index') }}"
-                    class="sidebar-item flex items-center text-lg text-gray-600">
-                    <i class="fa-solid fa-layer-group"></i> Görev Görüntüle
-                </a>
-            </li>
-
-            <li>
-                <a class="flex flex-row justify-start ml-2" href="{{ route('mission.index') }}"
-                    class="sidebar-item flex items-center text-lg text-gray-600">
-                    
-                </a>
-            </li>
-               
-
-
-
-
-
+                    <a href="{{ route('mission.index') }}" class="sidebar-item flex items-center text-lg text-gray-600">
+                        <i class="fa-solid fa-layer-group mr-3"></i> Görev Görüntüle
+                    </a>
+                </li>
+                -->
+                <li>
+                    <a class="flex flex-row justify-start ml-2" href="{{ route('mission.index') }}" class="sidebar-item flex items-center text-lg text-gray-600">
+                        
+                    </a>
+                </li>
             </ul>
 
-            <div class="flex flex-col justify-center mt-40 gap-1 border-t border-gray-500 pt-2">
-                <a href="{{ route('profile') }}"
-                    class="text-gray-600 hover:text-sky-700 transition-colors duration-200 flex items-center gap-2 pl-2">
+
+            
+           <div class="mt-40">
+           <div class="flex flex-col justify-center mt-auto gap-1 border-t border-gray-500 pt-1">
+                <a href="{{ route('profile') }}" class="text-gray-600 hover:text-sky-700 transition-colors duration-200 flex items-center gap-2 pl-2">
                     <i class="fas fa-cog text-md mr-1"></i>
                     <span class="text-md">Ayarlar</span>
                 </a>
 
                 <form action="{{ route('logout') }}" method="POST" class="flex items-center gap-4 pl-2">
                     @csrf
-                    <button type="submit"
-                        class="text-gray-600 hover:text-sky-700 transition-colors duration-200 flex items-center gap-2">
+                    <button type="submit" class="text-gray-600 hover:text-sky-700 transition-colors duration-200 flex items-center gap-2">
                         <i class="fas fa-sign-out-alt text-md mb-1 mr-1"></i>
                         <span class="text-md mb-1">Çıkış Yap</span>
                     </button>
                 </form>
             </div>
+           </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            const currentUrl = window.location.href;
+            sidebarItems.forEach(item => {
+                if (item.href === currentUrl) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -26,6 +26,13 @@ class ReportController extends Controller
         ]);
     }
 
+    public function showReports()
+    {
+        $tasks = Task::all(); 
+        return view('reports', compact('tasks'));
+    }
+
+
 
 
 
