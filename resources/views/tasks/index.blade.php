@@ -346,11 +346,11 @@
                 <a href="{{ route('admin.users.show') }}" class="see-all-link absolute top-3 right-3 text-sky-500 hover:text-blue-600">Tümünü Gör <i class="fa-solid fa-angle-right"></i></a>
                 <h2 class="text-xl text-gray-600 font-semibold mb-">Kullanıcılar</h2>
                 <div class="flex -space-x-5 overflow-hidden py-6 ml-2">
-                    @foreach ($users->take(3) as $user)
+                    @foreach ($users->take(4) as $user)
                     <img src="{{ asset('images/' . $user->profilePic) }}" alt="{{ $user->name }}" class="inline-block h-32 w-32 rounded-full ring-2 ring-gray-300 object-cover" />
-                    @endforeach @if ($users->count() > 3)
+                    @endforeach @if ($users->count() > 4)
                     <div class="inline-block h-16 w-16 rounded-full ring-2 ring-gray-300 bg-[#F1F5F9] flex items-center justify-center text-xs font-medium text-gray-700">
-                        +{{ $users->count() - 3 }}
+                        {{ $users->count() - 4 }}+
                     </div>
                     @endif
                 </div>

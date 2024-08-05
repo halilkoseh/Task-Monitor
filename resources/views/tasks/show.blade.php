@@ -1,89 +1,81 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="min-h-screen  bg-gray-100">
-
-        <div class="flex flex-row justify-between items-center w-screen h-screen ">
-
-            <div
-                class="max-w-lg w-full bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mx-auto hover:shadow-lg transition-shadow duration-300">
-                <div class="mt-6 mb-6">
-                    <a href="{{ route('mission.index') }}"
-                        class="text-sky-500 hover:text-blue-800 transition-colors duration-200">
-                        <i class="fa-solid fa-chevron-left"></i> Geri Dön
-                    </a>
-                </div>
-                <p class="mb-4 text-gray-700"><strong>Görev Başlığı:</strong> {{ $task->title }}</p>
-                <p class="mb-4 text-gray-700"><strong>Görev İçeriği:</strong> {{ $task->description }}</p>
-                <p class="mb-4 text-gray-700"><strong>Başlangıç Tarihi:</strong> {{ $task->start_date }}</p>
-                <p class="mb-4 text-gray-700"><strong>Bitiş Tarihi:</strong> {{ $task->due_date }}</p>
-                <p class="mb-4 text-gray-700"><strong>Durum:</strong> {{ $task->status }}</p>
-                <p class="mb-4 text-gray-700"><strong>Atanan Kişi:</strong> {{ $task->assignedUser->name ?? 'Kişi yok' }}
-                </p>
-                <p class="mb-4 text-gray-700"><strong>Proje:</strong> {{ $task->assignedProject->name ?? 'Proje yok' }}</p>
-                <p class="mb-4 text-gray-700"><strong>Ekler:</strong>
+    <div class="container mx-auto mt-48 flex flex-col md:flex-row md:space-x-8  p-4">
+        <!-- Task Details Card -->
+        <div class=" shadow-lg rounded-lg p-8 mb-6 md:mb-0 hover:shadow-xl transition-shadow duration-300 flex-1 ml-64 border-gray-300 border-2 bg-white">
+            <div class="mb-6">
+                <a href="{{ route('mission.index') }}"
+                    class="text-sky-500 hover:text-blue-800 transition-colors duration-200 flex items-center">
+                    <i class="fa-solid fa-chevron-left mr-2"></i> Geri Dön
+                </a>
+            </div>
+            <div class="space-y-4">
+                <p class="text-gray-700"><strong>Görev Başlığı:</strong> {{ $task->title }}</p>
+                <p class="text-gray-700"><strong>Görev İçeriği:</strong> {{ $task->description }}</p>
+                <p class="text-gray-700"><strong>Başlangıç Tarihi:</strong> {{ $task->start_date }}</p>
+                <p class="text-gray-700"><strong>Bitiş Tarihi:</strong> {{ $task->due_date }}</p>
+                <p class="text-gray-700"><strong>Durum:</strong> {{ $task->status }}</p>
+                <p class="text-gray-700"><strong>Atanan Kişi:</strong> {{ $task->assignedUser->name ?? 'Kişi yok' }}</p>
+                <p class="text-gray-700"><strong>Proje:</strong> {{ $task->assignedProject->name ?? 'Proje yok' }}</p>
+                <p class="text-gray-700"><strong>Ekler:</strong>
                     @if ($task->attachments)
                         <a href="{{ route('attachments.download', ['filename' => basename($task->attachments)]) }}"
                             class="fa-solid fa-paperclip cursor-pointer text-blue-500 hover:text-blue-800 transition-colors duration-200"
                             title="İndir"></a>
                     @endif
                 </p>
-                <div class="mt-4 flex justify-between">
-                    <a href="{{ route('tasks.edit', $task->id) }}"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">Düzenle</a>
-                    <form action="{{ route('tasks.destroy', $task->id) }}" method="POST"
-                        onsubmit="return confirm('Bu görevi silmek istediğinize emin misiniz?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">Sil</button>
-                    </form>
+            </div>
+            <div class="mt-4 flex justify-between">
+                <a href="{{ route('tasks.edit', $task->id) }}"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">Düzenle</a>
+                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST"
+                    onsubmit="return confirm('Bu görevi silmek istediğinize emin misiniz?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">Sil</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Calendar Card -->
+        <div class=" shadow-lg rounded-lg p-8 hover:shadow-xl transition-shadow duration-300 flex-1 border-gray-300 border-2 bg-white">
+            <div class="calendar p-4 rounded-lg">
+                <!-- Navigation Bar -->
+                <div class="flex items-center justify-between mb-6 p-4 bg-[#F1F5F9] rounded-lg shadow-sm">
+                    <button id="prev-month"
+                        class="flex items-center bg-[#F1F5F9] hover:bg-gray-300 p-2 rounded-lg transition duration-200 ">
+                        <i class="fa-solid fa-calendar-minus text-xl mr-2 text-red-700"></i>
+                        <span class="hidden md:inline">Önceki</span>
+                    </button>
+                    <span id="current-month" class="text-2xl font-bold text-gray-900"></span>
+                    <button id="next-month"
+                        class="flex items-center bg-[#F1F5F9] text-gray-800 hover:bg-gray-300 p-2 rounded-lg transition duration-200">
+                        <span class="hidden md:inline">Sonraki</span>
+                        <i class="fa-solid fa-calendar-plus text-xl ml-2 text-green-700"></i>
+                    </button>
+                </div>
+
+                <!-- Days of the Week -->
+                <div class="grid grid-cols-7 gap-1 text-center text-gray-600 font-medium">
+                    <div>Pzt</div>
+                    <div>Sal</div>
+                    <div>Çar</div>
+                    <div>Per</div>
+                    <div>Cum</div>
+                    <div>Cmt</div>
+                    <div>Paz</div>
+                </div>
+
+                <!-- Calendar Days -->
+                <div id="calendar-days" class="grid grid-cols-7 gap-1 mt-2 text-center text-gray-700">
+                    <!-- Days will be dynamically added here -->
                 </div>
             </div>
-
-
-
-            <div class="mb-6">
-                <div class="calendar bg-white p-4 rounded-lg shadow-lg">
-                    <!-- Navigation Bar -->
-                    <div class="flex items-center justify-between mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
-                        <button id="prev-month"
-                            class="flex items-center bg-gray-200  hover:bg-gray-300 p-2 rounded-lg transition duration-200">
-                            <i class="fa-solid fa-calendar-minus text-xl mr-2 text-red-700"></i>
-                            <span class="hidden md:inline">Önceki</span>
-                        </button>
-                        <span id="current-month" class="text-2xl font-bold text-gray-900"></span>
-                        <button id="next-month"
-                            class="flex items-center bg-gray-200 text-gray-800 hover:bg-gray-300 p-2 rounded-lg transition duration-200">
-
-                            <span class="hidden md:inline">Sonraki</span>
-                            <i class="fa-solid fa-calendar-plus text-xl ml-2 text-green-700"></i>
-                        </button>
-                    </div>
-
-                    <!-- Days of the Week -->
-                    <div class="grid grid-cols-7 gap-1 text-center text-gray-600 font-medium">
-                        <div>Pzt</div>
-                        <div>Sal</div>
-                        <div>Çar</div>
-                        <div>Per</div>
-                        <div>Cum</div>
-                        <div>Cmt</div>
-                        <div>Paz</div>
-                    </div>
-
-                    <!-- Calendar Days -->
-                    <div id="calendar-days" class="grid grid-cols-7 gap-1 mt-2 text-center text-gray-700">
-                        <!-- Days will be dynamically added here -->
-                    </div>
-                </div>
-            </div>
-
-
-
         </div>
     </div>
-    </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
