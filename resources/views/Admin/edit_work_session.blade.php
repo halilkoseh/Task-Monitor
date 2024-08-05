@@ -25,7 +25,7 @@
             <label class="block text-gray-700 font-semibold mb-2">Bitiş Zamanı</label>
             <input type="datetime-local" name="end_time" value="{{ optional($workSession->end_time)->format('Y-m-d\TH:i') }}" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
-f
+
         <div class="mb-6">
             <label class="block text-gray-700 font-semibold mb-2">Durum</label>
             <select name="status" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">

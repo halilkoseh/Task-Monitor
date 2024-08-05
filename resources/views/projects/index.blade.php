@@ -9,8 +9,9 @@
 
         .content-container {
             min-height: 100vh;
-            margin-left: 16rem;
+            margin-left: 18rem;
             padding: 20px;
+            margin-top: 2rem;
             box-sizing: border-box;
         }
 
@@ -23,15 +24,16 @@
         }
     </style>
 
-    <div class="container content-container">
+    <div class="container content-container ">
         <div class="flex justify-between items-center mx-auto p-4">
             <h1 class="text-3xl mb-6 mt-3 text-gray-600"><i class="fa-solid fa-code text-sky-500"></i> Projeler</h1>
+            <div class="flex justify-end items-center mx-auto p-4">
+                <p class="text-md text-gray-600 underline">{{ count($projects) }} proje görüntüleniyor..</p>
+            </div>
             <a href="{{ route('projects.create') }}" class="inline-block mb-4 px-6 py-2 bg-sky-500 text-white rounded-full hover:bg-blue-500 transition duration-200"><i class="fa-solid fa-circle-plus"></i> Proje Oluştur</a>
         </div>
         
-        <div class="flex justify-end items-center mx-auto p-4">
-            <p class="text-md text-gray-600 underline">{{ count($projects) }} proje görüntüleniyor..</p>
-        </div>
+       
 
         @if($projects && count($projects) > 0)
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

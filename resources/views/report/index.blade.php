@@ -19,21 +19,7 @@
             </div>
         </div>
         <!-- Assigned Tasks -->
-        <div class="w-full md:w-3/4 lg:w-3/5 bg-white shadow-lg rounded-lg p-4 mt-8 mx-auto">
-            <h2 class="text-xl font-semibold mb-4 text-center">Atanmış Tasklar</h2>
-            <ul class="space-y-4">
-                @foreach ($tasks as $task)
-                    <li class="flex items-center bg-gray-100 shadow-md rounded-lg p-4">
-                        <i class="fas fa-tasks text-sky-500 text-2xl mr-4"></i>
-                        <span class="flex-1 text-lg font-medium">{{ $task->title }}</span>
-                        <a href="{{ route('tasks.edit', $task->id) }}"
-                            class="btn bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded">
-                            Düzenle
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
+
     </div>
 
     <!-- Font Awesome -->
@@ -89,17 +75,20 @@
                                 tooltip: {
                                     callbacks: {
                                         label: function(tooltipItem) {
-                                            var percentage = (tooltipItem.raw / totalCount * 100).toFixed(2);
+                                            var percentage = (tooltipItem.raw / totalCount *
+                                                100).toFixed(2);
                                             return `${tooltipItem.label}: ${tooltipItem.raw} (${percentage}%)`;
                                         }
                                     }
                                 },
                                 datalabels: {
                                     display: function(context) {
-                                        return context.dataset.data[context.dataIndex] !== 0;
+                                        return context.dataset.data[context.dataIndex] !==
+                                        0;
                                     },
                                     formatter: (value, ctx) => {
-                                        let sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                        let sum = ctx.dataset.data.reduce((a, b) => a + b,
+                                            0);
                                         let percentage = (value / sum * 100).toFixed(2);
                                         return percentage + '%';
                                     },
@@ -113,16 +102,16 @@
                                         minRotation: 0,
                                     },
                                     grid: {
-                                        display: false 
+                                        display: false
                                     }
                                 },
                                 y: {
                                     ticks: {
                                         beginAtZero: true,
-                                        precision: 0 
+                                        precision: 0
                                     },
                                     grid: {
-                                        display: false 
+                                        display: false
                                     }
                                 }
                             }
@@ -152,8 +141,8 @@
                             datasets: [{
                                 label: 'Offdays Count',
                                 data: counts,
-                                backgroundColor: 'rgba(200, 230, 201, 0.5)', 
-                                borderColor: '#8bc34a', 
+                                backgroundColor: 'rgba(200, 230, 201, 0.5)',
+                                borderColor: '#8bc34a',
                                 borderWidth: 3
                             }]
                         },
@@ -161,7 +150,7 @@
                             responsive: true,
                             plugins: {
                                 legend: {
-                                    display: false, 
+                                    display: false,
                                 },
                                 tooltip: {
                                     callbacks: {
@@ -171,7 +160,7 @@
                                     }
                                 }
                             },
-                            cutout: '50%', 
+                            cutout: '50%',
                         }
                     });
                 });

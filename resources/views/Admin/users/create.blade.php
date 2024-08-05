@@ -14,7 +14,7 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="flex-1 p-8 mt-24 content-container">
+    <div class="flex-1 p-16 mt-24 content-container">
         <div class="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">
             <div class="mt-6 mb-6">
                 <a href="{{ route('admin.users.show') }}" class="text-sky-500 hover:text-blue-800"><i class="fa-solid fa-chevron-left"></i> Geri Dön</a>

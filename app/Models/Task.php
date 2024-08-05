@@ -32,6 +32,11 @@ class Task extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function assignedProject()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
+
     public function edit($id)
 {
     $task = Task::findOrFail($id); // Assuming you have a Task model
@@ -42,12 +47,19 @@ class Task extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+
     }
+
+
 
  
 
 }
 
-// app/Models/Task.php
+
+
+
+
+
 
 

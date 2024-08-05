@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\OffdayController;
+use App\Http\Controllers\AttachmentController;
 
 // Authentication Routes
 Route::get('/', function () {
@@ -103,5 +104,26 @@ Route::get('/navbar-tasks', [TaskController::class, 'index1'])->name('navbar.tas
 
 
 
-// web.php
 Route::get('/offday/monthly-data', [OffdayController::class, 'getMonthlyOffdayData']);
+
+
+use App\Http\Controllers\SearchController;
+
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+Route::get('/admin/users/search', [UserController::class, 'search']);
+
+Route::get('/search', [SearchController::class, 'search']);
+
+
+Route::get('/admin/users/search', [UserController::class, 'search']);
+Route::get('/admin/users/show/{id}', [UserController::class, 'show1']);
+Route::get('/mission/index', [TaskController::class, 'index1']); 
+Route::get('/projects/index', [ProjectController::class, 'show']); 
+
+
+// Route for showing a specific task
+Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.show');
+
+
+Route::get('/attachments/download/{filename}', [AttachmentController::class, 'download'])->name('attachments.download');

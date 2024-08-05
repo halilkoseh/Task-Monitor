@@ -106,7 +106,7 @@
                     <p class="text-sm text-gray-700 mb-1">Atanma Tarihi: {{ $task->start_date }}</p>
                     <p class="text-sm text-gray-700 mb-1">Son Teslim Tarihi: {{ $task->due_date }}</p>
                     <p class="text-sm text-gray-700 mb-2">Görev İçeriği: {{ $task->description }}</p>
-                    <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{ $task->projectName?->name }}</p>
+                    <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{$project->name }}</p>
 
                     <p class="text-sm text-gray-700">
                         Ek Materyaller: @if ($task->attachments)
@@ -127,7 +127,7 @@
                     <p class="text-sm text-gray-700 mb-1">Atanma Tarihi: {{ $task->start_date }}</p>
                     <p class="text-sm text-gray-700 mb-1">Son Teslim Tarihi: {{ $task->due_date }}</p>
                     <p class="text-sm text-gray-700 mb-2">Görev İçeriği: {{ $task->description }}</p>
-                    <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{ $task->projectName?->name }}</p>
+                    <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{$project->name }}</p>
 
                     <p class="text-sm text-gray-700">
                         Ek Materyaller: @if ($task->attachments)
@@ -148,7 +148,7 @@
                     <p class="text-sm text-gray-700 mb-1">Atanma Tarihi: {{ $task->start_date }}</p>
                     <p class="text-sm text-gray-700 mb-1">Son Teslim Tarihi: {{ $task->due_date }}</p>
                     <p class="text-sm text-gray-700 mb-2">Görev İçeriği: {{ $task->description }}</p>
-                    <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{ $task->projectName?->name }}</p>
+                    <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{$project->name }}</p>
 
                     <p class="text-sm text-gray-700">
                         Ek Materyaller: @if ($task->attachments)
@@ -169,7 +169,7 @@
                     <p class="text-sm text-gray-700 mb-1">Atanma Tarihi: {{ $task->start_date }}</p>
                     <p class="text-sm text-gray-700 mb-1">Son Teslim Tarihi: {{ $task->due_date }}</p>
                     <p class="text-sm text-gray-700 mb-2">Görev İçeriği: {{ $task->description }}</p>
-                    <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{ $task->projectName?->name }}</p>
+                    <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{$project->name }}</p>
 
                     <p class="text-sm text-gray-700">
                         Ek Materyaller: @if ($task->attachments)
@@ -183,14 +183,14 @@
         </div>
         <div class="column flex-1 p-4 bg-white rounded-lg shadow-lg min-w-[300px]" data-status="tamamlandi" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
             <h2 class="text-xl font-bold mb-4 text-green-600">Tamamlandı</h2>
-            @foreach ($project->tasks()->where('status', 'tamamlandi')->get() as $task)
+            @foreach ($project->tasks()->where('status', 'Tamamlandı')->get() as $task)
                 <div class="task-card bg-tamamlandi p-4 mb-4 rounded-lg shadow-md" draggable="true" data-task-id="{{ $task->id }}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
                     <h3 class="font-bold mb-2">{{ $task->title }}</h3>
                     <p class="text-sm text-gray-700 mb-1">Kime: {{ $task->assignedUser->name }}</p>
                     <p class="text-sm text-gray-700 mb-1">Atanma Tarihi: {{ $task->start_date }}</p>
                     <p class="text-sm text-gray-700 mb-1">Son Teslim Tarihi: {{ $task->due_date }}</p>
                     <p class="text-sm text-gray-700 mb-2">Görev İçeriği: {{ $task->description }}</p>
-                    <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{ $task->projectName?->name }}</p>
+                    <p class="text-sm text-gray-700 mb-2">Proje İsmi: {{$project->name }}</p>
 
                     <p class="text-sm text-gray-700">
                         Ek Materyaller: @if ($task->attachments)

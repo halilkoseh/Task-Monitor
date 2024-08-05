@@ -4,7 +4,8 @@
     <style>
         .main-content {
             min-height: 100vh;
-            margin-left: 16rem;
+            margin-left: 18rem;
+            margin-right: 2rem;
             padding: 20px;
             box-sizing: border-box;
         }
@@ -146,7 +147,7 @@
         }
     </style>
 
-    <div class="main-content w-5/6 mx-auto p-4">
+    <div class="main-content w-5/6 mx-auto p-4 ml-16">
         <div class="flex justify-between items-center mb-5">
             <h2 class="text-3xl text-gray-600">
                 <i class="fas fa-users text-sky-500"></i> Tüm Kullanıcılar
@@ -181,7 +182,7 @@
                 <thead>
                     <tr>
                         <th>Profil Resmi</th>
-                        <th>İsim-Soyisim</th>
+                        <th>İsim ve Mail</th>
                         <th>Kullanıcı Adı</th>
                         <th>Görevi</th>
                         <th>Telefon</th>
@@ -220,10 +221,9 @@
                             <td><a href="{{ $user->portfolioLink }}" class="text-sky-500 hover:text-blue-500"><i
                                         class="fas fa-link"></i></a></td>
                             <td class="relative">
-                                <div class="dropdown">
+                                <div class="dropdown flex justify-center text-red-600">
                                     <button class="dropdown-toggle">
-                                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                                    </button>
+                                        <i class="fa-solid fa-user-pen"></i>                                    </button>
                                     <div class="dropdown-content">
                                         <a href="{{ route('admin.users.edit', $user->id) }}"
                                             class="block px-4 py-2 text-blue-600 hover:bg-blue-100">Düzenle</a>

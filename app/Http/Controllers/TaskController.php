@@ -40,15 +40,22 @@ class TaskController extends Controller
     public function edit($id)
     {
         $task = Task::findOrFail($id);
-        return view('tasks.edit', compact('task'));
+        $users = User::all();
+        $projects = Project::all();
+    
+        return view('tasks.edit', compact('task', 'users', 'projects'));
     }
+    
 
     public function update(Request $request, $id)
     {
         $task = Task::findOrFail($id);
+        
+
+        
         $task->update($request->all());
 
-        return redirect()->route('tasks.index')->with('success', 'Task updated successfully');
+        return redirect()->route('mission.index')->with('success', 'Task updated successfully');
         
     }
 
@@ -57,7 +64,7 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
         $task->delete();
 
-        return redirect()->route('tasks.index')->with('success', 'Task deleted successfully');
+        return redirect()->route('mission.index')->with('success', 'Task deleted successfully');
     }
 
 
@@ -123,7 +130,15 @@ class TaskController extends Controller
 
 
 
-
+    public function show($id)
+    {
+        // Find the task by ID
+        $task = Task::findOrFail($id);
+        
+        // Return the view with the task data
+        return view('tasks.show', compact('task'));
+    }
+    
 
 
 

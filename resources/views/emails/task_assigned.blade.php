@@ -42,30 +42,18 @@
 
                         <div class="ml-4">
                             <h1 class="text-lg font-semibold text-gray-800 text-2xl">Atanan Proje</h1>
-                            <p class="text-md text-gray-600">{{ $task->projectName->name }}</p>
+                            <p class="text-md text-gray-600">{{ $task->project->name }}</p>
                             <p class="text-md text-gray-600 mt-2">Görev detayları için lütfen uygulamamıza giriş
                                 yapınız.</p>
 
                         </div>
-
-
-
                     </div>
-
 
                     <div class="mt-8">
                         <a href="https://halilkose.me"
                             class="text-indigo-600 hover:text-indigo-700 font-medium underline">Uygulamaya Git</a>
                     </div>
-
-
-
                 </div>
-
-
-
-
-
 
                 <div class="text-center text-gray-600">
                     <p class="text-sm text-gray-600">Atama tarihi: {{ $task->start_date }} | Teslim tarihi:

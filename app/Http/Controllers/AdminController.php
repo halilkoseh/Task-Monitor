@@ -180,8 +180,6 @@ class AdminController extends Controller
 
 
 
-
-
     public function storeTask(Request $request)
     {
         $attachmentPath = null;
@@ -191,77 +189,51 @@ class AdminController extends Controller
             'assignedTo' => 'required',
             'startDate' => 'required',
             'dueDate' => 'required',
-            'attachments' => 'required',
+            'attachments' => 'nullable|file|mimes:zip',
             'project' => 'required',
         ]);
-
-
-
-
-
+    
         if ($request->hasFile('attachments')) {
-            $task = new Task(); // Declare the $task variable
             $file = $request->file('attachments');
             $fileName = time() . '.' . $file->getClientOriginalExtension();
-            $destinationPath = public_path() . '/images';
+            $destinationPath = public_path('attachments');
             $file->move($destinationPath, $fileName);
-        
-            $task->attachments = $fileName;
+    
+            $attachmentPath = 'attachments/' . $fileName;
         }
-
-
-
-
-
-
-
-
-
-
+    
         foreach ($request->input('assignedTo') as $userId) {
             $task = Task::create([
                 'title' => $request->taskTitle,
                 'description' => $request->taskDescription,
                 'user_id' => $userId,
-                'project' => $request->project,
+                'project_id' => $request->project,
                 'start_date' => $request->startDate,
                 'due_date' => $request->dueDate,
                 'attachments' => $attachmentPath,
-                'project_id' => $request->project
-
             ]);
-
-
-
-
+    
             UserProject::create([
                 'user_id' => $userId,
                 'project_id' => $request->project,
             ]);
-
-
-
+    
             $user = User::find($userId);
-            $users = User::all();
-            $projects = Project::all();
-            $tasks = Task::all();
-
-
-            if ($user && $user->username) {
-                Mail::to($user->username)->send(new TaskAssigned($task, $user, ));
+            if ($user && $user->email) {
+                Mail::to($user->email)->send(new TaskAssigned($task, $user));
             } else {
-
-
                 return redirect()->back()->with('error', 'Kullanıcı e-posta adresi bulunamadı!');
             }
-
-
         }
-
-
-
+    
         return redirect()->back()->with('success', 'Görevler başarıyla atandı!');
     }
+    
+
+
+
+
+
 
 
 

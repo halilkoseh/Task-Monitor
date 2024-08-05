@@ -1,7 +1,7 @@
 <style>
     .content-container {
         min-height: 100vh;
-        margin-left: 16rem;
+        margin-left: 18rem;
         padding: 20px;
         box-sizing: border-box;
     }

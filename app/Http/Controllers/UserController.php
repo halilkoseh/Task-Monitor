@@ -30,7 +30,7 @@ class UserController extends Controller
     public function assaign()
     {
         $users = User::all();
-        $projects = Project::all(); 
+        $projects = Project::all();
         $tasks = Task::all();
 
         return view('admin.users.assaign', compact('users', 'projects', 'tasks'));
@@ -54,7 +54,7 @@ class UserController extends Controller
         $users = User::with('tasks')->findOrFail($id);
         return view('tasks.index', compact('users'));
 
-            
+
     }
 
     public function showProfile()
@@ -112,133 +112,133 @@ class UserController extends Controller
     }
 
 
- public function startWorkSession()
- {
-     $user = Auth::user();
- 
-     $activeSession = $user->workSessions()->where('status', 'working')->orWhere('status', 'on_break')->first();
- 
-     if ($activeSession) {
-         return response()->json(['message' => 'You already have an active work session.'], 400);
-     }
- 
-     $workSession = $user->workSessions()->create([
-         'start_time' => now(),
-         'status' => 'working'
-     ]);
- 
-     return redirect()->route('user.workSessions')->with('message', 'Work session started');
- }
- 
- 
+    public function startWorkSession()
+    {
+        $user = Auth::user();
 
- public function startBreak()
- {
-     $user = Auth::user();
-     $workSession = $user->workSessions()->where('status', 'working')->latest()->first();
- 
-     if ($workSession) {
-         $workSession->breaks()->create([
-             'start_time' => now(),
-         ]);
- 
-         $workSession->status = 'on_break';
-         $workSession->save();
- 
-         return redirect()->route('user.workSessions')->with('message', 'Break started');
-     }
- 
-     return response()->json(['message' => 'You are not currently working or there is no active work session.'], 400);
- }
- 
+        $activeSession = $user->workSessions()->where('status', 'working')->orWhere('status', 'on_break')->first();
 
-public function endBreak()
-{
-    $user = Auth::user();
-    $workSession = $user->workSessions()->where('status', 'on_break')->latest()->first();
-    $currentBreak = $workSession ? $workSession->breaks()->whereNull('end_time')->latest()->first() : null;
-
-    if ($workSession && $currentBreak) {
-        $currentBreak->update(['end_time' => now()]);
-
-        $workSession->status = 'working';
-        $workSession->save();
-
-        return redirect()->back()->with('message', 'Break ended');
-    }
-
-    return response()->json(['message' => 'No active break found.'], 400);
-}
-
-public function endWorkSession()
-{
-    $user = Auth::user();
-    $workSession = $user->workSessions()->whereIn('status', ['working', 'on_break'])->latest()->first();
-
-    if ($workSession) {
-        if ($workSession->status === 'on_break') {
-            $this->endBreak();
+        if ($activeSession) {
+            return response()->json(['message' => 'You already have an active work session.'], 400);
         }
 
-        $workSession->update([
-            'end_time' => now(),
-            'status' => 'ended',
+        $workSession = $user->workSessions()->create([
+            'start_time' => now(),
+            'status' => 'working'
         ]);
 
-        return redirect()->route('user.workSessions')->with('message', 'Work session ended');
+        return redirect()->route('user.workSessions')->with('message', 'Work session started');
     }
 
-    return response()->json(['message' => 'No active work session found.'], 400);
-}
 
 
-public function showWorkSessions()
-{
-    $user = Auth::user();
-    $workSessions = $user->workSessions()->with('breaks')->get();
+    public function startBreak()
+    {
+        $user = Auth::user();
+        $workSession = $user->workSessions()->where('status', 'working')->latest()->first();
 
-    $totalWorkDuration = 0;
+        if ($workSession) {
+            $workSession->breaks()->create([
+                'start_time' => now(),
+            ]);
 
-    foreach ($workSessions as $session) {
-        $startTime = Carbon::parse($session->start_time);
-        $endTime = Carbon::parse($session->end_time ?? now());
+            $workSession->status = 'on_break';
+            $workSession->save();
 
-        $workDuration = 0;
-        $currentStartTime = $startTime;
-
-        foreach ($session->breaks as $break) {
-            if ($break->start_time) {
-                $breakStartTime = Carbon::parse($break->start_time);
-                $breakEndTime = $break->end_time ? Carbon::parse($break->end_time) : $endTime;
-
-                $workDuration += $breakStartTime->diffInSeconds($currentStartTime);
-                $currentStartTime = $breakEndTime;
-            }
+            return redirect()->route('user.workSessions')->with('message', 'Break started');
         }
 
-        $workDuration += $endTime->diffInSeconds($currentStartTime);
-        $totalWorkDuration += $workDuration;
+        return response()->json(['message' => 'You are not currently working or there is no active work session.'], 400);
     }
 
-    $hours = floor($totalWorkDuration / 3600);
-    $minutes = floor(($totalWorkDuration % 3600) / 60);
-    $seconds = $totalWorkDuration % 60;
 
-    $formattedTotalWorkDuration = '';
-    if ($hours > 0) {
-        $formattedTotalWorkDuration .= "$hours hours ";
-    }
-    if ($minutes > 0) {
-        $formattedTotalWorkDuration .= "$minutes minutes ";
-    }
-    if ($seconds > 0 || empty($formattedTotalWorkDuration)) {
-        $formattedTotalWorkDuration .= "$seconds seconds";
+    public function endBreak()
+    {
+        $user = Auth::user();
+        $workSession = $user->workSessions()->where('status', 'on_break')->latest()->first();
+        $currentBreak = $workSession ? $workSession->breaks()->whereNull('end_time')->latest()->first() : null;
+
+        if ($workSession && $currentBreak) {
+            $currentBreak->update(['end_time' => now()]);
+
+            $workSession->status = 'working';
+            $workSession->save();
+
+            return redirect()->back()->with('message', 'Break ended');
+        }
+
+        return response()->json(['message' => 'No active break found.'], 400);
     }
 
-    return view('user.workSessions', compact('workSessions', 'formattedTotalWorkDuration'));
-}
+    public function endWorkSession()
+    {
+        $user = Auth::user();
+        $workSession = $user->workSessions()->whereIn('status', ['working', 'on_break'])->latest()->first();
 
-// app/Http/Controllers/UserController.php
+        if ($workSession) {
+            if ($workSession->status === 'on_break') {
+                $this->endBreak();
+            }
+
+            $workSession->update([
+                'end_time' => now(),
+                'status' => 'ended',
+            ]);
+
+            return redirect()->route('user.workSessions')->with('message', 'Work session ended');
+        }
+
+        return response()->json(['message' => 'No active work session found.'], 400);
+    }
+
+
+    public function showWorkSessions()
+    {
+        $user = Auth::user();
+        $workSessions = $user->workSessions()->with('breaks')->get();
+
+        $totalWorkDuration = 0;
+
+        foreach ($workSessions as $session) {
+            $startTime = Carbon::parse($session->start_time);
+            $endTime = Carbon::parse($session->end_time ?? now());
+
+            $workDuration = 0;
+            $currentStartTime = $startTime;
+
+            foreach ($session->breaks as $break) {
+                if ($break->start_time) {
+                    $breakStartTime = Carbon::parse($break->start_time);
+                    $breakEndTime = $break->end_time ? Carbon::parse($break->end_time) : $endTime;
+
+                    $workDuration += $breakStartTime->diffInSeconds($currentStartTime);
+                    $currentStartTime = $breakEndTime;
+                }
+            }
+
+            $workDuration += $endTime->diffInSeconds($currentStartTime);
+            $totalWorkDuration += $workDuration;
+        }
+
+        $hours = floor($totalWorkDuration / 3600);
+        $minutes = floor(($totalWorkDuration % 3600) / 60);
+        $seconds = $totalWorkDuration % 60;
+
+        $formattedTotalWorkDuration = '';
+        if ($hours > 0) {
+            $formattedTotalWorkDuration .= "$hours hours ";
+        }
+        if ($minutes > 0) {
+            $formattedTotalWorkDuration .= "$minutes minutes ";
+        }
+        if ($seconds > 0 || empty($formattedTotalWorkDuration)) {
+            $formattedTotalWorkDuration .= "$seconds seconds";
+        }
+
+        return view('user.workSessions', compact('workSessions', 'formattedTotalWorkDuration'));
+    }
+
+    // app/Http/Controllers/UserController.php
 
     public function store(Request $request)
     {
@@ -316,7 +316,47 @@ public function showWorkSessions()
     }
 
 
+    // UserController.php
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
 
+        $users = User::where('name', 'like', '%' . $query . '%')->get();
+        $tasks = Task::where('title', 'like', '%' . $query . '%')->get();
+        $projects = Project::where('name', 'like', '%' . $query . '%')->get();
+
+        $results = [];
+
+        foreach ($users as $user) {
+            $results[] = ['type' => 'user', 'id' => $user->id, 'name' => $user->name];
+        }
+
+        foreach ($tasks as $task) {
+            $results[] = ['type' => 'task', 'id' => $task->id, 'name' => $task->title];
+        }
+
+        foreach ($projects as $project) {
+            $results[] = ['type' => 'project', 'id' => $project->id, 'name' => $project->name];
+        }
+
+        return response()->json($results);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public function show1($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.users.show', compact('user'));
+    }
 
 
 }
