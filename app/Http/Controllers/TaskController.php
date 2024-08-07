@@ -19,10 +19,6 @@ class TaskController extends Controller
         $tasks = Task::all();
 
         return view('tasks.index', compact('users', 'userTasks', 'tasks'));
-
-
-
-
     }
 
 
@@ -42,21 +38,21 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
         $users = User::all();
         $projects = Project::all();
-    
+
         return view('tasks.edit', compact('task', 'users', 'projects'));
     }
-    
+
 
     public function update(Request $request, $id)
     {
         $task = Task::findOrFail($id);
-        
 
-        
+
+
         $task->update($request->all());
 
         return redirect()->route('mission.index')->with('success', 'Task updated successfully');
-        
+
     }
 
     public function destroy($id)
@@ -134,11 +130,41 @@ class TaskController extends Controller
     {
         // Find the task by ID
         $task = Task::findOrFail($id);
-        
+
         // Return the view with the task data
         return view('tasks.show', compact('task'));
     }
-    
+
+
+
+
+
+    public function filter(Request $request)
+    {
+        $query = Task::query();
+        $users = User::all();
+
+        if ($request->filled('owner_id')) {
+            $query->where('user_id', $request->owner_id);
+        }
+
+        if ($request->filled('start_date')) {
+            $startDate = \Carbon\Carbon::parse($request->start_date)->format('Y-m-d');
+            $query->where('start_date', '>=', $startDate);
+        }
+
+        if ($request->filled('end_date')) {
+            $endDate = \Carbon\Carbon::parse($request->end_date)->format('Y-m-d');
+            $query->where('due_date', '<=', $endDate);
+        }
+
+        $tasks = $query->get();
+        $taskCount = $tasks->count();  // Count the number of tasks
+
+        return view('mission.index', compact('tasks', 'users', 'taskCount'));
+    }
+
+
 
 
 

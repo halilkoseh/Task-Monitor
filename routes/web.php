@@ -118,8 +118,8 @@ Route::get('/search', [SearchController::class, 'search']);
 
 Route::get('/admin/users/search', [UserController::class, 'search']);
 Route::get('/admin/users/show/{id}', [UserController::class, 'show1']);
-Route::get('/mission/index', [TaskController::class, 'index1']); 
-Route::get('/projects/index', [ProjectController::class, 'show']); 
+Route::get('/mission/index', [TaskController::class, 'index1']);
+Route::get('/projects/index', [ProjectController::class, 'show']);
 
 
 // Route for showing a specific task
@@ -127,3 +127,7 @@ Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.show');
 
 
 Route::get('/attachments/download/{filename}', [AttachmentController::class, 'download'])->name('attachments.download');
+
+
+// In web.php
+Route::get('/missions', [TaskController::class, 'filter'])->name('mission.index');

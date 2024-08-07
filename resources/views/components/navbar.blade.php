@@ -45,8 +45,12 @@
     <!-- Sidebar -->
     <div class="flex">
         <div class="fixed w-64 bg-white h-screen p-5 text-gray-600 rounded-xl md:w-1/4 lg:w-1/5 xl:w-1/6">
+
+
+
+
             <div class="flex items-center mb-20">
-                <a href="https://www.mfeteknoloji.com/" class="flex items-center" target="_blank">
+                <a href="{{ url('admin') }}" class="flex items-center">
                     <div class="logo-box rounded-full">
                         <img src="{{ asset('images/logo1.png') }}" alt="logo" class="w-14" />
                     </div>
@@ -55,6 +59,11 @@
                     <span class="font-quicksand text-2xl">Task Monitor</span>
                 </a>
             </div>
+
+
+
+
+
 
             <ul id="sidebar-menu" class="space-y-4">
                 <li>
@@ -70,6 +79,17 @@
                         Kullanıcılar
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{ route('projects.index') }}"
+                        class="sidebar-item flex items-center text-lg text-gray-600">
+                        <i class="fa-regular fa-file-code mr-4"></i>
+                        Projeler
+                    </a>
+                </li>
+
+
+
                 <li>
                     <a href="{{ route('mission.index') }}" class="sidebar-item flex items-center text-lg text-gray-600">
                         <i class="fa-solid fa-layer-group mr-3"></i> Görevler
@@ -83,13 +103,7 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ route('admin.reports.index') }}"
-                        class="sidebar-item flex items-center text-lg text-gray-600">
-                        <i class="fa-regular fa-copy mr-3"></i>
-                        Raporlar
-                    </a>
-                </li>
+
                 <li>
                     <a href="{{ route('admin.offdays.index') }}"
                         class="sidebar-item flex items-center text-lg text-gray-600">
@@ -103,10 +117,10 @@
 
 
                 <li>
-                    <a href="{{ route('projects.index') }}"
+                    <a href="{{ route('admin.reports.index') }}"
                         class="sidebar-item flex items-center text-lg text-gray-600">
-                        <i class="fa-regular fa-file-code mr-4"></i>
-                        Projeler
+                        <i class="fa-regular fa-copy mr-3"></i>
+                        Raporlar
                     </a>
                 </li>
 
