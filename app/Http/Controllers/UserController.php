@@ -10,6 +10,7 @@ use App\Models\Task;
 use App\Models\Project;
 use App\Models\WorkSession;
 use Carbon\Carbon;
+use App\Models\Offday;
 
 
 
@@ -333,6 +334,7 @@ class UserController extends Controller
 
         foreach ($tasks as $task) {
             $results[] = ['type' => 'task', 'id' => $task->id, 'name' => $task->title];
+
         }
 
         foreach ($projects as $project) {
@@ -357,6 +359,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         return view('admin.users.show', compact('user'));
     }
+
+
+
 
 
 }

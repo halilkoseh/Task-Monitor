@@ -51,7 +51,6 @@
             </div>
 
             <div class="flex justify-end">
-                <a href="{{ route('offday.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-full shadow-sm hover:bg-gray-600">İptal</a>
                 <button type="submit" class="ml-2 bg-sky-600 text-white px-4 py-2 rounded-full shadow-sm hover:bg-indigo-700">Güncelle</button>
             </div>
         </form>

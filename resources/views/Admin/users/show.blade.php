@@ -15,13 +15,15 @@
             position: absolute;
             right: 0;
             top: 100%;
-            z-index: 1000; /* Yüksek z-index değeri dropdown'ın üstte görünmesini sağlar */
+            z-index: 1000;
+            /* Yüksek z-index değeri dropdown'ın üstte görünmesini sağlar */
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 0.25rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             white-space: nowrap;
-            overflow: visible; /* Dropdown menüsünün tam görünmesini sağlar */
+            overflow: visible;
+            /* Dropdown menüsünün tam görünmesini sağlar */
         }
 
         .dropdown-content.show {
@@ -221,25 +223,27 @@
                             <td><a href="{{ $user->portfolioLink }}" class="text-sky-500 hover:text-blue-500"><i
                                         class="fas fa-link"></i></a></td>
                             <td class="relative">
-                                <div class="dropdown flex justify-center text-red-600">
+                                <div class="dropdown flex justify-center text-blue-600">
                                     <button class="dropdown-toggle">
-                                        <i class="fa-solid fa-user-pen"></i>                                    </button>
+                                        <i class="fa-solid fa-user-pen"></i> </button>
                                     <div class="dropdown-content">
                                         <a href="{{ route('admin.users.edit', $user->id) }}"
                                             class="block px-4 py-2 text-blue-600 hover:bg-blue-100">Düzenle</a>
-                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
-                                                onsubmit="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?');" class="block">
-                                              @csrf
-                                              @method('DELETE')
-                                          
-                                              {{-- Check if the user's name is not 'admin' --}}
-                                              @if ($user->name !== 'admin')
-                                                  <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100">
-                                                      Sil
-                                                  </button>
-                                              @endif
-                                          </form>
-                                          
+                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                                            onsubmit="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?');"
+                                            class="block">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            {{-- Check if the user's name is not 'admin' --}}
+                                            @if ($user->name !== 'admin')
+                                                <button type="submit"
+                                                    class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100">
+                                                    Sil
+                                                </button>
+                                            @endif
+                                        </form>
+
                                     </div>
                                 </div>
                             </td>

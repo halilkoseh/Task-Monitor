@@ -51,7 +51,7 @@ class TaskController extends Controller
 
         $task->update($request->all());
 
-        return redirect()->route('mission.index')->with('success', 'Task updated successfully');
+        return redirect()->route('mission.index')->with('success', 'Task Başarıyla Güncellendi !');
 
     }
 
@@ -60,18 +60,21 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
         $task->delete();
 
-        return redirect()->route('mission.index')->with('success', 'Task deleted successfully');
+        return redirect()->route('mission.index')->with('success', 'Task Başarıyla Silindi !');
     }
 
 
 
     public function index1()
     {
+
+
         $users = User::all();
         $userTasks = User::with('tasks')->get();
         $tasks = Task::all();
+        $taskCount = Task::count();
 
-        return view('mission.index', compact('users', 'userTasks', 'tasks'));
+        return view('mission.index', compact('users', 'userTasks', 'tasks', 'taskCount'));
     }
 
 
@@ -138,14 +141,26 @@ class TaskController extends Controller
 
 
 
-
     public function filter(Request $request)
     {
-        $query = Task::query();
-        $users = User::all();
+        // Initializing the query and including related user and project
+        $query = Task::with(['user', 'assignedProject']);
 
+        // Fetching all users and projects for dropdowns
+        $users = User::all();
+        $projects = Project::all();
+
+        // Applying filters
         if ($request->filled('owner_id')) {
             $query->where('user_id', $request->owner_id);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('project_id')) {
+            $query->where('project_id', $request->project_id);
         }
 
         if ($request->filled('start_date')) {
@@ -158,11 +173,16 @@ class TaskController extends Controller
             $query->where('due_date', '<=', $endDate);
         }
 
+        // Fetching the filtered tasks and counting them
         $tasks = $query->get();
-        $taskCount = $tasks->count();  // Count the number of tasks
+        $taskCount = $tasks->count();
 
-        return view('mission.index', compact('tasks', 'users', 'taskCount'));
+        return view('mission.index', compact('tasks', 'users', 'projects', 'taskCount'));
     }
+
+
+
+
 
 
 

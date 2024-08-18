@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\User;
+
 
 
 class OffdayController extends Controller
@@ -15,7 +17,8 @@ class OffdayController extends Controller
     public function index()
     {
         $offdays = Offday::all();
-        return view('admin.offdays.index', compact('offdays'));
+        $users = User::all();
+        return view('admin.offdays.index', compact('offdays', 'users'));
     }
 
     // Admin tarafındaki create metodu
@@ -24,29 +27,51 @@ class OffdayController extends Controller
         return view('admin.offdays.create');
     }
 
+
+
+
+
+
+
     public function store(Request $request)
     {
+        $attachmentPath = null;
+
+        // Validate the request
         $request->validate([
-            'reason' => 'required|string|max:255',
-            'document' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+            'reason' => 'required',
+            'attachments' => 'nullable|file|mimes:zip',
             'offday_date' => 'required|date',
-
-
         ]);
 
-        $documentPath = $request->file('document') ? $request->file('document')->store('documents') : null;
+        // Handle file upload
+        if ($request->hasFile('attachments')) {
+            $file = $request->file('attachments');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('attachments');
+            $file->move($destinationPath, $fileName);
+            $attachmentPath = 'attachments/' . $fileName;
 
+
+        }
+
+        // Create the offday record
         Offday::create([
             'user_id' => Auth::id(),
             'reason' => $request->reason,
-            'document' => $documentPath,
+            'document' => $attachmentPath, // Store relative path
             'status' => 'pending',
             'offday_date' => $request->offday_date,
-
         ]);
 
-        return redirect()->route('admin.offdays.index')->with('success', 'İzin talebiniz oluşturuldu.');
+        return redirect()->route('offday.index')->with('success', 'İzin talebiniz oluşturuldu.');
     }
+
+
+
+
+
+
 
     // Kullanıcı tarafındaki create metodu
     public function createUser()
@@ -57,26 +82,54 @@ class OffdayController extends Controller
     // Kullanıcı tarafındaki store metodu
     public function storeUser(Request $request)
     {
-        $request->validate([
-            'reason' => 'required|string|max:255',
-            'document' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
-            'offday_date' => 'required|date',
+        $attachmentPath = null;
 
+        // Validate the request
+        $request->validate([
+            'reason' => 'required',
+            'attachments' => 'nullable|file|mimes:zip',
+            'offday_date' => 'required|date',
         ]);
 
-        $documentPath = $request->file('document') ? $request->file('document')->store('documents') : null;
+        // Handle file upload
+        if ($request->hasFile('attachments')) {
+            $file = $request->file('attachments');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('attachments');
+            $file->move($destinationPath, $fileName);
+            $attachmentPath = 'attachments/' . $fileName;
 
+
+        }
+
+        // Create the offday record
         Offday::create([
             'user_id' => Auth::id(),
             'reason' => $request->reason,
-            'document' => $documentPath,
+            'document' => $attachmentPath, // Store relative path
             'status' => 'pending',
             'offday_date' => $request->offday_date,
-
         ]);
 
         return redirect()->route('offday.index')->with('success', 'İzin talebiniz oluşturuldu.');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function show($id)
     {
@@ -141,15 +194,58 @@ class OffdayController extends Controller
 
 
     public function getMonthlyOffdayData()
-{
-    $data = Offday::select(DB::raw('MONTH(offday_date) as month, COUNT(*) as count'))
-        ->whereYear('offday_date', Carbon::now()->year)
-        ->groupBy(DB::raw('MONTH(offday_date)'))
-        ->get();
+    {
+        $data = Offday::select(DB::raw('MONTH(offday_date) as month, COUNT(*) as count'))
+            ->whereYear('offday_date', Carbon::now()->year)
+            ->groupBy(DB::raw('MONTH(offday_date)'))
+            ->get();
 
-    return response()->json($data);
-}
+        return response()->json($data);
+    }
 
+    public function search2(Request $request)
+    {
+        $query = User::query();
+
+        // Kullanıcı adı ile filtreleme
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        // Sadece filtrelenen kullanıcıları getiriyoruz
+        $users = $query->get();
+
+        // Filtrelenen kullanıcıların izin günlerini alıyoruz
+        $offdays = Offday::whereIn('user_id', $users->pluck('id'))->get();
+
+        return view('admin.offdays.index', compact('users', 'offdays'));
+    }
+
+
+
+
+
+    public function search3(Request $request)
+    {
+        $query = Offday::query();
+
+        // Kullanıcı durumuna göre filtreleme
+        if ($request->filled('status')) {
+            $status = $request->input('status');
+            $query->where('status', $status);
+        }
+
+        // İzin tarihi ile filtreleme
+        if ($request->filled('offday_date')) {
+            $offdayDate = $request->input('offday_date');
+            $query->whereDate('offday_date', $offdayDate);
+        }
+
+        $offdays = $query->get();
+
+        return view('admin.offdays.index', compact('offdays'));
+    }
 
 
 

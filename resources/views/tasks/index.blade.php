@@ -215,10 +215,12 @@
 <div class="content-container mx-auto">
     <!-- Header -->
     <div class="flex justify-between items-center mb-8 p-2">
+        
+        
         <div class="search-container relative ml-8">
             <input type="text" id="user-search" placeholder="Ara..." class="search-input py-2 px-4 border border-sky-500 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
             <i class="fas fa-search search-icon"></i>
-            <div id="suggestions" class="suggestions absolute bg-white border border-gray-300 rounded-lg mt-1 w-full hidden"></div>
+            <div id="suggestions" class="suggestions relative bg-white border border-gray-300 rounded-lg mt-1 w-full hidden"></div>
         </div>
 
         <script>
@@ -302,9 +304,10 @@
                 <a href="{{ route('profile') }}">
 
                 <div class="user-info">
-                    @if ($loggedInUser)
-                    <img src="{{ asset('images/' . $loggedInUser->profilePic) }}" alt="{{ $loggedInUser->name }}"   />
-                    @endif
+                    @if (Auth::check())
+                    <img src="{{ asset('images/' . Auth::user()->profilePic) }}" alt="{{ Auth::user()->name }}" />
+                @endif
+                
                 </div>
             </a>
 
@@ -412,8 +415,10 @@
                             {{ $task->assignedProject->name ?? 'Proje yok' }}
                         </span>
                     </div>
-                        <div class="flex justify-between items-center mb-2">
+                        
+                    <div class="flex justify-between items-center mb-2">
                             <h3 class="font-semibold text-lg truncate max-w-xs">{{ $task->title }}</h3>
+                            
                             <div class="flex items-center space-x-2">
                                 <a href="{{ route('tasks.show', $task->id) }}" class="text-blue-500 hover:text-black transition">
                                     <i class="fa-solid fa-circle-info"></i>
@@ -422,6 +427,7 @@
                                     <!-- Dropdown content -->
                                 </div>
                             </div>
+                            
                         </div>
                     
                       

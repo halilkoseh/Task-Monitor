@@ -20,11 +20,11 @@ class Task extends Model
         'attachments',
     ];
 
-            // Task.php (Model)
-        public function attachments()
-        {
-            return $this->hasMany(Attachment::class);
-        }
+    // Task.php (Model)
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
 
 
     public function assignedUser()
@@ -38,10 +38,10 @@ class Task extends Model
     }
 
     public function edit($id)
-{
-    $task = Task::findOrFail($id); // Assuming you have a Task model
-    return view('tasks.edit', compact('task'));
-}
+    {
+        $task = Task::findOrFail($id); // Assuming you have a Task model
+        return view('tasks.edit', compact('task'));
+    }
 
 
     public function project()
@@ -50,9 +50,13 @@ class Task extends Model
 
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 
- 
+
 
 }
 

@@ -298,6 +298,7 @@ class AdminController extends Controller
         $workSessions = WorkSession::with(['user', 'breaks'])->get();
 
         return view('admin.work_sessions', compact('users', 'workSessions'));
+        
     }
 
     public function editWorkSession($id)

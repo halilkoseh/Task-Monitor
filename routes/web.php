@@ -10,7 +10,6 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\OffdayController;
 use App\Http\Controllers\AttachmentController;
 
-// Authentication Routes
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -19,7 +18,6 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Admin Routes
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
     Route::post('/admin/users', [AdminController::class, 'store'])->name('admin.users.store');
@@ -47,7 +45,6 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
 });
 
-// Authenticated User Routes
 Route::middleware('auth')->group(function () {
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks');
     Route::get('/user', [UserController::class, 'showUserTasks'])->name('user');
@@ -68,7 +65,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/offdays/{id}', [OffdayController::class, 'update'])->name('offdays.update');
 });
 
-// General Routes
 Route::resource('projects', ProjectController::class);
 Route::get('projects/create', [ProjectController::class, 'create'])->name('projects.create');
 Route::get('/users/{id}/tasks', [UserController::class, 'showTasks'])->name('admin.index');
@@ -122,12 +118,17 @@ Route::get('/mission/index', [TaskController::class, 'index1']);
 Route::get('/projects/index', [ProjectController::class, 'show']);
 
 
-// Route for showing a specific task
 Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.show');
 
 
 Route::get('/attachments/download/{filename}', [AttachmentController::class, 'download'])->name('attachments.download');
 
 
-// In web.php
 Route::get('/missions', [TaskController::class, 'filter'])->name('mission.index');
+
+
+Route::get('/admin/users/search2', [OffdayController::class, 'search2'])->name('admin.users.search2');
+
+Route::get('/admin/users/search3', [OffdayController::class, 'search3'])->name('admin.users.search3');
+
+
