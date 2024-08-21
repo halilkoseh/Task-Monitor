@@ -79,7 +79,7 @@
         }
     </style>
 
-    <div class="container p-9">
+    <div class="container p-9 ml-96 mr-8">
         <div class="flex flex-wrap gap-3">
             @php
                 $statuses = ['Atandı', 'basladi', 'Devam Ediyor', 'test ediliyor', 'tamamlandi'];

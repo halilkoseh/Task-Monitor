@@ -1,9 +1,10 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container mx-auto mt-48 flex flex-col md:flex-row md:space-x-8  p-4">
+    <div class="container mx-auto mt-48 flex flex-col md:flex-row md:space-x-8 p-4">
         <!-- Task Details Card -->
-        <div class=" shadow-lg rounded-lg p-8 mb-6 md:mb-0 hover:shadow-xl transition-shadow duration-300 flex-1 ml-64 border-gray-300 border-2 bg-white">
+        <div
+            class="shadow-lg rounded-lg p-8 mb-6 md:mb-0 hover:shadow-xl transition-shadow duration-300 flex-1 ml-0 md:ml-64 border-gray-300 border-2 bg-white">
             <div class="mb-6">
                 <a href="{{ route('mission.index') }}"
                     class="text-sky-500 hover:text-blue-800 transition-colors duration-200 flex items-center">
@@ -40,7 +41,8 @@
         </div>
 
         <!-- Calendar Card -->
-        <div class=" shadow-lg rounded-lg p-8 hover:shadow-xl transition-shadow duration-300 flex-1 border-gray-300 border-2 bg-white">
+        <div
+            class=" shadow-lg rounded-lg p-8 hover:shadow-xl transition-shadow duration-300 flex-1 border-gray-300 border-2 bg-white">
             <div class="calendar p-4 rounded-lg">
                 <!-- Navigation Bar -->
                 <div class="flex items-center justify-between mb-6 p-4 bg-[#F1F5F9] rounded-lg shadow-sm">

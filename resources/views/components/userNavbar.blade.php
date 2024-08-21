@@ -1,112 +1,165 @@
-<!--font-family-->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .sidebar-item:hover {
-        background-color: #f2e4f9;
-        color: #4a5568; /* text-gray-800 */
-        border-radius: 9999px; /* rounded-full */
-        transition: all 0.2s;
-    }
-    .sidebar-item {
-        transition: all 0.2s;
-    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <link rel="icon" type="image/x-icon" href="images/favLogo.png">
 
-    .body {
-        font-family: 'Quicksand', monospace;
-    }
 
-</style>
+    <style>
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-<!-- Sidebar -->
-<div class="body">
-    
-<div class="w-64 bg-gray-700 h-screen p-5 text-white rounded-3xl">
-        <div class="flex items-center mb-20">
-            <a href="{{ asset('admin') }}" class="flex items-center">
-                <img src="{{ asset('images/logo1.png') }}" alt="logo" class="w-12 mr-1" /> <!-- Logo boyutu küçültüldü -->
-                <div>
-                    <span class="font-quicksand text-2xl">TaskManager</span> <!-- Yazı yanına getirildi -->
-                </div>
-            </a>
-        </div>
-        <ul class="space-y-3.5">
-            <li>
-                <a href="{{ route('user') }}" class="sidebar-item flex items-center text-lg">
-                    <i class="fas fa-th-large mr-2"></i> <!-- Icon and text spacing adjusted -->
-                    Kullanıcı Paneli
+        .sidebar-item {
+            transition: all 0.3s, transform 0.3s;
+            display: block;
+            padding: 10px;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background-color: #e0f2fe;
+            color: #075985;
+        }
+
+        .logo-box {
+            background-color: #0ea5e9;
+            padding: 10px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-box:hover {
+            transform: scale(1.1);
+        }
+
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-container {
+            min-height: 100vh;
+            margin-left: 16rem;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="flex">
+        <div class="fixed w-64 bg-white h-screen p-5 text-gray-600 rounded-xl md:w-1/4 lg:w-1/5 xl:w-1/6">
+
+
+
+
+            <div class="flex items-center mb-20">
+                <a href="{{ url('user') }}" class="flex items-center">
+                    <div class="logo-box rounded-full">
+                        <img src="{{ asset('images/logo1.png') }}" alt="logo" class="w-14" />
+                    </div>
                 </a>
-            </li>
-            <li>
-            <li class="space-y-3.5">
-                <a href="#" class="sidebar-item flex items-center text-lg">
-                    <i class="fas fa-calendar-alt mr-3"></i>
-                    Takvim
+                <a href="{{ url('user') }}" class="ml-2">
+                    <span class="font-quicksand text-2xl">Task Monitor</span>
                 </a>
-            </li> 
-                <a href="{{ route('user.workSessions') }}" class="sidebar-item flex items-center text-lg">
-                    <i class="fa-solid fa-clock mr-2"></i> <!-- Icon and text spacing adjusted -->
-                    Mesai Giriş/Çıkış
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('offday.index') }}" class="sidebar-item flex items-center text-lg">
-                    <i class="fa-solid fa-copy mr-2"></i> <!-- Icon and text spacing adjusted -->
-                    İzin Takip
-                </a>
-            </li>
-                    <li class="mb-4">
-                        <a href="{{ route('userProfile') }}" class="sidebar-item flex items-center text-lg">
-                        <i class="fas fa-user mr-3"></i>Profilim</a>
-                </li>
-            
-            </ul>
-     
-       
-
-
-
-   
-
-<!--
-            <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200"
-                x-transition:enter-start="transform opacity-0 scale-95"
-                x-transition:enter-end="transform opacity-100 scale-100"
-                x-transition:leave="transition ease-in duration-75"
-                x-transition:leave-start="transform opacity-100 scale-100"
-                x-transition:leave-end="transform opacity-0 scale-95"
-                class="absolute left-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
-                <a href="{{ route('userProfile') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Profili
-                    Görüntüle</a>
-                    <form action="{{ route('logout') }}" method="POST" class="flex items-center gap-4 pl-2">
-                @csrf
-                <button type="submit" class="text-white hover:text-blue-800 transition-colors duration-200 flex items-center gap-2">
-                    <i class="fas fa-sign-out-alt text-md mb-1"></i> 
-                    <span class="text-md mb-1">Çıkış Yap</span>
-                </button>
-            </form>
             </div>
--->
-<div class="flex flex-col justify-center mt-60 gap-1 border-t border-white pt-2">
-            <a href="{{ route('profile') }}" class="text-white hover:text-blue-800 transition-colors duration-200 flex items-center gap-2 pl-2">
-                <i class="fas fa-cog text-md"></i> 
-                <span class="text-md">Ayarlar</span>
-            </a>
 
-            <form action="{{ route('logout') }}" method="POST" class="flex items-center gap-4 pl-2">
-                @csrf
-                <button type="submit" class="text-white hover:text-blue-800 transition-colors duration-200 flex items-center gap-2">
-                    <i class="fas fa-sign-out-alt text-md mb-1"></i> <!-- İkon boyutu büyütüldü -->
-                    <span class="text-md mb-1">Çıkış Yap</span>
-                </button>
-            </form>
 
+
+
+
+
+            <ul id="sidebar-menu" class="space-y-4">
+                <li>
+                    <a href="{{ route('user') }}" class="sidebar-item flex items-center text-lg text-gray-600">
+                        <i class="fas fa-th-large mr-3"></i>
+                        Kullanıcı Paneli
+                    </a>
+                </li>
+
+
+
+
+
+
+
+                <li>
+                    <a href="{{ route('user.workSessions') }}"
+                        class="sidebar-item flex items-center text-lg text-gray-600">
+                        <i class="fa-regular fa-clock mr-3"></i>
+                        Mesai Giriş Çıkış
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="{{ route('offday.index') }}" class="sidebar-item flex items-center text-lg text-gray-600">
+                        <i class="fa-regular fa-pen-to-square mr-3"></i>
+                        İzin Talep
+                    </a>
+                </li>
+
+
+
+
+
+
+
+
+
+            </ul>
+
+
+
+            <div class="mt-40">
+                <div class="flex flex-col justify-center mt-auto gap-1 border-t border-gray-500 pt-1">
+                    <a href="{{ route('userProfile') }}"
+                        class="text-gray-600 hover:text-sky-700 transition-colors duration-200 flex items-center gap-2 pl-2">
+                        <i class="fas fa-cog text-md mr-1"></i>
+                        <span class="text-md">Ayarlar</span>
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST" class="flex items-center gap-4 pl-2">
+                        @csrf
+                        <button type="submit"
+                            class="text-gray-600 hover:text-sky-700 transition-colors duration-200 flex items-center gap-2">
+                            <i class="fas fa-sign-out-alt text-md mb-1 mr-1"></i>
+                            <span class="text-md mb-1">Çıkış Yap</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            const currentUrl = window.location.href;
+            sidebarItems.forEach(item => {
+                if (item.href === currentUrl) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

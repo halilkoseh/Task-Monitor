@@ -48,10 +48,24 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks');
     Route::get('/user', [UserController::class, 'showUserTasks'])->name('user');
+
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
+
+
+
+
     Route::post('/profile/update-password', [UserController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::post('/tasks/{id}/update-status', [TaskController::class, 'updateStatus'])->name('tasks.update-status');
-    Route::get('/userProfile', [UserController::class, 'showProfile'])->name('userProfile');
+
+
+
+
+
+    Route::get('/userProfile', [UserController::class, 'showProfile1'])->name('userProfile');
+
+
+
+
     Route::post('/user/start-work-session', [UserController::class, 'startWorkSession'])->name('user.startWorkSession');
     Route::post('/user/start-break', [UserController::class, 'startBreak'])->name('user.startBreak');
     Route::post('/user/end-break', [UserController::class, 'endBreak'])->name('user.endBreak');

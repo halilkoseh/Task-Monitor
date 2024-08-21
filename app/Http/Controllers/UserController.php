@@ -64,6 +64,13 @@ class UserController extends Controller
         return view('profile', compact('user'));
     }
 
+
+    public function showProfile1()
+    {
+        $user = Auth::user();
+        return view('userProfile', compact('user'));
+    }
+
     public function updatePassword(Request $request)
     {
         $request->validate([
@@ -112,12 +119,16 @@ class UserController extends Controller
         return response()->json(['success' => true, 'message' => 'Görev durumu güncellendi.']);
     }
 
-
     public function startWorkSession()
     {
         $user = Auth::user();
 
-        $activeSession = $user->workSessions()->where('status', 'working')->orWhere('status', 'on_break')->first();
+        $activeSession = $user->workSessions()
+            ->where(function ($query) {
+                $query->where('status', 'working')
+                    ->orWhere('status', 'on_break');
+            })
+            ->first();
 
         if ($activeSession) {
             return response()->json(['message' => 'You already have an active work session.'], 400);
@@ -133,16 +144,24 @@ class UserController extends Controller
 
 
 
+
     public function startBreak()
     {
         $user = Auth::user();
-        $workSession = $user->workSessions()->where('status', 'working')->latest()->first();
+
+        // Aktif bir çalışma oturumunu en son başlayan oturumlardan alıyoruz.
+        $workSession = $user->workSessions()
+            ->where('status', 'working')
+            ->latest('start_time')
+            ->first();
 
         if ($workSession) {
+            // Yeni bir mola oturumu başlatıyoruz.
             $workSession->breaks()->create([
                 'start_time' => now(),
             ]);
 
+            // Çalışma oturumunun durumunu 'on_break' olarak güncelliyoruz.
             $workSession->status = 'on_break';
             $workSession->save();
 
@@ -153,15 +172,27 @@ class UserController extends Controller
     }
 
 
+
     public function endBreak()
     {
         $user = Auth::user();
-        $workSession = $user->workSessions()->where('status', 'on_break')->latest()->first();
-        $currentBreak = $workSession ? $workSession->breaks()->whereNull('end_time')->latest()->first() : null;
+
+        // En son mola durumundaki çalışma oturumunu buluyoruz.
+        $workSession = $user->workSessions()
+            ->where('status', 'on_break')
+            ->latest('start_time')
+            ->first();
+
+        // Mola oturumlarının arasında bitmemiş olan en sonuncusunu buluyoruz.
+        $currentBreak = $workSession
+            ? $workSession->breaks()->whereNull('end_time')->latest('start_time')->first()
+            : null;
 
         if ($workSession && $currentBreak) {
+            // Molanın bitiş zamanını güncelliyoruz.
             $currentBreak->update(['end_time' => now()]);
 
+            // Çalışma oturumunun durumunu tekrar 'working' olarak ayarlıyoruz.
             $workSession->status = 'working';
             $workSession->save();
 
@@ -174,13 +205,21 @@ class UserController extends Controller
     public function endWorkSession()
     {
         $user = Auth::user();
-        $workSession = $user->workSessions()->whereIn('status', ['working', 'on_break'])->latest()->first();
+
+        $workSession = $user->workSessions()
+            ->whereIn('status', ['working', 'on_break'])
+            ->latest('start_time')
+            ->first();
 
         if ($workSession) {
             if ($workSession->status === 'on_break') {
-                $this->endBreak();
+                $currentBreak = $workSession->breaks()->whereNull('end_time')->latest('start_time')->first();
+                if ($currentBreak) {
+                    $currentBreak->update(['end_time' => now()]);
+                }
             }
 
+            // Sadece end_time'i güncelliyoruz.
             $workSession->update([
                 'end_time' => now(),
                 'status' => 'ended',
@@ -191,6 +230,8 @@ class UserController extends Controller
 
         return response()->json(['message' => 'No active work session found.'], 400);
     }
+
+
 
 
     public function showWorkSessions()

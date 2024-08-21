@@ -10,20 +10,25 @@
             box-sizing: border-box;
         }
 
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+
         .dropdown-content {
             display: none;
             position: absolute;
             right: 0;
             top: 100%;
             z-index: 1000;
-            /* Yüksek z-index değeri dropdown'ın üstte görünmesini sağlar */
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 0.25rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             white-space: nowrap;
             overflow: visible;
-            /* Dropdown menüsünün tam görünmesini sağlar */
         }
 
         .dropdown-content.show {
@@ -149,15 +154,15 @@
         }
     </style>
 
-    <div class="main-content w-5/6 mx-auto p-4 ml-16">
+    <div class="main-content w-5/6 mx-auto p-4 ml-16 lg:w-full lg:ml-0">
         <div class="flex justify-between items-center mb-5">
             <h2 class="text-3xl text-gray-600">
                 <i class="fas fa-users text-sky-500"></i> Tüm Kullanıcılar
             </h2>
         </div>
 
-        <div class="flex justify-between items-center mb-5">
-            <form action="{{ route('admin.users.search1') }}" method="GET" class="flex items-center">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-5">
+            <form action="{{ route('admin.users.search1') }}" method="GET" class="flex items-center mb-3 sm:mb-0">
                 <input type="text" name="search" value="{{ request()->query('search') }}"
                     class="border rounded-lg px-4 py-2 w-80" placeholder="Kullanıcı adı ile ara...">
                 <button type="submit"
@@ -166,7 +171,7 @@
                 </button>
             </form>
 
-            <div class="flex items-center ml-4">
+            <div class="flex items-center sm:ml-4">
                 <p class="text-gray-600 underline">{{ $users->count() }} kullanıcı listeleniyor..</p>
                 <a href="{{ route('admin.users.create') }}"
                     class="ml-4 bg-sky-500 text-white px-4 py-1 rounded-full hover:bg-blue-500 transform hover:scale-100 transition duration-200">
@@ -180,7 +185,7 @@
                     class="text-blue-500 underline"> Listeye geri dön </a></p>
         @endif
         <div class="overflow-x-auto">
-            <table class="table-container">
+            <table class="table-container w-full">
                 <thead>
                     <tr>
                         <th>Profil Resmi</th>
@@ -253,27 +258,20 @@
             </table>
         </div>
     </div>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.dropdown-toggle').forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    const dropdownContent = this.nextElementSibling;
-                    document.querySelectorAll('.dropdown-content').forEach(content => {
-                        if (content !== dropdownContent) {
-                            content.classList.remove('show');
-                        }
-                    });
-                    dropdownContent.classList.toggle('show');
-                });
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const dropdownContent = this.nextElementSibling;
+                dropdownContent.classList.toggle('show');
             });
+        });
 
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.dropdown')) {
-                    document.querySelectorAll('.dropdown-content').forEach(dropdownContent => {
-                        dropdownContent.classList.remove('show');
-                    });
+        document.addEventListener('click', function(e) {
+            dropdownToggles.forEach(toggle => {
+                const dropdownContent = toggle.nextElementSibling;
+                if (!toggle.contains(e.target) && !dropdownContent.contains(e.target)) {
+                    dropdownContent.classList.remove('show');
                 }
             });
         });

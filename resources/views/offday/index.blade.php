@@ -1,6 +1,19 @@
 @extends('userLayout.app')
 
 @section('content')
+    <style>
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-container {
+            min-height: 100vh;
+            margin-left: 16rem;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+    </style>
     <div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold mb-6">İzin Talepleri</h1>
         <a href="{{ route('offday.create') }}"
