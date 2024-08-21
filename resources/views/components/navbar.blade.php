@@ -28,8 +28,8 @@
         }
 
         .logo-box {
-            background-color: #0ea5e9;
             padding: 10px;
+            
             display: inline-block;
             transition: transform 0.3s ease;
         }
@@ -82,9 +82,10 @@
         class="sidebar fixed w-64 bg-white h-screen p-5 text-gray-600 rounded-xl md:w-1/4 lg:w-1/5 xl:w-1/6 ">
 
         <div class="flex items-center mb-20">
+            
             <a href="{{ url('admin') }}" class="flex items-center">
                 <div class="logo-box rounded-full">
-                    <img src="{{ asset('images/logo1.png') }}" alt="logo" class="w-14" />
+                    <img src="{{ asset('images/favLogo.png') }}" alt="logo" class="w-14" />
                 </div>
             </a>
             <a href="{{ url('admin') }}" class="ml-2">
