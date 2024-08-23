@@ -4,20 +4,34 @@
     <div class="container px-12 py-12">
         <div class="flex flex-wrap justify-center gap-10">
             <!-- Task Status Chart -->
+
+
+
+
             <div class="w-full md:w-1/3 lg:w-1/4 bg-white shadow-lg rounded-lg p-2">
-                <h2 class="text-xl font-semibold mb-4 text-center">Görev Durumu</h2>
-                <canvas id="taskStatusChart" height="200"></canvas>
+                <a href="{{ route('mission.index') }}">
+
+                    <h2 class="text-xl font-semibold mb-4 text-center cursor-pointer">
+                        Görev Durumu
+                    </h2>
+                    <canvas id="taskStatusChart" height="200"> </canvas>
             </div>
+            </a>
+
+
+
 
             <!-- Offday Chart -->
             <div class="w-full md:w-1/3 lg:w-1/4 bg-white shadow-lg rounded-lg p-4">
-                <h2 class="text-xl font-semibold mb-4 text-center">Aylık İzinler</h2>
-                <div class="relative">
-                    <canvas id="offdayChart" width="75" height="75" style="width: 75px; height: 75px;"></canvas>
-                    <div class="absolute top-0 right-0 m-2 text-lg font-semibold text-gray-700">7. ay</div>
-                </div>
+                <a href="{{ route('admin.offdays.index') }}">
+
+                    <h2 class="text-xl font-semibold mb-4 text-center">Aylık İzinler</h2>
+                    <div class="relative">
+                        <canvas id="offdayChart" width="75" height="75" style="width: 75px; height: 75px;"></canvas>
+                    </div>
             </div>
         </div>
+        </a>
         <!-- Assigned Tasks -->
 
     </div>
@@ -84,7 +98,7 @@
                                 datalabels: {
                                     display: function(context) {
                                         return context.dataset.data[context.dataIndex] !==
-                                        0;
+                                            0;
                                     },
                                     formatter: (value, ctx) => {
                                         let sum = ctx.dataset.data.reduce((a, b) => a + b,

@@ -28,7 +28,6 @@
         }
 
         .logo-box {
-            background-color: #0ea5e9;
             padding: 10px;
             display: inline-block;
             transition: transform 0.3s ease;
@@ -84,7 +83,7 @@
         <div class="flex items-center mb-20">
             <a href="{{ url('admin') }}" class="flex items-center">
                 <div class="logo-box rounded-full">
-                    <img src="{{ asset('images/logo1.png') }}" alt="logo" class="w-14" />
+                    <img src="{{ asset('images/favLogo.png') }}" alt="logo" class="w-14" />
                 </div>
             </a>
             <a href="{{ url('admin') }}" class="ml-2">
@@ -211,6 +210,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -225,15 +225,18 @@
             box-sizing: border-box;
 
         }
+
         .container {
             margin-left: 10%;
             padding: 20px;
         }
+
         .header {
             display: flex;
             justify-content: flex-start;
             margin-bottom: 20px;
         }
+
         .header button {
             background-color: #007bff;
             color: white;
@@ -247,16 +250,19 @@
             gap: 8px;
             transition: background-color 0.3s;
         }
+
         .header button:hover {
             background-color: #0056b3;
         }
+
         .board {
             display: flex;
-gap: 5px;
+            gap: 5px;
             overflow-x: auto;
             padding: 20px 0;
             flex-wrap: nowrap;
         }
+
         .column {
             background: white;
             border-radius: 8px;
@@ -269,11 +275,13 @@ gap: 5px;
             overflow: hidden;
             flex-shrink: 0;
         }
+
         .column h2 {
             font-size: 18px;
             margin: 0 0 20px;
             color: #333;
         }
+
         .task-card {
             background: #f0f0f0;
             border-radius: 8px;
@@ -283,22 +291,27 @@ gap: 5px;
             cursor: grab;
             transition: background-color 0.3s;
         }
+
         .task-card:hover {
             background-color: #e0e0e0;
         }
+
         .task-card .task-title {
             font-size: 16px;
             font-weight: bold;
             margin-bottom: 10px;
         }
+
         .task-card .task-info {
             font-size: 14px;
             color: #555;
             margin-bottom: 5px;
         }
+
         .task-card .task-info:last-child {
             margin-bottom: 0;
         }
+
         .dragging {
             opacity: 0.5;
         }
@@ -309,10 +322,12 @@ gap: 5px;
                 font-size: 14px;
                 padding: 8px 16px;
             }
+
             .board {
                 flex-direction: column;
                 overflow-x: visible;
             }
+
             .column {
                 width: 100%;
                 margin-bottom: 20px;
@@ -320,13 +335,32 @@ gap: 5px;
         }
     </style>
 </head>
+
 <body class="">
     <div class="container ml-32">
-        <div class="header ml-32">
-            <button onclick="window.location.href='{{ route('admin.users.assaign') }}'">
-                <i class="fa-solid fa-list-check"></i> Task Ata
+        <div class="header ml-32 py-4 flex gap-4">
+
+            <button onclick="window.location.href='{{ route('projects.index') }}'"
+                class="bg-green-500 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-green-600 transition-colors duration-300">
+                <i class="fa-solid fa-diagram-project"></i><span>Projeler</span>
             </button>
+
+
+            <button onclick="window.location.href='{{ route('admin.users.assaign') }}'"
+                class="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-600 transition-colors duration-300">
+                <i class="fa-solid fa-list-check"></i>
+                <span>Task Ata</span>
+            </button>
+
+            <button onclick="window.location.href='{{ route('mission.index') }}'"
+                class="bg-green-500 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-green-600 transition-colors duration-300">
+                <i class="fa-regular fa-paste"></i> <span>Tüm Tasklar</span>
+            </button>
+
+
+
         </div>
+
         <div class="board ml-32">
             <div class="column" data-status="Atandı" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
                 <h2 class="text-red-600">Atandı</h2>
@@ -341,7 +375,8 @@ gap: 5px;
                         <div class="task-info">Proje İsmi: {{ $project->name }}</div>
                         <div class="task-info">
                             Ek Materyaller: @if ($task->attachments)
-                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı Görüntüle</a>
+                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı
+                                    Görüntüle</a>
                             @else
                                 Yok
                             @endif
@@ -350,7 +385,8 @@ gap: 5px;
                 @endforeach
             </div>
             <!-- Repeat for other columns with different statuses -->
-            <div class="column" data-status="basladi" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+            <div class="column" data-status="basladi" ondragover="event.preventDefault()"
+                ondrop="handleDrop(event)">
                 <h2 class="text-yellow-600">Başladı</h2>
                 @foreach ($project->tasks()->where('status', 'basladi')->get() as $task)
                     <div class="task-card bg-yellow-100" draggable="true" data-task-id="{{ $task->id }}"
@@ -363,7 +399,8 @@ gap: 5px;
                         <div class="task-info">Proje İsmi: {{ $project->name }}</div>
                         <div class="task-info">
                             Ek Materyaller: @if ($task->attachments)
-                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı Görüntüle</a>
+                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı
+                                    Görüntüle</a>
                             @else
                                 Yok
                             @endif
@@ -371,7 +408,8 @@ gap: 5px;
                     </div>
                 @endforeach
             </div>
-            <div class="column" data-status="Devam Ediyor" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+            <div class="column" data-status="Devam Ediyor" ondragover="event.preventDefault()"
+                ondrop="handleDrop(event)">
                 <h2 class="text-blue-600">Devam Ediyor</h2>
                 @foreach ($project->tasks()->where('status', 'Devam Ediyor')->get() as $task)
                     <div class="task-card bg-blue-100" draggable="true" data-task-id="{{ $task->id }}"
@@ -384,7 +422,8 @@ gap: 5px;
                         <div class="task-info">Proje İsmi: {{ $project->name }}</div>
                         <div class="task-info">
                             Ek Materyaller: @if ($task->attachments)
-                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı Görüntüle</a>
+                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı
+                                    Görüntüle</a>
                             @else
                                 Yok
                             @endif
@@ -392,7 +431,8 @@ gap: 5px;
                     </div>
                 @endforeach
             </div>
-            <div class="column" data-status="Test Ediliyor" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+            <div class="column" data-status="Test Ediliyor" ondragover="event.preventDefault()"
+                ondrop="handleDrop(event)">
                 <h2 class="text-orange-600">Test Ediliyor</h2>
                 @foreach ($project->tasks()->where('status', 'test ediliyor')->get() as $task)
                     <div class="task-card bg-orange-100" draggable="true" data-task-id="{{ $task->id }}"
@@ -405,7 +445,8 @@ gap: 5px;
                         <div class="task-info">Proje İsmi: {{ $project->name }}</div>
                         <div class="task-info">
                             Ek Materyaller: @if ($task->attachments)
-                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı Görüntüle</a>
+                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı
+                                    Görüntüle</a>
                             @else
                                 Yok
                             @endif
@@ -413,7 +454,8 @@ gap: 5px;
                     </div>
                 @endforeach
             </div>
-            <div class="column" data-status="Tamamlandı" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+            <div class="column" data-status="Tamamlandı" ondragover="event.preventDefault()"
+                ondrop="handleDrop(event)">
                 <h2 class="text-green-600">Tamamlandı</h2>
                 @foreach ($project->tasks()->where('status', 'Tamamlandı')->get() as $task)
                     <div class="task-card bg-green-100" draggable="true" data-task-id="{{ $task->id }}"
@@ -426,7 +468,8 @@ gap: 5px;
                         <div class="task-info">Proje İsmi: {{ $project->name }}</div>
                         <div class="task-info">
                             Ek Materyaller: @if ($task->attachments)
-                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı Görüntüle</a>
+                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı
+                                    Görüntüle</a>
                             @else
                                 Yok
                             @endif
@@ -483,5 +526,5 @@ gap: 5px;
         }
     </script>
 </body>
-</html>
 
+</html>

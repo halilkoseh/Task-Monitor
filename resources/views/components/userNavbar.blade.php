@@ -29,7 +29,6 @@
         }
 
         .logo-box {
-            background-color: #0ea5e9;
             padding: 10px;
             display: inline-block;
             transition: transform 0.3s ease;
@@ -65,7 +64,7 @@
             <div class="flex items-center mb-20">
                 <a href="{{ url('user') }}" class="flex items-center">
                     <div class="logo-box rounded-full">
-                        <img src="{{ asset('images/logo1.png') }}" alt="logo" class="w-14" />
+                        <img src="{{ asset('images/favLogo.png') }}" alt="logo" class="w-14" />
                     </div>
                 </a>
                 <a href="{{ url('user') }}" class="ml-2">

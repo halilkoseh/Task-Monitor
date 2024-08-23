@@ -16,10 +16,11 @@
 
 @section('content')
     <div class="content-container flex items-center justify-center min-h-screen p-5 box-border ">
-        
+
         <div class="max-w-lg w-screen bg-white rounded-lg shadow-md p-8 mt-12  mr-32">
             <div class="mt-6 mb-6">
-                <a href="{{ route('projects.index') }}" class="text-sky-500 hover:text-blue-800 transition-colors duration-200">
+                <a href="{{ route('projects.index') }}"
+                    class="text-sky-500 hover:text-blue-800 transition-colors duration-200">
                     <i class="fa-solid fa-chevron-left"></i> Geri Dön
                 </a>
             </div>
@@ -50,10 +51,13 @@
                     <select name="users[]" id="users" multiple
                         class="mt-2 block w-full border border-gray-200 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-3">
                         @foreach ($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            <option value="{{ $user->id }}" {{ $user->id == 1 ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
+
 
 
 
