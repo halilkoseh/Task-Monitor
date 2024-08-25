@@ -67,10 +67,33 @@
 
                         <div class="col-span-1">
                             <label for="password" class="block text-sm font-medium text-gray-700">Şifre</label>
-                            <input type="text" name="password" id="password" placeholder="Şifre"
+                            <input type="password" name="password" id="password" placeholder="Şifre"
                                 class="form-input mt-1 block w-full h-12 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                                 required />
+                            <span id="password-error" class="text-red-500 text-sm hidden">Bu alan boş bırakılamaz.</span>
                         </div>
+
+                        <script>
+                            const passwordInput = document.getElementById('password');
+                            const passwordError = document.getElementById('password-error');
+
+                            passwordInput.addEventListener('input', () => {
+                                if (passwordInput.value.trim() === '') {
+                                    passwordError.classList.remove('hidden');
+                                } else {
+                                    passwordError.classList.add('hidden');
+                                }
+                            });
+
+                            document.querySelector('form').addEventListener('submit', (event) => {
+                                if (passwordInput.value.trim() === '') {
+                                    event.preventDefault();
+                                    passwordError.classList.remove('hidden');
+                                    passwordInput.focus();
+                                }
+                            });
+                        </script>
+
 
                         <div class="col-span-1">
                             <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
