@@ -137,24 +137,26 @@
                                 required />
                         </div>
 
-                        <div class="col-span-1 flex flex-col sm:flex-row justify-end items-center mt-8 gap-4">
-                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" id="deleteForm"
-                                onsubmit="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?');">
-                                @csrf
-                                @method('DELETE')
-                                @if ($user->name !== 'admin')
-                                    <button type="submit" form="deleteForm"
-                                        class="px-4 py-2 text-red-400 hover:text-black rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 border-2 border-red-400">
-                                        Sil
-                                    </button>
-                                @endif
-                            </form>
-                            <button type="submit" form="updateForm"
-                                class="px-4 py-2 text-white bg-blue-400 hover:text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border-2 border-blue-400">
-                                Güncelle
-                            </button>
-                        </div>
+
                     </form>
+
+                    <div class="col-span-1 flex flex-col sm:flex-row justify-end items-center mt-8 gap-4">
+                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" id="deleteForm"
+                            onsubmit="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?');">
+                            @csrf
+                            @method('DELETE')
+                            @if ($user->name !== 'admin')
+                                <button type="submit" form="deleteForm"
+                                    class="px-4 py-2 text-red-400 hover:text-black rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 border-2 border-red-400">
+                                    Sil
+                                </button>
+                            @endif
+                        </form>
+                        <button type="submit" form="updateForm"
+                            class="px-4 py-2 text-white bg-blue-400 hover:text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border-2 border-blue-400">
+                            Güncelle
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

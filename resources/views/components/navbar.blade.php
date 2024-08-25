@@ -140,7 +140,7 @@
             </li>
         </ul>
 
-        <div class="mt-40">
+        <div class="">
             <div class="flex flex-col justify-center mt-auto gap-4 border-t border-gray-300 pt-4">
                 <a href="{{ route('profile') }}"
                     class="flex items-center gap-3 pl-4 py-2 rounded-md hover:bg-sky-100 transition-colors duration-300 group">

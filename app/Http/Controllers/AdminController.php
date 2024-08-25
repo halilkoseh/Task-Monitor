@@ -144,8 +144,6 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
 
-
-
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->gorev = $request->gorev;

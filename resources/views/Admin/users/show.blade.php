@@ -17,19 +17,7 @@
             }
         }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            z-index: 1000;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.25rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            white-space: nowrap;
-            overflow: visible;
-        }
+       
 
         .dropdown-content.show {
             display: block;
@@ -116,10 +104,9 @@
 
         .dropdown-content {
             display: none;
-            position: absolute;
+            position: relative;
             right: 0;
             top: 100%;
-            z-index: 1000;
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 0.25rem;
@@ -135,7 +122,7 @@
         .dropdown-content a,
         .dropdown-content form {
             display: block;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem ;
             text-decoration: none;
             color: #212529;
         }
