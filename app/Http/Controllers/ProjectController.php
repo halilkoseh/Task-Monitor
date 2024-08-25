@@ -94,5 +94,19 @@ class ProjectController extends Controller
 
         return redirect()->route('projects.index')->with('success', 'Proje başarıyla silindi.');
     }
+
+
+    public function indexuser()
+    {
+        $userId = Auth::id();
+        $projects = Project::getUserProjects($userId);
+        
+        return view('user.tasks', compact('projects'));
+    }
+
+
+    
+
+
 }
 

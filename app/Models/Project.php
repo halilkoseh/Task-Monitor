@@ -18,4 +18,14 @@ class Project extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class, 'project_id', 'id');     }
+
+
+        public static function getUserProjects($userId)
+    {
+        return self::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
+    }
+
+
 }

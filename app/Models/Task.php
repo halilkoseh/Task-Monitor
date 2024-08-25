@@ -57,6 +57,15 @@ class Task extends Model
 
 
 
+    public static function getUserTasks($userId)
+    {
+        return self::where('user_id', $userId)->get();
+    }
+
+
+
+
+
 
 }
 

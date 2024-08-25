@@ -9,6 +9,7 @@ use App\Mail\TaskStatusUpdated;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Models\Offday;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -184,6 +185,15 @@ class TaskController extends Controller
 
 
 
+
+
+    public function userindex()
+    {
+        $userId = Auth::id();
+        $userTasks = Task::getUserTasks($userId);
+        
+        return view('user.tasks', compact('userTasks'));
+    }
 
 
 

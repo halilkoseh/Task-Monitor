@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giriş Yap</title>
+    <title>Task Monitor</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
@@ -46,7 +46,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
             </svg>
         </div>
-        <h1 class="text-3xl font-semibold text-center mb-8">Giriş Yap</h1>
+        <h1 class="text-3xl font-semibold text-center mb-8">Task Monitor</h1>
+        
         <form id="loginForm" method="POST" action="{{ route('login') }}">
             @csrf
             <div class="mb-4 input-container">

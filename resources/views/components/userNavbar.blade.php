@@ -120,19 +120,18 @@
 
 
             <div class="mt-40">
-                <div class="flex flex-col justify-center mt-auto gap-1 border-t border-gray-500 pt-1">
-                    <a href="{{ route('userProfile') }}"
-                        class="text-gray-600 hover:text-sky-700 transition-colors duration-200 flex items-center gap-2 pl-2">
-                        <i class="fas fa-cog text-md mr-1"></i>
-                        <span class="text-md">Ayarlar</span>
+                <div class="flex flex-col justify-center mt-auto gap-4 border-t border-gray-300 pt-4">
+                    <a href="{{ route('profile') }}"
+                        class="flex items-center gap-3 pl-4 py-2 rounded-md hover:bg-sky-100 transition-colors duration-300 group">
+                        <i class="fas fa-cog text-lg text-gray-500 group-hover:text-sky-700"></i>
+                        <span class=" font-medium text-gray-700 group-hover:text-sky-700">Ayarlar</span>
                     </a>
-
-                    <form action="{{ route('logout') }}" method="POST" class="flex items-center gap-4 pl-2">
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit"
-                            class="text-gray-600 hover:text-sky-700 transition-colors duration-200 flex items-center gap-2">
-                            <i class="fas fa-sign-out-alt text-md mb-1 mr-1"></i>
-                            <span class="text-md mb-1">Çıkış Yap</span>
+                            class="flex items-center gap-3 pl-4 py-2 w-full rounded-md hover:bg-red-100 transition-colors duration-300 group">
+                            <i class="fas fa-sign-out-alt text-lg text-gray-500 group-hover:text-red-700"></i>
+                            <span class=" font-medium text-gray-700 group-hover:text-red-700">Çıkış Yap</span>
                         </button>
                     </form>
                 </div>

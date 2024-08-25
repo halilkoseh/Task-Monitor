@@ -212,130 +212,118 @@
 
     <div class="content-container mx-auto w-screen">
 
-        <div class="flex justify-between items-center mb-8 p-2">
-            <div class="search-container relative ml-8">
+        <div class="flex flex-wrap justify-between items-center mb-8 p-2">
+            <div class="search-container relative ml-8 w-full sm:w-auto sm:flex-grow">
                 <input type="text" id="user-search" placeholder="Ara..."
-                    class="search-input py-2 px-4 border border-sky-500 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
-                <i class="fas fa-search search-icon"></i>
+                    class="search-input py-2 px-4 w-full border border-sky-500 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
+                <i class="fas fa-search search-icon absolute right-3 top-1/2 transform -translate-y-1/2"></i>
                 <div id="suggestions"
-                    class="suggestions relative bg-white border border-gray-300 rounded-lg mt-1 w-full hidden">
-                </div>
+                    class="suggestions absolute bg-white border border-gray-300 rounded-lg mt-1 w-full hidden"></div>
             </div>
-
-            <script>
-                document.querySelector(".search-input").addEventListener("input", function(e) {
-                    const query = e.target.value;
-
-                    if (query.length > 2) {
-                        fetch(`/admin/users/search?query=${query}`)
-                            .then((response) => response.json())
-                            .then((data) => {
-                                const suggestions = document.getElementById("suggestions");
-                                suggestions.innerHTML = "";
-                                if (data.length > 0) {
-                                    data.forEach((item) => {
-                                        const suggestionItem = document.createElement("div");
-                                        suggestionItem.classList.add("suggestion-item", "p-2", "cursor-pointer",
-                                            "hover:bg-gray-200");
-                                        suggestionItem.textContent = `${item.name} (${item.type})`;
-                                        suggestionItem.dataset.id = item.id;
-                                        suggestionItem.dataset.type = item.type;
-                                        suggestions.appendChild(suggestionItem);
-                                    });
-                                    suggestions.classList.remove("hidden");
-                                } else {
-                                    suggestions.classList.add("hidden");
-                                }
-                            })
-                            .catch((error) => {
-                                console.error("Error:", error);
-                            });
-                    } else {
-                        document.getElementById("suggestions").classList.add("hidden");
-                    }
-                });
-
-                document.getElementById("suggestions").addEventListener("click", function(e) {
-                    if (e.target.classList.contains("suggestion-item")) {
-                        const id = e.target.dataset.id;
-                        const type = e.target.dataset.type;
-
-                        if (type === "user") {
-                            window.location.href = `/admin/users/show/`;
-                        } else if (type === "task") {
-                            window.location.href = `/mission/index`;
-                        } else if (type === "project") {
-                            window.location.href = `/projects/`;
-                        }
-                    }
-                });
-            </script>
-
-            <div class="flex items-center space-x-8">
+        
+            <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 space-x-0 sm:space-x-8 w-full sm:w-auto mt-4 sm:mt-0">
                 <span id="current-date" class="mr-4"></span>
-
-                <script>
-                    function updateDateTime() {
-                        const now = new Date();
-                        const options = {
-                            weekday: "long",
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            second: "2-digit",
-                            hour12: false,
-                            timeZone: "Europe/Istanbul",
-                        };
-                        const formattedDate = now.toLocaleDateString("tr-TR", options);
-                        document.getElementById("current-date").textContent = formattedDate;
-                    }
-
-                    // Update the time every second
-                    setInterval(updateDateTime, 1000);
-
-                    // Initial call to display time immediately
-                    updateDateTime();
-                </script>
-
                 <div class="user-info-container relative">
                     <a href="{{ route('profile') }}">
-                        <div class="user-info">
+                        <div class="user-info flex items-center space-x-2">
                             @if (Auth::check())
-                                <img src="{{ asset('images/' . Auth::user()->profilePic) }}"
-                                    alt="{{ Auth::user()->name }}" />
+                            <img class="w-10 h-10 rounded-full object-cover" src="{{ asset('images/' . Auth::user()->profilePic) }}"
+                                alt="{{ Auth::user()->name }}" />
                             @endif
+                            <div id="greeting" class="text-gray-800"></div>
                         </div>
                     </a>
-
-                    <a href="{{ route('profile') }}">
-                        <div id="greeting" class="mr-2 text-gray-800"></div>
-                    </a>
-
-                    <script>
-                        function updateGreeting() {
-                            const now = new Date();
-                            const hours = now.getHours();
-                            let greeting;
-
-                            if (hours < 12) {
-                                greeting = "Günaydın";
-                            } else if (hours < 18) {
-                                greeting = "Tünaydın";
-                            } else {
-                                greeting = "İyi çalışmalar";
-                            }
-
-                            const userName = "{{ Auth::user()->name }}";
-                            document.getElementById("greeting").textContent = `${greeting}, ${userName}`;
-                        }
-
-                        updateGreeting();
-                    </script>
                 </div>
             </div>
         </div>
+        
+        <script>
+            document.querySelector(".search-input").addEventListener("input", function (e) {
+                const query = e.target.value;
+        
+                if (query.length > 2) {
+                    fetch(`/admin/users/search?query=${query}`)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            const suggestions = document.getElementById("suggestions");
+                            suggestions.innerHTML = "";
+                            if (data.length > 0) {
+                                data.forEach((item) => {
+                                    const suggestionItem = document.createElement("div");
+                                    suggestionItem.classList.add("suggestion-item", "p-2", "cursor-pointer", "hover:bg-gray-200");
+                                    suggestionItem.textContent = `${item.name} (${item.type})`;
+                                    suggestionItem.dataset.id = item.id;
+                                    suggestionItem.dataset.type = item.type;
+                                    suggestions.appendChild(suggestionItem);
+                                });
+                                suggestions.classList.remove("hidden");
+                            } else {
+                                suggestions.classList.add("hidden");
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error:", error);
+                        });
+                } else {
+                    document.getElementById("suggestions").classList.add("hidden");
+                }
+            });
+        
+            document.getElementById("suggestions").addEventListener("click", function (e) {
+                if (e.target.classList.contains("suggestion-item")) {
+                    const id = e.target.dataset.id;
+                    const type = e.target.dataset.type;
+        
+                    if (type === "user") {
+                        window.location.href = `/admin/users/show/`;
+                    } else if (type === "task") {
+                        window.location.href = `/mission/index`;
+                    } else if (type === "project") {
+                        window.location.href = `/projects/`;
+                    }
+                }
+            });
+        
+            function updateDateTime() {
+                const now = new Date();
+                const options = {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: false,
+                    timeZone: "Europe/Istanbul",
+                };
+                const formattedDate = now.toLocaleDateString("tr-TR", options);
+                document.getElementById("current-date").textContent = formattedDate;
+            }
+        
+            setInterval(updateDateTime, 1000);
+            updateDateTime();
+        
+            function updateGreeting() {
+                const now = new Date();
+                const hours = now.getHours();
+                let greeting;
+        
+                if (hours < 12) {
+                    greeting = "Günaydın";
+                } else if (hours < 18) {
+                    greeting = "Tünaydın";
+                } else {
+                    greeting = "İyi çalışmalar";
+                }
+        
+                const userName = "{{ Auth::user()->name }}";
+                document.getElementById("greeting").textContent = `${greeting}, ${userName}`;
+            }
+        
+            updateGreeting();
+        </script>
+        
 
         <div class="bg-blue-50 mt-8">
             <div class="max-w-4xl mt-8 mx-auto p-6">
