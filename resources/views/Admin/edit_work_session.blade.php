@@ -6,7 +6,7 @@
         <div class="mt-6 mb-6"> <a href="{{ route('admin.workSessions') }}"
                 class="text-sky-500 hover:text-blue-800 transition-colors duration-200"> <i
                     class="fa-solid fa-chevron-left"></i> Geri Dön </a>
-                 </div>
+        </div>
 
 
         <h2 class="text-2xl font-bold mb-6 text-center">Çalışma Oturumunu Güncelle</h2>

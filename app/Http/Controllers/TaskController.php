@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\UserProject;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\User;
@@ -183,17 +184,51 @@ class TaskController extends Controller
 
 
 
-
-
-
-
-    public function userindex()
+    public function index2()
     {
-        $userId = Auth::id();
-        $userTasks = Task::getUserTasks($userId);
-        
-        return view('user.tasks', compact('userTasks'));
+        $user = auth()->user(); // Get the authenticated user
+        $tasks = $user->tasks; // Get tasks associated with the authenticated user
+        $taskCount = $tasks->count(); // Count the tasks
+
+        return view('mission.indexUser', compact('user', 'tasks', 'taskCount'));
     }
+
+
+
+
+    public function filter1(Request $request)
+    {
+        // Initializing the query and including related user and project
+        $query = Task::with(['user', 'assignedProject']);
+    
+        // Fetching the authenticated user
+        $user = auth()->user();
+    
+        // Fetching only the projects the authenticated user is involved in
+        $projects = Project::whereIn('id', UserProject::where('user_id', $user->id)->pluck('project_id'))->get();
+    
+        // Applying filters
+        if ($request->filled('owner_id')) {
+            $query->where('user_id', $request->owner_id);
+        } else {
+            $query->where('user_id', $user->id); // Default filter: current user's tasks
+        }
+    
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+    
+        if ($request->filled('project_id')) {
+            $query->where('project_id', $request->project_id);
+        }
+    
+        // Fetching the filtered tasks and counting them
+        $tasks = $query->get();
+        $taskCount = $tasks->count();
+    
+        return view('mission.indexUser', compact('tasks', 'user', 'projects', 'taskCount'));
+    }
+    
 
 
 

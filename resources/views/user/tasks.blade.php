@@ -1,8 +1,5 @@
 @extends('userLayout.app') @section('content')
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-
-
 
     <style>
         html,
@@ -214,13 +211,11 @@
         }
     </style>
 
-
-
-
     <!-- Main Content -->
     <div class="content-container mx-auto">
         <!-- Header -->
         <div class="flex flex-wrap justify-between items-center mb-8 p-2">
+
 
 
 
@@ -231,7 +226,6 @@
                 <div id="suggestions"
                     class="suggestions absolute bg-white border border-gray-300 rounded-lg mt-1 w-full hidden"></div>
             </div>
-
 
 
 
@@ -252,8 +246,6 @@
                     </a>
                 </div>
             </div>
-
-
         </div>
 
         <script>
@@ -295,9 +287,9 @@
                     const type = e.target.dataset.type;
 
                     if (type === "task") {
-                        window.location.href = `/mission/index`;
+                        window.location.href = `/mission/user`;
                     } else if (type === "project") {
-                        window.location.href = `/projects/`;
+                        window.location.href = `/user/projects`;
                     }
                 }
             });
@@ -342,79 +334,39 @@
             updateGreeting();
         </script>
 
-
-
-
         <div class="container mx-auto p-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
 
 
 
-                {{-- 
 
-            <div class="bg-white p-6 md:p-10 rounded-lg shadow-lg relative">
-                <a href="{{ route('admin.users.show') }}"
-                    class="see-all-link absolute top-3 right-3 text-sky-500 hover:text-blue-600">Tümünü Gör
-                    <i class="fa-solid fa-angle-right"></i>
-                </a>
-                <h2 class="text-xl text-gray-600 font-semibold mb-2">Kullanıcılar</h2>
-                <div class="flex flex-wrap -space-x-5 overflow-hidden py-6 ml-2">
-                    @foreach ($users->take(4) as $user)
-    
-                    <img src="{{ asset('images/' . $user->profilePic) }}" alt="{{ $user->name }}"
-                        class="inline-block h-16 w-16 sm:h-24 sm:w-24 md:h-32 md:w-32 rounded-full ring-2 ring-gray-300 object-cover" />
-                    @endforeach @if ($users->count() > 4)
-    
-                    <div
-                        class="inline-block h-16 w-16 sm:h-24 sm:w-24 md:h-32 md:w-32 rounded-full ring-2 ring-gray-300 bg-[#F1F5F9] flex items-center justify-center text-xs font-medium text-gray-700">
-                        {{ $users->count() - 4 }}+
-                    </div>
-                    @endif
-    
-                </div>
-            </div>
+                @php
+                    use App\Models\UserProject;
+                    use App\Models\Project;
+                    use Illuminate\Support\Facades\Auth;
+                    use App\Models\Task;
+                    use App\Models\TaskAttachment;
 
-            --}}
+                    $userId = Auth::id();
+                    $projectIds = UserProject::where('user_id', $userId)->pluck('project_id');
+                    $projects = Project::whereIn('id', $projectIds)->get();
+                @endphp
 
-
-
-
-
-
-
-                @if ($projects && count($projects) > 0)
+                @if ($projects->isNotEmpty())
                     <div class="relative">
                         <div class="project-box bg-white rounded-md shadow-md p-4">
-                            <a href="{{ route('projects.index') }}"
-                                class="see-all-link text-blue-600 hover:text-blue-700">Tümünü Gör
+                            <a href="{{ route('user.projects.index') }}"
+                                class="see-all-link text-blue-600 hover:text-blue-700">
+                                Tümünü Gör
                                 <i class="fa-solid fa-angle-right"></i>
                             </a>
-                            <h2 class="text-xl text-gray-600 font-semibold mt-3 ml-4">Projeler</h2>
+                            <h2 class="text-xl text-gray-600 font-semibold mt-3 ml-4">Projelerim</h2>
+
                             @foreach ($projects->take(2) as $index => $project)
                                 @php
                                     $iconBackgroundColors = ['bg-sky-100', 'bg-green-100', 'bg-orange-100'];
                                     $iconColors = ['text-sky-500', 'text-green-500', 'text-orange-500'];
-                                    $iconData = [
-                                        ['icon' => 'fa-code'],
-                                        ['icon' => 'fa-project-diagram'],
-                                        ['icon' => 'fa-tasks'],
-                                        ['icon' => 'fa-rocket'],
-                                        ['icon' => 'fa-chart-network'],
-                                        ['icon' => 'fa-clipboard-list'],
-                                        ['icon' => 'fa-chart-pie'],
-                                        ['icon' => 'fa-code-branch'],
-                                        ['icon' => 'fa-database'],
-                                        ['icon' => 'fa-desktop'],
-                                        ['icon' => 'fa-file-code'],
-                                        ['icon' => 'fa-folder'],
-                                        ['icon' => 'fa-laptop-code'],
-                                        ['icon' => 'fa-microchip'],
-                                        ['icon' => 'fa-mobile-alt'],
-                                        ['icon' => 'fa-network-wired'],
-                                        ['icon' => 'fa-server'],
-                                        ['icon' => 'fa-shield-alt'],
-                                        ['icon' => 'fa-tablet-alt'],
-                                    ];
+                                    $iconData = [['icon' => 'fa-code']];
                                     $bgColor =
                                         $index == 1
                                             ? 'bg-light-green-100'
@@ -430,8 +382,9 @@
                                         class="icon-container w-10 h-10 sm:w-12 sm:h-12 rounded-full {{ $bgColor }} flex items-center justify-center transform transition-transform duration-200 hover:scale-110">
                                         <i class="fa-solid {{ $icon['icon'] }} text-sm sm:text-lg {{ $iconColor }}"></i>
                                     </div>
+
                                     <div class="text-container flex-1">
-                                        <a href="{{ route('projects.show', $project->id) }}"
+                                        <a href="{{ route('user.projects.index', $project->id) }}"
                                             class="text-md sm:text-lg text-gray-600 hover:underline font-semibold">{{ $project->name }}</a>
                                         <span
                                             class="badge mt-2 inline-block {{ $bgColor }} text-gray-600">{{ $project->type }}</span>
@@ -444,19 +397,80 @@
                     <p>Henüz proje yok.</p>
                 @endif
 
+
+
+
+                @php
+                    use App\Models\WorkSession;
+
+                    $userId = Auth::id();
+                    $workSessions = WorkSession::where('user_id', $userId)->orderBy('start_time', 'desc')->get();
+
+                @endphp
+
+
+
+
+                @if ($workSessions->isNotEmpty())
+                    <div class="relative">
+                        <div class="project-box bg-white rounded-md shadow-md p-4">
+                            <a href="{{ route('user.workSessions') }}"
+                                class="see-all-link text-blue-600 hover:text-blue-700">
+                                Tümünü Gör
+                                <i class="fa-solid fa-angle-right"></i>
+                            </a>
+                            <h2 class="text-xl text-gray-600 font-semibold mt-3 ml-4">Mesailerim</h2>
+
+                            @foreach ($workSessions->take(2) as $index => $workSession)
+                                <!-- Use $workSession here -->
+                                @php
+                                    $iconBackgroundColors = ['bg-sky-100', 'bg-orange-100'];
+                                    $iconColors = ['text-sky-500', 'text-orange-500'];
+                                    $iconData = [['icon' => 'fa-solid fa-business-time']];
+                                    $bgColor =
+                                        $index == 1
+                                            ? 'bg-light-green-100'
+                                            : $iconBackgroundColors[$index % count($iconBackgroundColors)];
+                                    $iconColor =
+                                        $index == 1 ? 'text-light-green-500' : $iconColors[$index % count($iconColors)];
+                                    $icon = $iconData[$index % count($iconData)];
+                                @endphp
+
+                                <div
+                                    class="project-card bg-white rounded-md shadow-sm mb-4 p-4 flex items-center space-x-4">
+                                    <div
+                                        class="icon-container w-10 h-10 sm:w-12 sm:h-12 rounded-full {{ $bgColor }} flex items-center justify-center transform transition-transform duration-200 hover:scale-110">
+                                        <i
+                                            class="fa-solid {{ $icon['icon'] }} text-sm sm:text-lg {{ $iconColor }}"></i>
+                                    </div>
+
+                                    <div class="text-container flex-1">
+                                        <a href="{{ route('user.workSessions', $workSession->id) }}"
+                                            class="text-md sm:text-lg text-gray-600 hover:underline font-semibold">
+                                            {{ $workSession->start_time }}
+                                        </a>
+                                        <span
+                                            class="badge mt-2 inline-block {{ $bgColor }} text-gray-600">{{ $workSession->getTranslatedStatusAttribute() }}</span>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @else
+                    <p>Henüz mesai yok.</p>
+                @endif
+
+
+
             </div>
-
-
 
             <div class="bg-transparent py-3 px-3">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl text-gray-600 font-semibold">Görevler</h2>
+                    <h2 class="text-xl text-gray-600 font-semibold">Görevlerim</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 task-board text-gray-600">
-                    @foreach (['Atandı', 'Başladı', 'Devam Ediyor', 'Test Ediliyor', 'Tamamlandı'] as $index => $status)
-                        @php
-                            $statusCount = $userTasks->where('status', $status)->count();
-                        @endphp
+                    @foreach (['Atandı', 'basladi', 'Devam Ediyor', 'Test Ediliyor', 'Tamamlandı'] as $index => $status)
+                        @php $statusCount = $userTasks->where('status', $status)->count(); @endphp
 
                         <div class="p-4 rounded-lg shadow-lg min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-white"
                             style="background-color: {{ ['#e0f2fe', '#dcedc8', '#ffedd5', '#e0f2fe', '#dcedc8'][$index % 5] }}"
@@ -513,12 +527,11 @@
                                                 <a href="{{ route('attachments.download', ['filename' => basename($task->attachments)]) }}"
                                                     class="text-gray-600 hover:text-blue-500"><i
                                                         class="fa-solid fa-paperclip"></i></a>
-                                            @endif
-                                            @if ($task->document)
-                                                <a href="{{ route('document.download', ['filename' => basename($task->document)]) }}"
-                                                    class="text-gray-600 hover:text-blue-500"><i
-                                                        class="fa-solid fa-file-pdf"></i></a>
-                                            @endif
+                                                @endif @if ($task->document)
+                                                    <a href="{{ route('document.download', ['filename' => basename($task->document)]) }}"
+                                                        class="text-gray-600 hover:text-blue-500"><i
+                                                            class="fa-solid fa-file-pdf"></i></a>
+                                                @endif
                                         </div>
                                     </div>
                                     <div class="task-actions absolute top-2 right-2">
@@ -532,9 +545,6 @@
             </div>
         </div>
 
-
-
-
         <!-- Modal -->
         <div id="attachmentModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
             <div class="flex items-center justify-center min-h-screen">
@@ -547,7 +557,8 @@
                                 <i class="fa-solid fa-paperclip text-blue-600"></i>
                             </div>
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Ek Materyaller</h3>
+                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Ek Materyaller
+                                </h3>
                                 <div class="mt-2">
                                     <ul id="attachmentList" class="list-disc pl-5">
                                         <!-- Attachments will be loaded here dynamically -->
@@ -566,7 +577,6 @@
             </div>
         </div>
     </div>
-
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -673,5 +683,4 @@
             });
         });
     </script>
-
 @endsection

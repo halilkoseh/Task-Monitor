@@ -1,4 +1,6 @@
-@extends('layout.app')
+@extends(auth()->user()->is_admin ? 'layout.app' : 'userLayout.app')
+
+
 
 @section('content')
     <div class="container mx-auto mt-48 flex flex-col md:flex-row md:space-x-8 p-4">
@@ -6,10 +8,31 @@
         <div
             class="shadow-lg rounded-lg p-8 mb-6 md:mb-0 hover:shadow-xl transition-shadow duration-300 flex-1 ml-0 md:ml-64 border-gray-300 border-2 bg-white">
             <div class="mb-6">
+
+                @if (auth()->user()->is_admin)
+
+
                 <a href="{{ route('mission.index') }}"
                     class="text-sky-500 hover:text-blue-800 transition-colors duration-200 flex items-center">
                     <i class="fa-solid fa-chevron-left mr-2"></i> Geri Dön
                 </a>
+
+
+
+                @else
+
+                <a href="{{ route('mission.indexUser') }}"
+                class="text-sky-500 hover:text-blue-800 transition-colors duration-200 flex items-center">
+                <i class="fa-solid fa-chevron-left mr-2"></i> Geri Dön
+            </a>
+
+                @endif
+
+
+
+
+
+
             </div>
             <div class="space-y-4">
                 <p class="text-gray-700"><strong>Görev Başlığı:</strong> {{ $task->title }}</p>
@@ -27,17 +50,20 @@
                     @endif
                 </p>
             </div>
-            <div class="mt-4 flex justify-between">
-                <a href="{{ route('tasks.edit', $task->id) }}"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">Düzenle</a>
-                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST"
-                    onsubmit="return confirm('Bu görevi silmek istediğinize emin misiniz?');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit"
-                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">Sil</button>
-                </form>
-            </div>
+
+            @if (auth()->user()->is_admin)
+                <div class="mt-4 flex justify-between">
+                    <a href="{{ route('tasks.edit', $task->id) }}"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">Düzenle</a>
+                    <form action="{{ route('tasks.destroy', $task->id) }}" method="POST"
+                        onsubmit="return confirm('Bu görevi silmek istediğinize emin misiniz?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">Sil</button>
+                    </form>
+                </div>
+            @endif
         </div>
 
         <!-- Calendar Card -->

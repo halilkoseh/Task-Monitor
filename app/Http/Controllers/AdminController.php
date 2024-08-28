@@ -190,16 +190,16 @@ class AdminController extends Controller
             'attachments' => 'nullable|file|mimes:zip',
             'project' => 'required',
         ]);
-    
+
         if ($request->hasFile('attachments')) {
             $file = $request->file('attachments');
             $fileName = time() . '.' . $file->getClientOriginalExtension();
             $destinationPath = public_path('attachments');
             $file->move($destinationPath, $fileName);
-    
+
             $attachmentPath = 'attachments/' . $fileName;
         }
-    
+
         foreach ($request->input('assignedTo') as $userId) {
             $task = Task::create([
                 'title' => $request->taskTitle,
@@ -210,12 +210,12 @@ class AdminController extends Controller
                 'due_date' => $request->dueDate,
                 'attachments' => $attachmentPath,
             ]);
-    
+
             UserProject::create([
                 'user_id' => $userId,
                 'project_id' => $request->project,
             ]);
-    
+
             $user = User::find($userId);
             if ($user && $user->email) {
                 Mail::to($user->email)->send(new TaskAssigned($task, $user));
@@ -223,10 +223,10 @@ class AdminController extends Controller
                 return redirect()->back()->with('error', 'Kullanıcı e-posta adresi bulunamadı!');
             }
         }
-    
+
         return redirect()->back()->with('success', 'Görevler başarıyla atandı!');
     }
-    
+
 
 
 
@@ -296,7 +296,7 @@ class AdminController extends Controller
         $workSessions = WorkSession::with(['user', 'breaks'])->get();
 
         return view('admin.work_sessions', compact('users', 'workSessions'));
-        
+
     }
 
     public function editWorkSession($id)
@@ -359,6 +359,15 @@ class AdminController extends Controller
 
 
 
+    public function showWorkSessions1()
+    {
+        $user = auth()->user();
+        $workSessions = WorkSession::with(['user', 'breaks'])
+            ->where('user_id', $user->id)
+            ->get();
+
+        return view('user.tasks', compact('user', 'workSessions'));
+    }
 
 
 

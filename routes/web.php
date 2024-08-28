@@ -146,3 +146,25 @@ Route::get('/admin/users/search2', [OffdayController::class, 'search2'])->name('
 Route::get('/admin/users/search3', [OffdayController::class, 'search3'])->name('admin.users.search3');
 
 
+
+
+Route::get('user/projects', [ProjectController::class, 'index1'])->name('user.projects.index');
+
+
+
+Route::get('user/projects/{id}', [ProjectController::class, 'show1'])->name('user.projects.show');
+
+
+Route::get('/projects/index', [ProjectController::class, 'show']);
+
+
+
+Route::get('/mission/user', [TaskController::class, 'index2']);
+
+Route::get('/mission/user', [TaskController::class, 'index2'])->name('mission.indexUser');
+
+
+Route::get('/missions/user', [TaskController::class, 'filter1'])->name('mission.index1');
+
+
+Route::get('/user/worksessions', [AdminController::class, 'showWorkSessions1'])->name('user.worksessions');

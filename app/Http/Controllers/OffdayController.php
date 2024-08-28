@@ -32,7 +32,6 @@ class OffdayController extends Controller
 
 
 
-
     public function store(Request $request)
     {
         $attachmentPath = null;
@@ -41,7 +40,8 @@ class OffdayController extends Controller
         $request->validate([
             'reason' => 'required',
             'attachments' => 'nullable|file|mimes:zip',
-            'offday_date' => 'required|date',
+            'offday_dates' => 'required|array',
+            'offday_dates.*' => 'date',
         ]);
 
         // Handle file upload
@@ -51,21 +51,23 @@ class OffdayController extends Controller
             $destinationPath = public_path('attachments');
             $file->move($destinationPath, $fileName);
             $attachmentPath = 'attachments/' . $fileName;
-
-
         }
 
-        // Create the offday record
-        Offday::create([
-            'user_id' => Auth::id(),
-            'reason' => $request->reason,
-            'document' => $attachmentPath, // Store relative path
-            'status' => 'pending',
-            'offday_date' => $request->offday_date,
-        ]);
+        // Loop through each selected date
+        foreach ($request->offday_dates as $offday_date) {
+            // Create the offday record for each date
+            Offday::create([
+                'user_id' => Auth::id(),
+                'reason' => $request->reason,
+                'document' => $attachmentPath, // Store relative path
+                'status' => 'pending',
+                'offday_date' => $offday_date,
+            ]);
+        }
 
         return redirect()->route('offday.index')->with('success', 'İzin talebiniz oluşturuldu.');
     }
+
 
 
 

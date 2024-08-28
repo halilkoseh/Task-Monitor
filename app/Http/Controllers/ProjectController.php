@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\UserProject;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ class ProjectController extends Controller
         $user = Auth::user();
 
         // Get projects where the user is associated or is an admin
-        if ($user && $user ->role == 'admin') {
+        if ($user && $user->role == 'admin') {
             $projects = Project::all();
         } else {
             $projects = $user ? $user->projects : collect();
@@ -60,7 +61,7 @@ class ProjectController extends Controller
         return redirect()->route('projects.index')->with('success', 'Proje başarıyla oluşturuldu.');
     }
 
-        public function show(Project $project)
+    public function show(Project $project)
     {
         $user = Auth::user();
 
@@ -68,7 +69,8 @@ class ProjectController extends Controller
         if ($user && $user->role != 'admin' && !$project->users->contains($user->id)) {
             abort(403, 'Bu projeye erişim izniniz yok.');
         }
-        return view('projects.show', compact('project'));    }
+        return view('projects.show', compact('project'));
+    }
 
     public function edit(Project $project)
     {
@@ -96,16 +98,52 @@ class ProjectController extends Controller
     }
 
 
-    public function indexuser()
+
+
+    public function index1()
     {
-        $userId = Auth::id();
-        $projects = Project::getUserProjects($userId);
-        
-        return view('user.tasks', compact('projects'));
+        // Giriş yapan kullanıcının ID'sini al
+        $userId = auth()->id();
+
+        // Kullanıcının erişim yetkisi olduğu projelerin ID'lerini al
+        $projectIds = UserProject::where('user_id', $userId)
+            ->pluck('project_id');
+
+        // Projeleri getir (eğer erişim yetkisi olan projeler varsa)
+        $projects = Project::whereIn('id', $projectIds)->get();
+
+        // Projeleri view'e gönder
+        return view('projects.indexUser', compact('projects'));
+
+
+
+
+
+
     }
 
 
-    
+
+
+
+
+
+    public function show1(Project $project)
+    {
+        $user = Auth::user();
+
+
+        if (
+            $user &&
+            $user->role == 'admin' &&
+            !$project->users->contains($user->id)
+        ) {
+            abort(403, 'Bu projeye erişim izniniz yok.');
+        }
+
+
+        return view('projects.showUser', compact('project'));
+    }
 
 
 }
