@@ -178,8 +178,6 @@ class UserController extends Controller
         return response()->json(['message' => 'You are not currently working or there is no active work session.'], 400);
     }
 
-
-
     public function endBreak()
     {
         $user = Auth::user();
@@ -208,6 +206,7 @@ class UserController extends Controller
 
         return response()->json(['message' => 'No active break found.'], 400);
     }
+
 
     public function endWorkSession()
     {
@@ -246,46 +245,49 @@ class UserController extends Controller
         $user = Auth::user();
         $workSessions = $user->workSessions()->with('breaks')->get();
 
-        $totalWorkDuration = 0;
+        $workDurations = []; // Her mesai için çalışma sürelerini saklayacağımız dizi
 
         foreach ($workSessions as $session) {
-            $startTime = Carbon::parse($session->start_time);
+            $created_at = Carbon::parse($session->created_at);
             $endTime = Carbon::parse($session->end_time ?? now());
 
-            $workDuration = 0;
-            $currentStartTime = $startTime;
+            $workDuration = $endTime->diffInSeconds($created_at);
 
             foreach ($session->breaks as $break) {
-                if ($break->start_time) {
-                    $breakStartTime = Carbon::parse($break->start_time);
-                    $breakEndTime = $break->end_time ? Carbon::parse($break->end_time) : $endTime;
+                if ($break->created_at) {
+                    $breakStartTime = Carbon::parse($break->created_at);
+                    $breakEndTime = $break->end_time ? Carbon::parse($break->end_time) : now();
 
-                    $workDuration += $breakStartTime->diffInSeconds($currentStartTime);
-                    $currentStartTime = $breakEndTime;
+                    $workDuration -= $breakStartTime->diffInSeconds($breakEndTime);
                 }
             }
 
-            $workDuration += $endTime->diffInSeconds($currentStartTime);
-            $totalWorkDuration += $workDuration;
+            $workDurations[] = $workDuration; // Bu mesai oturumunun çalışma süresini diziye ekle
         }
 
-        $hours = floor($totalWorkDuration / 3600);
-        $minutes = floor(($totalWorkDuration % 3600) / 60);
-        $seconds = $totalWorkDuration % 60;
+        // Her oturum için süreyi formatlayalım
+        $formattedWorkDurations = array_map(function ($duration) {
+            $hours = floor($duration / 3600);
+            $minutes = floor(($duration % 3600) / 60);
+            $seconds = $duration % 60;
 
-        $formattedTotalWorkDuration = '';
-        if ($hours > 0) {
-            $formattedTotalWorkDuration .= "$hours hours ";
-        }
-        if ($minutes > 0) {
-            $formattedTotalWorkDuration .= "$minutes minutes ";
-        }
-        if ($seconds > 0 || empty($formattedTotalWorkDuration)) {
-            $formattedTotalWorkDuration .= "$seconds seconds";
-        }
+            $formattedDuration = '';
+            if ($hours > 0) {
+                $formattedDuration .= "$hours hours ";
+            }
+            if ($minutes > 0) {
+                $formattedDuration .= "$minutes minutes ";
+            }
+            if ($seconds > 0 || empty($formattedDuration)) {
+                $formattedDuration .= "$seconds seconds";
+            }
 
-        return view('user.workSessions', compact('workSessions', 'formattedTotalWorkDuration'));
+            return $formattedDuration;
+        }, $workDurations);
+
+        return view('user.workSessions', compact('workSessions', 'formattedWorkDurations'));
     }
+
 
     // app/Http/Controllers/UserController.php
 
@@ -449,7 +451,7 @@ class UserController extends Controller
 
 
 
-    
+
 
     public function search9(Request $request)
     {

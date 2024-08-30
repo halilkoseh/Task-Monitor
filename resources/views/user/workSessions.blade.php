@@ -78,24 +78,51 @@
             </form>
         </div>
 
-        @if ($formattedTotalWorkDuration)
-            <div class="bg-[#535353] text-white rounded-full px-4 py-2 mt-4 hover:bg-[#7F7F7F] hover:scale-105">
+        <div>
+            <div
+                class="bg-[#7F7F7F] text-white rounded-full px-4 py-2 mt-4 hover:bg-white hover:scale-105 transition-transform duration-300">
+                <div class="flex items-center justify-end space-x-2">
 
-                <div class="flex items-center justify-end space-x-2 ">
-                    <p class="text-lg "><i class="fa-solid fa-stopwatch mr-2"></i> Toplam Süre:</p>
-                    <p class="text-lg font-semibold">{{ $formattedTotalWorkDuration }}</p>
+                    @if ($workSessions->isNotEmpty())
+                        <p class="bg-[#7F7F7F] rounded-lg px-3 py-1">Mesai Durumu: {{ $workSessions->first()->status }}</p>
+                    @else
+                        <p class="bg-[#7F7F7F] rounded-lg px-3 py-1">Mesai Durumu: Başlamadı</p>
+                    @endif
                 </div>
             </div>
-        @endif
+        </div>
+
+
+        <div>
+            @if ($formattedWorkDurations)
+                <div class="bg-[#535353] text-white rounded-full px-4 py-2 mt-4 hover:bg-[#7F7F7F] hover:scale-105">
+                    <div class="flex items-center justify-end space-x-2 ">
+                        <p class="text-lg"> Mevcut Oturum:</p>
+                        <p class="text-lg font-semibold">{{ end($formattedWorkDurations) }}</p>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+
 
     </div>
-
-    <div class="space-y-6"> <!-- Added this div to space out the cards -->
+    @php
+        // WorkSessions'u en son eklenenden en önce olacak şekilde sıralıyoruz
+$workSessions = $workSessions->sortByDesc('created_at');
+    @endphp
+    <div class="space-y-8"> <!-- Daha geniş aralıklar için space-y-6 yerine space-y-8 -->
         @foreach ($workSessions as $session)
-            <div class="bg-gradient-to-r from-[#EEF6FF] to-blue-100 shadow-lg rounded-xl overflow-hidden p-4">
-                <div class="bg-white rounded-lg overflow-hidden shadow-md">
-                    <table class="min-w-full bg-white">
-                        <thead class="bg-[#7F7F7F] text-white">
+            <div class="bg-[#CAF1DE] shadow-xl rounded-lg overflow-hidden p-6">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-[#7F7F7F] text-white py-2 px-4">
+                        <p class="text-lg font-semibold">
+                            Tarih: {{ \Carbon\Carbon::parse($session->created_at)->format('d.m.Y') }}
+                        </p>
+
+                    </div>
+                    <table class="min-w-full bg-white mt-4">
+                        <thead class="bg-[#555555] text-white">
                             <tr>
                                 <th class="py-3 px-6 text-left font-semibold">Başlangıç Zamanı</th>
                                 <th class="py-3 px-6 text-left font-semibold">Bitiş Zamanı</th>
@@ -103,27 +130,33 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="hover:bg-blue-50 transition-colors duration-200">
-                                <td class="py-3 px-6 border-b border-gray-300">{{ $session->start_time }}</td>
+                            <tr class="hover:bg-[#E0F2FE] transition-colors duration-200">
+                                <td class="py-3 px-6 border-b border-gray-300">{{ $session->created_at }}</td>
                                 <td class="py-3 px-6 border-b border-gray-300">{{ $session->end_time }}</td>
                                 <td class="py-3 px-6 border-b border-gray-300">
                                     @php
                                         $statusColors = [
-                                            'working' => 'bg-green-500 text-[#fff]',
-                                            'on_break' => 'bg-yellow-500 text-[#fff]',
-                                            'ended' => 'bg-blue-500 text-[#fff]',
+                                            'working' => 'bg-green-500 text-white',
+                                            'on_break' => 'bg-yellow-500 text-white',
+                                            'ended' => 'bg-blue-500 text-white',
                                         ];
                                     @endphp
                                     <span
-                                        class="px-2 py-1 rounded-full text-sm font-medium {{ $statusColors[$session->status] ?? 'bg-gray-100 text-gray-800' }}">
-                                        {{ $session->status }}
+                                        class="px-3 py-1 rounded-full text-sm font-medium {{ $statusColors[$session->status] ?? 'bg-gray-100 text-gray-800' }}">
+                                        {{ ucfirst($session->status) }}
                                     </span>
                                 </td>
                             </tr>
                             @foreach ($session->breaks as $break)
-                                <tr class="bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
-                                    <td class="py-2 px-6 border-b border-gray-300 pl-12">Mola Başlangıcı: {{ $break->start_time }}</td>
-                                    <td class="py-2 px-6 border-b border-gray-300">Mola Bitişi: {{ $break->end_time }}</td>
+                                <tr class="bg-[#F9FAFB] hover:bg-[#F3F4F6] transition-colors duration-200">
+                                    <td class="py-2 px-6 border-b border-gray-300 pl-12">
+                                        <span class="font-semibold">Mola Başlangıcı:</span>
+                                        {{ \Carbon\Carbon::parse($break->created_at)->format('H:i:s') }}
+                                    </td>
+                                    <td class="py-2 px-6 border-b border-gray-300">
+                                        <span class="font-semibold">Mola Bitişi:</span>
+                                        {{ \Carbon\Carbon::parse($break->end_time)->format('H:i:s') }}
+                                    </td>
                                     <td class="py-2 px-6 border-b border-gray-300"></td>
                                 </tr>
                             @endforeach
@@ -133,7 +166,7 @@
             </div>
         @endforeach
     </div>
-    
+
 
     </div>
 @endsection
