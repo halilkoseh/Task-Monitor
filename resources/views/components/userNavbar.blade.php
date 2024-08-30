@@ -146,23 +146,24 @@
                 </a>
             </li>
 
-
             <li>
-                <a class="sidebar-item flex items-center text-lg text-gray-600">
-                    <i class="fa-regular fa-copy mr-4"></i>
-                    Raporlarım
+                <a href="{{ route('user.teammates') }}" class="sidebar-item flex items-center text-lg text-gray-600">
+                    <i class="fa-solid fa-user-group mr-4"></i>
+                    Takım Arkadaşlarım
                 </a>
             </li>
+
+
 
 
         </ul>
 
         <div class="">
             <div class="flex flex-col justify-center mt-auto gap-4 border-t border-gray-300 pt-4">
-                <a href="https://linktr.ee/halilkoseh"
+                <a href="{{ route('user.contact') }}"
                     class="flex items-center gap-3 pl-4 py-2 rounded-md hover:bg-sky-100 transition-colors duration-300 group">
-                    <i class="fa-regular fa-note-sticky text-lg text-gray-500 group-hover:text-sky-700"></i>
-                    <span class=" font-medium text-gray-700 group-hover:text-sky-700">İletişim</span>
+                    <i class="fa-solid fa-headset text-lg text-gray-500 group-hover:text-sky-700"></i>
+                    <span class=" font-medium text-gray-700 group-hover:text-sky-700">Destek</span>
                 </a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf

@@ -9,6 +9,8 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\OffdayController;
 use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\SearchController;
+
 
 Route::get('/', function () {
     return view('auth.login');
@@ -117,7 +119,6 @@ Route::get('/navbar-tasks', [TaskController::class, 'index1'])->name('navbar.tas
 Route::get('/offday/monthly-data', [OffdayController::class, 'getMonthlyOffdayData']);
 
 
-use App\Http\Controllers\SearchController;
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
@@ -168,3 +169,26 @@ Route::get('/missions/user', [TaskController::class, 'filter1'])->name('mission.
 
 
 Route::get('/user/worksessions', [AdminController::class, 'showWorkSessions1'])->name('user.worksessions');
+
+
+Route::get('/user/teammates', [UserController::class, 'show2'])->name('user.teammates');
+
+
+
+Route::get('/user/contact', [UserController::class, 'show3'])->name('user.contact');
+
+
+
+Route::post('/contact', [UserController::class, 'storeContact'])->name('contact.store');
+
+
+Route::get('/admin/contacts', [AdminController::class, 'contactindex'])->name('admin.contacts.index');
+
+Route::get('/admin/contacts/{id}', [AdminController::class, 'contactshow'])->name('admin.contacts.show');
+
+
+Route::get('/admin/users/search9', [UserController::class, 'search9'])->name('admin.users.search9');
+
+
+
+Route::delete('/admin/contacts/{id}', [TaskController::class, 'contactdestroy'])->name('contact.destroy');

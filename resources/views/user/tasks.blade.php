@@ -208,6 +208,14 @@
 
         .badge-light-green-100 {
             background-color: #dcedc8;
+
+        }
+
+
+
+        .search-icon {
+            pointer-events: none;
+            /* İkonun tıklamaları engellemesini önler */
         }
     </style>
 

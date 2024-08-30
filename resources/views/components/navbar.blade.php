@@ -29,7 +29,7 @@
 
         .logo-box {
             padding: 10px;
-            
+
             display: inline-block;
             transition: transform 0.3s ease;
         }
@@ -82,7 +82,7 @@
         class="sidebar fixed w-64 bg-white h-screen p-5 text-gray-600 rounded-xl md:w-1/4 lg:w-1/5 xl:w-1/6 ">
 
         <div class="flex items-center mb-20">
-            
+
             <a href="{{ url('admin') }}" class="flex items-center">
                 <div class="logo-box rounded-full">
                     <img src="{{ asset('images/favLogo.png') }}" alt="logo" class="w-14" />
@@ -131,6 +131,17 @@
                     İzin Takip
                 </a>
             </li>
+
+            <li>
+                <a href="{{ route('admin.contacts.index') }}"
+                    class="sidebar-item flex items-center text-lg text-gray-600">
+                    <i class="fa-solid fa-life-ring mr-3"></i>
+                    Destek Talepleri </a>
+            </li>
+
+
+
+
             <li>
                 <a href="{{ route('admin.reports.index') }}"
                     class="sidebar-item flex items-center text-lg text-gray-600">
@@ -157,7 +168,7 @@
                 </form>
             </div>
         </div>
-        
+
     </div>
 
     <script>

@@ -11,6 +11,7 @@ use App\Models\Project;
 use App\Models\WorkSession;
 use Carbon\Carbon;
 use App\Models\Offday;
+use App\Models\Contact;
 
 
 
@@ -104,7 +105,7 @@ class UserController extends Controller
     }
 
 
- 
+
 
 
 
@@ -406,6 +407,72 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         return view('admin.users.show', compact('user'));
     }
+
+
+
+    public function show2()
+    {
+        $users = User::all();
+        return view('user.teammates', compact('users'));
+    }
+
+    public function show3()
+    {
+        $users = User::all();
+        $tasks = Task::all();
+        $assignedTasks = Task::where('user_id', Auth::id())->get();
+        $userTasks = Task::where('user_id', Auth::id())->get();
+
+        return view('user.contact', compact('users', 'tasks', 'assignedTasks', 'userTasks'));
+    }
+
+
+
+
+    public function storeContact(Request $request)
+    {
+        Contact::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'message' => $request->input('message'),
+            'user_id' => Auth::id(), // Store the logged-in user's ID
+        ]);
+
+        return redirect()->back()->with('success', 'Mesajınız başarıyla gönderildi!');
+    }
+
+
+
+
+
+
+
+
+
+    
+
+    public function search9(Request $request)
+    {
+        $query = User::query();
+
+        // Check if the search input is present
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $search = $request->input('search');
+
+            // Search for users by name
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        $users = $query->get();
+
+        // Fetch contacts only related to the users found in the search
+        $contacts = Contact::whereIn('user_id', $users->pluck('id'))->get();
+
+        return view('admin.support', compact('users', 'contacts'));
+    }
+
+
+
 
 
 

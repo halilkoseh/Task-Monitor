@@ -36,6 +36,11 @@
         border-radius: 50%;
     }
 
+    .search-icon {
+    pointer-events: none; /* İkonun tıklamaları engellemesini önler */
+}
+
+
     .user-info img {
         width: 40px;
         height: 40px;

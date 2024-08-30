@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Models\Offday;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Contact;
 
 class TaskController extends Controller
 {
@@ -200,35 +201,45 @@ class TaskController extends Controller
     {
         // Initializing the query and including related user and project
         $query = Task::with(['user', 'assignedProject']);
-    
+
         // Fetching the authenticated user
         $user = auth()->user();
-    
+
         // Fetching only the projects the authenticated user is involved in
         $projects = Project::whereIn('id', UserProject::where('user_id', $user->id)->pluck('project_id'))->get();
-    
+
         // Applying filters
         if ($request->filled('owner_id')) {
             $query->where('user_id', $request->owner_id);
         } else {
             $query->where('user_id', $user->id); // Default filter: current user's tasks
         }
-    
+
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
-    
+
         if ($request->filled('project_id')) {
             $query->where('project_id', $request->project_id);
         }
-    
+
         // Fetching the filtered tasks and counting them
         $tasks = $query->get();
         $taskCount = $tasks->count();
-    
+
         return view('mission.indexUser', compact('tasks', 'user', 'projects', 'taskCount'));
     }
-    
+
+
+
+
+    public function contactdestroy($id)
+    {
+        $contact = Contact::findOrFail($id);
+        $contact->delete();
+
+        return redirect()->route('admin.contacts.index')->with('success', 'Talep Başarıyla Silindi !');
+    }
 
 
 

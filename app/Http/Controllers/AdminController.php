@@ -13,7 +13,7 @@ use App\Models\WorkSession;
 use App\Models\WorkBreak;
 use App\Models\UserProject;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Contact;
 
 
 
@@ -368,6 +368,27 @@ class AdminController extends Controller
 
         return view('user.tasks', compact('user', 'workSessions'));
     }
+
+
+
+
+    public function contactindex()
+    {
+        $contacts = Contact::with('user')->latest()->paginate(10); // Fetch contacts with user info
+        return view('admin.support', compact('contacts'));
+    }
+
+
+    public function contactshow($id)
+    {
+        $contacts = Contact::with('user')->findOrFail($id);
+        return view('admin.supportShow', compact('contacts'));
+    }
+
+
+ 
+
+
 
 
 
