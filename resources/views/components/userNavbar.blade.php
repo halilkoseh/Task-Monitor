@@ -63,14 +63,12 @@
                 font-size: 1.5rem;
                 cursor: pointer;
                 z-index: 1100;
-                /* Ensure the toggle button is above other content */
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Hamburger Menu -->
     <div class="lg:hidden p-4 relative">
         <span class="sidebar-toggle text-gray-600">
             <i class="fas fa-bars"></i>

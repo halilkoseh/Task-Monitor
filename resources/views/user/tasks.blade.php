@@ -41,7 +41,6 @@
             height: 40px;
             border-radius: 50%;
             margin-right: 8px;
-            /* Adjust the margin to bring the image closer to the text */
         }
 
         .search-container {
@@ -125,7 +124,6 @@
             flex-direction: column;
             gap: 1rem;
             position: relative;
-            /* Add relative positioning to contain the "Tümünü Gör" link */
         }
 
         .project-card {
@@ -197,7 +195,6 @@
             background-color: #f1f1f1;
         }
 
-        /* Custom light green colors */
         .bg-light-green-100 {
             background-color: #dcedc8;
         }
@@ -215,13 +212,10 @@
 
         .search-icon {
             pointer-events: none;
-            /* İkonun tıklamaları engellemesini önler */
         }
     </style>
 
-    <!-- Main Content -->
     <div class="content-container mx-auto">
-        <!-- Header -->
         <div class="flex flex-wrap justify-between items-center mb-8 p-2">
 
 
@@ -430,7 +424,6 @@
                             <h2 class="text-xl text-gray-600 font-semibold mt-3 ml-4">Mesailerim</h2>
 
                             @foreach ($workSessions->take(2) as $index => $workSession)
-                                <!-- Use $workSession here -->
                                 @php
                                     $iconBackgroundColors = ['bg-sky-100', 'bg-orange-100'];
                                     $iconColors = ['text-sky-500', 'text-orange-500'];
@@ -508,7 +501,6 @@
                                                 <i class="fa-solid fa-circle-info"></i>
                                             </a>
                                             <div class="dropdown">
-                                                <!-- Dropdown content -->
                                             </div>
                                         </div>
                                     </div>
@@ -543,7 +535,6 @@
                                         </div>
                                     </div>
                                     <div class="task-actions absolute top-2 right-2">
-                                        <!-- Add any additional actions here -->
                                     </div>
                                 </div>
                             @endforeach
@@ -553,7 +544,6 @@
             </div>
         </div>
 
-        <!-- Modal -->
         <div id="attachmentModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
             <div class="flex items-center justify-center min-h-screen">
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
@@ -569,7 +559,6 @@
                                 </h3>
                                 <div class="mt-2">
                                     <ul id="attachmentList" class="list-disc pl-5">
-                                        <!-- Attachments will be loaded here dynamically -->
                                     </ul>
                                 </div>
                             </div>
@@ -679,7 +668,6 @@
                 document.getElementById("attachmentModal").classList.add("hidden");
             };
 
-            // Attach event listeners for drag and drop
             document.querySelectorAll(".task-card").forEach((card) => {
                 card.addEventListener("dragstart", handleDragStart);
                 card.addEventListener("dragend", handleDragEnd);

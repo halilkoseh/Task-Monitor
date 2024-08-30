@@ -124,7 +124,6 @@
             flex-direction: column;
             gap: 1rem;
             position: relative;
-            /* Add relative positioning to contain the "Tümünü Gör" link */
         }
 
         .project-card {
@@ -196,7 +195,6 @@
             background-color: #f1f1f1;
         }
 
-        /* Custom light green colors */
         .bg-light-green-100 {
             background-color: #dcedc8;
         }
@@ -220,15 +218,17 @@
                 <div id="suggestions"
                     class="suggestions absolute bg-white border border-gray-300 rounded-lg mt-1 w-full hidden"></div>
             </div>
-        
-            <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 space-x-0 sm:space-x-8 w-full sm:w-auto mt-4 sm:mt-0">
+
+            <div
+                class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 space-x-0 sm:space-x-8 w-full sm:w-auto mt-4 sm:mt-0">
                 <span id="current-date" class="mr-4"></span>
                 <div class="user-info-container relative">
                     <a href="{{ route('profile') }}">
                         <div class="user-info flex items-center space-x-2">
                             @if (Auth::check())
-                            <img class="w-10 h-10 rounded-full object-cover" src="{{ asset('images/' . Auth::user()->profilePic) }}"
-                                alt="{{ Auth::user()->name }}" />
+                                <img class="w-10 h-10 rounded-full object-cover"
+                                    src="{{ asset('images/' . Auth::user()->profilePic) }}"
+                                    alt="{{ Auth::user()->name }}" />
                             @endif
                             <div id="greeting" class="text-gray-800"></div>
                         </div>
@@ -236,11 +236,11 @@
                 </div>
             </div>
         </div>
-        
+
         <script>
-            document.querySelector(".search-input").addEventListener("input", function (e) {
+            document.querySelector(".search-input").addEventListener("input", function(e) {
                 const query = e.target.value;
-        
+
                 if (query.length > 2) {
                     fetch(`/admin/users/search?query=${query}`)
                         .then((response) => response.json())
@@ -250,7 +250,8 @@
                             if (data.length > 0) {
                                 data.forEach((item) => {
                                     const suggestionItem = document.createElement("div");
-                                    suggestionItem.classList.add("suggestion-item", "p-2", "cursor-pointer", "hover:bg-gray-200");
+                                    suggestionItem.classList.add("suggestion-item", "p-2", "cursor-pointer",
+                                        "hover:bg-gray-200");
                                     suggestionItem.textContent = `${item.name} (${item.type})`;
                                     suggestionItem.dataset.id = item.id;
                                     suggestionItem.dataset.type = item.type;
@@ -268,12 +269,12 @@
                     document.getElementById("suggestions").classList.add("hidden");
                 }
             });
-        
-            document.getElementById("suggestions").addEventListener("click", function (e) {
+
+            document.getElementById("suggestions").addEventListener("click", function(e) {
                 if (e.target.classList.contains("suggestion-item")) {
                     const id = e.target.dataset.id;
                     const type = e.target.dataset.type;
-        
+
                     if (type === "user") {
                         window.location.href = `/admin/users/show/`;
                     } else if (type === "task") {
@@ -283,7 +284,7 @@
                     }
                 }
             });
-        
+
             function updateDateTime() {
                 const now = new Date();
                 const options = {
@@ -300,15 +301,15 @@
                 const formattedDate = now.toLocaleDateString("tr-TR", options);
                 document.getElementById("current-date").textContent = formattedDate;
             }
-        
+
             setInterval(updateDateTime, 1000);
             updateDateTime();
-        
+
             function updateGreeting() {
                 const now = new Date();
                 const hours = now.getHours();
                 let greeting;
-        
+
                 if (hours < 12) {
                     greeting = "Günaydın";
                 } else if (hours < 18) {
@@ -316,14 +317,14 @@
                 } else {
                     greeting = "İyi çalışmalar";
                 }
-        
+
                 const userName = "{{ Auth::user()->name }}";
                 document.getElementById("greeting").textContent = `${greeting}, ${userName}`;
             }
-        
+
             updateGreeting();
         </script>
-        
+
 
         <div class="bg-blue-50 mt-8">
             <div class="max-w-4xl mt-8 mx-auto p-6">

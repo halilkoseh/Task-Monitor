@@ -16,14 +16,12 @@
             right: 0;
             top: 100%;
             z-index: 1000;
-            /* Yüksek z-index değeri dropdown'ın üstte görünmesini sağlar */
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 0.25rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             white-space: nowrap;
             overflow: visible;
-            /* Dropdown menüsünün tam görünmesini sağlar */
         }
 
         .dropdown-content.show {
@@ -161,11 +159,9 @@
 
 
             <form action="{{ route('admin.users.search2') }}" method="GET" class="flex items-center space-x-4">
-                <!-- Kullanıcı adı ile arama -->
                 <input type="text" name="search" value="{{ request()->query('search') }}"
                     class="border rounded-lg px-4 py-2 w-80" placeholder="Kullanıcı adı ile ara...">
 
-                <!-- Durum seçici -->
             </form>
 
 
@@ -182,11 +178,9 @@
                     </option>
                 </select>
 
-                <!-- İzin tarihi seçici -->
                 <input type="date" name="offday_date" value="{{ request()->query('offday_date') }}"
                     class="border rounded-lg px-4 py-2">
 
-                <!-- Arama butonu -->
                 <button type="submit"
                     class="ml-2 bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600 transition duration-300">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -349,13 +343,11 @@
 
                 toggle.addEventListener('click', function(event) {
                     event.stopPropagation();
-                    // Close other dropdowns
                     document.querySelectorAll('.dropdown-content').forEach(function(otherContent) {
                         if (otherContent !== content) {
                             otherContent.style.display = 'none';
                         }
                     });
-                    // Toggle the clicked dropdown
                     content.style.display = content.style.display === 'block' ? 'none' : 'block';
                 });
 

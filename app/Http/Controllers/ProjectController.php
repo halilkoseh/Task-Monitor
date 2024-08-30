@@ -15,7 +15,6 @@ class ProjectController extends Controller
         $projects = Project::all();
         $user = Auth::user();
 
-        // Get projects where the user is associated or is an admin
         if ($user && $user->role == 'admin') {
             $projects = Project::all();
         } else {
@@ -102,17 +101,13 @@ class ProjectController extends Controller
 
     public function index1()
     {
-        // Giriş yapan kullanıcının ID'sini al
         $userId = auth()->id();
 
-        // Kullanıcının erişim yetkisi olduğu projelerin ID'lerini al
         $projectIds = UserProject::where('user_id', $userId)
             ->pluck('project_id');
 
-        // Projeleri getir (eğer erişim yetkisi olan projeler varsa)
         $projects = Project::whereIn('id', $projectIds)->get();
 
-        // Projeleri view'e gönder
         return view('projects.indexUser', compact('projects'));
 
 

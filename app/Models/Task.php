@@ -39,7 +39,7 @@ class Task extends Model
 
     public function edit($id)
     {
-        $task = Task::findOrFail($id); // Assuming you have a Task model
+        $task = Task::findOrFail($id); 
         return view('tasks.edit', compact('task'));
     }
 

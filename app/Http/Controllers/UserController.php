@@ -156,19 +156,16 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        // Aktif bir çalışma oturumunu en son başlayan oturumlardan alıyoruz.
         $workSession = $user->workSessions()
             ->where('status', 'working')
             ->latest('start_time')
             ->first();
 
         if ($workSession) {
-            // Yeni bir mola oturumu başlatıyoruz.
             $workSession->breaks()->create([
                 'start_time' => now(),
             ]);
 
-            // Çalışma oturumunun durumunu 'on_break' olarak güncelliyoruz.
             $workSession->status = 'on_break';
             $workSession->save();
 
@@ -182,22 +179,18 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        // En son mola durumundaki çalışma oturumunu buluyoruz.
         $workSession = $user->workSessions()
             ->where('status', 'on_break')
             ->latest('start_time')
             ->first();
 
-        // Mola oturumlarının arasında bitmemiş olan en sonuncusunu buluyoruz.
         $currentBreak = $workSession
             ? $workSession->breaks()->whereNull('end_time')->latest('start_time')->first()
             : null;
 
         if ($workSession && $currentBreak) {
-            // Molanın bitiş zamanını güncelliyoruz.
             $currentBreak->update(['end_time' => now()]);
 
-            // Çalışma oturumunun durumunu tekrar 'working' olarak ayarlıyoruz.
             $workSession->status = 'working';
             $workSession->save();
 
@@ -225,7 +218,6 @@ class UserController extends Controller
                 }
             }
 
-            // Sadece end_time'i güncelliyoruz.
             $workSession->update([
                 'end_time' => now(),
                 'status' => 'ended',
@@ -245,7 +237,7 @@ class UserController extends Controller
         $user = Auth::user();
         $workSessions = $user->workSessions()->with('breaks')->get();
 
-        $workDurations = []; // Her mesai için çalışma sürelerini saklayacağımız dizi
+        $workDurations = [];
 
         foreach ($workSessions as $session) {
             $created_at = Carbon::parse($session->created_at);
@@ -262,10 +254,9 @@ class UserController extends Controller
                 }
             }
 
-            $workDurations[] = $workDuration; // Bu mesai oturumunun çalışma süresini diziye ekle
+            $workDurations[] = $workDuration;
         }
 
-        // Her oturum için süreyi formatlayalım
         $formattedWorkDurations = array_map(function ($duration) {
             $hours = floor($duration / 3600);
             $minutes = floor(($duration % 3600) / 60);
@@ -289,7 +280,6 @@ class UserController extends Controller
     }
 
 
-    // app/Http/Controllers/UserController.php
 
     public function store(Request $request)
     {
@@ -437,7 +427,7 @@ class UserController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'message' => $request->input('message'),
-            'user_id' => Auth::id(), // Store the logged-in user's ID
+            'user_id' => Auth::id(),
         ]);
 
         return redirect()->back()->with('success', 'Mesajınız başarıyla gönderildi!');
@@ -445,29 +435,18 @@ class UserController extends Controller
 
 
 
-
-
-
-
-
-
-
-
     public function search9(Request $request)
     {
         $query = User::query();
 
-        // Check if the search input is present
         if ($request->has('search') && !empty($request->input('search'))) {
             $search = $request->input('search');
 
-            // Search for users by name
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
         $users = $query->get();
 
-        // Fetch contacts only related to the users found in the search
         $contacts = Contact::whereIn('user_id', $users->pluck('id'))->get();
 
         return view('admin.support', compact('users', 'contacts'));

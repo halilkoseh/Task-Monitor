@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container mx-auto mt-32 p-4 md:flex md:space-x-8">
-        <!-- Task Details Card -->
         <div
             class="shadow-lg rounded-xl p-8 mb-6 md:mb-0 transition-transform transform hover:scale-105 duration-300 flex-1 md:ml-64 bg-white border border-gray-200">
             <div class="mb-8">
@@ -24,7 +23,6 @@
                 </h1>
 
                 @php
-                    // Access the contact and user directly from the $contacts variable
                     $user = $contacts->user;
                 @endphp
 

@@ -193,7 +193,7 @@
                     @endphp
                     @foreach ($contacts as $index => $contact)
                         @php
-                            $user = $contact->user; // Access the user associated with the contact
+                            $user = $contact->user;
                             $badgeColor = $badgeColors[$index % count($badgeColors)];
                         @endphp
                         <tr>
@@ -210,7 +210,7 @@
                                     {{ $contact->name }}
                                 </span>
                             </td>
-                            <td>{{ $contact->email }}</td> <!-- Assuming 'subject' is a field in contacts table -->
+                            <td>{{ $contact->email }}</td>
                             <td>{{ $contact->message }}</td>
                             <td>{{ $contact->created_at->format('d-m-Y H:i') }}</td>
                             <td class="relative">
@@ -234,9 +234,7 @@
                                             @csrf
                                             @method('DELETE')
 
-                                            {{-- Check if the user's name is not 'admin' --}}
                                             @if ($user->name !== 'admin')
-                                            
                                             @endif
                                         </form>
                                     </div>

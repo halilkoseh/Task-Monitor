@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notifications Email Template</title>
+    <title>Task Monitor</title>
     <meta name="description" content="Notifications Email Template">
     <style>
     </style>

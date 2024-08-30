@@ -143,17 +143,15 @@
 
     <script>
         document.getElementById('contact-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Formun hemen gönderilmesini engeller
+            event.preventDefault(); 
 
-            // Pop-up mesajını göster
             var popup = document.getElementById('popup-message');
             popup.classList.remove('hidden');
 
-            // 2 saniye sonra pop-up'ı gizle
             setTimeout(function() {
                 popup.classList.add('hidden');
                 // Formu gönder
-                event.target.submit(); // Formu tekrar gönderme işlemi
+                event.target.submit(); /
             }, 5000);
         });
     </script>

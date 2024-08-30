@@ -183,8 +183,7 @@
 
                             <td class="py-6 px-8 border-b border-gray-300">
                                 @foreach ($session->breaks as $break)
-                                    <span
-                                        class="text-sm text-gray-600">{{ \Carbon\Carbon::parse($break->end_time)->format('d/m/Y H:i') }}</span>
+                                    <span class="text-sm text-gray-600">{{ $break->end_time }}</span>
                                 @endforeach
                             </td>
 

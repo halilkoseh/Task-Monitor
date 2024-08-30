@@ -91,14 +91,11 @@
     </div>
 
     <script>
-        // Beni Hatırla 
         document.addEventListener('DOMContentLoaded', function () {
-            // gerektiğinde  geri yükleme
             const rememberMeCheckbox = document.getElementById('remember_me');
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
 
-            // LocalStorage'dan bilgileri kontrol et
             const storedUsername = localStorage.getItem('storedUsername');
             const storedPassword = localStorage.getItem('storedPassword');
             const rememberMeChecked = localStorage.getItem('rememberMeChecked');
@@ -109,22 +106,18 @@
                 rememberMeCheckbox.checked = true;
             }
 
-            // Beni Hatırla 
             rememberMeCheckbox.addEventListener('change', function () {
                 if (this.checked) {
-                    // Kullanıcı adı ve şifreyi LocalStorage'a kaydetme
                     localStorage.setItem('storedUsername', usernameInput.value);
                     localStorage.setItem('storedPassword', passwordInput.value);
                     localStorage.setItem('rememberMeChecked', true);
                 } else {
-                    // LocalStorage'daki bilgileri temizleme
                     localStorage.removeItem('storedUsername');
                     localStorage.removeItem('storedPassword');
                     localStorage.removeItem('rememberMeChecked');
                 }
             });
 
-            // Form submit olduğunda LocalStorage'daki değerleri temizleme
             const loginForm = document.getElementById('loginForm');
             loginForm.addEventListener('submit', function () {
                 localStorage.removeItem('storedUsername');

@@ -17,7 +17,7 @@
             }
         }
 
-       
+
 
         .dropdown-content.show {
             display: block;
@@ -122,7 +122,7 @@
         .dropdown-content a,
         .dropdown-content form {
             display: block;
-            padding: 0.5rem ;
+            padding: 0.5rem;
             text-decoration: none;
             color: #212529;
         }
@@ -227,7 +227,6 @@
                                             @csrf
                                             @method('DELETE')
 
-                                            {{-- Check if the user's name is not 'admin' --}}
                                             @if ($user->name !== 'admin')
                                                 <button type="submit"
                                                     class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100">

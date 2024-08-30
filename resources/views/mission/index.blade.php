@@ -23,14 +23,12 @@
             right: 0;
             top: 100%;
             z-index: 1000;
-            /* Yüksek z-index değeri dropdown'ın üstte görünmesini sağlar */
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 0.25rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             white-space: nowrap;
             overflow: visible;
-            /* Dropdown menüsünün tam görünmesini sağlar */
         }
 
         .dropdown-content.show {

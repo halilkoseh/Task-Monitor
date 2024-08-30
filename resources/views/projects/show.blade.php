@@ -57,7 +57,6 @@
 </style>
 
 <body>
-    <!-- Hamburger Menu -->
     <div class="lg:hidden p-4 relative">
         <span class="sidebar-toggle text-gray-600">
             <i class="fas fa-bars"></i>
@@ -66,7 +65,6 @@
 
 
     @if (auth()->user()->is_admin)
-        <!-- Sidebar -->
         <div id="sidebar"
             class="sidebar fixed w-64 bg-white h-screen p-5 text-gray-600 rounded-xl md:w-1/4 lg:w-1/5 xl:w-1/6 ">
 
@@ -392,7 +390,6 @@
                     </div>
                 @endforeach
             </div>
-            <!-- Repeat for other columns with different statuses -->
             <div class="column" data-status="basladi" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
                 <h2 class="text-yellow-600">Başladı</h2>
                 @foreach ($project->tasks()->where('status', 'basladi')->get() as $task)

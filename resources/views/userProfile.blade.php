@@ -124,7 +124,6 @@
             flex-direction: column;
             gap: 1rem;
             position: relative;
-            /* Add relative positioning to contain the "Tümünü Gör" link */
         }
 
         .project-card {
@@ -196,7 +195,6 @@
             background-color: #f1f1f1;
         }
 
-        /* Custom light green colors */
         .bg-light-green-100 {
             background-color: #dcedc8;
         }

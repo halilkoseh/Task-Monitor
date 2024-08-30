@@ -10,7 +10,6 @@
     <style>
         .main-content {
             margin-top: 2rem;
-            /* Adjust for spacing */
         }
 
         @media (min-width: 768px) {

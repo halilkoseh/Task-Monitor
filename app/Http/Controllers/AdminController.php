@@ -23,24 +23,20 @@ class AdminController extends Controller
 {
     public function index()
     {
-        // Get all users
         $users = User::all();
 
-        // Get tasks for each user
         $userTasks = User::with('tasks')->get();
 
-        // Get all tasks
+        
         $tasks = Task::all();
 
-        // Get the logged-in user
         $loggedInUser = auth()->user();
 
-        // Pass data to the view
         return view('tasks.index', [
             'users' => $users,
             'userTasks' => $userTasks,
             'tasks' => $tasks,
-            'loggedInUser' => $loggedInUser,  // Pass the logged-in user to the view
+            'loggedInUser' => $loggedInUser,  
         ]);
     }
 
@@ -281,7 +277,6 @@ class AdminController extends Controller
 
     public function getProjectUsers(Project $projectId)
     {
-        // Belirli bir project_id'ye sahip user_id'leri project_user tablosunda bul ve döndür
         $userIds = UserProject::where('project_id', $projectId->id)->pluck('user_id');
 
         $users = User::whereIn('id', $userIds)->get();
@@ -374,7 +369,7 @@ class AdminController extends Controller
 
     public function contactindex()
     {
-        $contacts = Contact::with('user')->latest()->paginate(10); // Fetch contacts with user info
+        $contacts = Contact::with('user')->latest()->paginate(10); 
         return view('admin.support', compact('contacts'));
     }
 
@@ -386,7 +381,7 @@ class AdminController extends Controller
     }
 
 
- 
+
 
 
 

@@ -59,9 +59,7 @@
 
 <body class="bg-gray-100">
 
-    <!-- Main Content -->
     <div class="content-container">
-        <!-- Header -->
         <div class="flex justify-between items-center mb-8 p-2">
             <div class="search-container relative">
                 <input type="text" placeholder="Ara.." class="search-input py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm w-full">
@@ -80,7 +78,6 @@
             </div>
         </div>
 
-        <!-- Projects -->
         <div class="grid grid-cols-12 gap-6">
             @php
                 $colors = ['bg-blue-100', 'bg-pink-100', 'bg-yellow-100', 'bg-green-50', 'bg-red-50'];
@@ -103,7 +100,7 @@
                 <p class="text-gray-700 mb-4">{{ $project->description }}</p>
                 @if ($index == 2 && $projects->count() > 3)
                 <div class="absolute top-2 right-2">
-                    <a href="{{ route('projects.index') }}" class="text-blue-500 hover:text-blue-700">View All+</a>
+                    <a href="{{ route('projects.index') }}" class="text-blue-500 hover:text-blue-700">Tümünü Gör</a>
                 </div>
                 @endif
             </div>
@@ -160,7 +157,6 @@
         </div>
     </div>
 
-    <!-- Chart.js Script -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('activityChart').getContext('2d');

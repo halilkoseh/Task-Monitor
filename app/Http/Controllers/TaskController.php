@@ -134,10 +134,8 @@ class TaskController extends Controller
 
     public function show($id)
     {
-        // Find the task by ID
         $task = Task::findOrFail($id);
 
-        // Return the view with the task data
         return view('tasks.show', compact('task'));
     }
 
@@ -146,14 +144,11 @@ class TaskController extends Controller
 
     public function filter(Request $request)
     {
-        // Initializing the query and including related user and project
         $query = Task::with(['user', 'assignedProject']);
 
-        // Fetching all users and projects for dropdowns
         $users = User::all();
         $projects = Project::all();
 
-        // Applying filters
         if ($request->filled('owner_id')) {
             $query->where('user_id', $request->owner_id);
         }
@@ -176,7 +171,6 @@ class TaskController extends Controller
             $query->where('due_date', '<=', $endDate);
         }
 
-        // Fetching the filtered tasks and counting them
         $tasks = $query->get();
         $taskCount = $tasks->count();
 
@@ -187,9 +181,9 @@ class TaskController extends Controller
 
     public function index2()
     {
-        $user = auth()->user(); // Get the authenticated user
-        $tasks = $user->tasks; // Get tasks associated with the authenticated user
-        $taskCount = $tasks->count(); // Count the tasks
+        $user = auth()->user(); 
+        $tasks = $user->tasks; 
+        $taskCount = $tasks->count(); 
 
         return view('mission.indexUser', compact('user', 'tasks', 'taskCount'));
     }
@@ -199,20 +193,17 @@ class TaskController extends Controller
 
     public function filter1(Request $request)
     {
-        // Initializing the query and including related user and project
         $query = Task::with(['user', 'assignedProject']);
 
-        // Fetching the authenticated user
         $user = auth()->user();
 
-        // Fetching only the projects the authenticated user is involved in
         $projects = Project::whereIn('id', UserProject::where('user_id', $user->id)->pluck('project_id'))->get();
 
         // Applying filters
         if ($request->filled('owner_id')) {
             $query->where('user_id', $request->owner_id);
         } else {
-            $query->where('user_id', $user->id); // Default filter: current user's tasks
+            $query->where('user_id', $user->id); 
         }
 
         if ($request->filled('status')) {
@@ -223,7 +214,6 @@ class TaskController extends Controller
             $query->where('project_id', $request->project_id);
         }
 
-        // Fetching the filtered tasks and counting them
         $tasks = $query->get();
         $taskCount = $tasks->count();
 

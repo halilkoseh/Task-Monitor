@@ -4,28 +4,20 @@
 
 @section('content')
     <div class="container mx-auto mt-48 flex flex-col md:flex-row md:space-x-8 p-4">
-        <!-- Task Details Card -->
         <div
             class="shadow-lg rounded-lg p-8 mb-6 md:mb-0 hover:shadow-xl transition-shadow duration-300 flex-1 ml-0 md:ml-64 border-gray-300 border-2 bg-white">
             <div class="mb-6">
 
                 @if (auth()->user()->is_admin)
-
-
-                <a href="{{ route('mission.index') }}"
-                    class="text-sky-500 hover:text-blue-800 transition-colors duration-200 flex items-center">
-                    <i class="fa-solid fa-chevron-left mr-2"></i> Geri Dön
-                </a>
-
-
-
+                    <a href="{{ route('mission.index') }}"
+                        class="text-sky-500 hover:text-blue-800 transition-colors duration-200 flex items-center">
+                        <i class="fa-solid fa-chevron-left mr-2"></i> Geri Dön
+                    </a>
                 @else
-
-                <a href="{{ route('mission.indexUser') }}"
-                class="text-sky-500 hover:text-blue-800 transition-colors duration-200 flex items-center">
-                <i class="fa-solid fa-chevron-left mr-2"></i> Geri Dön
-            </a>
-
+                    <a href="{{ route('mission.indexUser') }}"
+                        class="text-sky-500 hover:text-blue-800 transition-colors duration-200 flex items-center">
+                        <i class="fa-solid fa-chevron-left mr-2"></i> Geri Dön
+                    </a>
                 @endif
 
 
@@ -66,11 +58,9 @@
             @endif
         </div>
 
-        <!-- Calendar Card -->
         <div
             class=" shadow-lg rounded-lg p-8 hover:shadow-xl transition-shadow duration-300 flex-1 border-gray-300 border-2 bg-white">
             <div class="calendar p-4 rounded-lg">
-                <!-- Navigation Bar -->
                 <div class="flex items-center justify-between mb-6 p-4 bg-[#F1F5F9] rounded-lg shadow-sm">
                     <button id="prev-month"
                         class="flex items-center bg-[#F1F5F9] hover:bg-gray-300 p-2 rounded-lg transition duration-200 ">
@@ -85,7 +75,6 @@
                     </button>
                 </div>
 
-                <!-- Days of the Week -->
                 <div class="grid grid-cols-7 gap-1 text-center text-gray-600 font-medium">
                     <div>Pzt</div>
                     <div>Sal</div>
@@ -96,9 +85,7 @@
                     <div>Paz</div>
                 </div>
 
-                <!-- Calendar Days -->
                 <div id="calendar-days" class="grid grid-cols-7 gap-1 mt-2 text-center text-gray-700">
-                    <!-- Days will be dynamically added here -->
                 </div>
             </div>
         </div>
@@ -112,7 +99,6 @@
             let currentMonth = startDate.getMonth();
             let currentYear = startDate.getFullYear();
 
-            // Define public holidays (format: "MM/DD/YYYY")
             const publicHolidays = [
                 // 2024
                 "01/01/2024", "04/23/2024", "05/01/2024", "05/19/2024", "03/28/2024", "03/29/2024",
@@ -160,9 +146,8 @@
                 "05/28/2034", "10/29/2034"
             ];
 
-            // Define weekends
             function isWeekend(date) {
-                return date.getDay() === 0 || date.getDay() === 6; // Sunday or Saturday
+                return date.getDay() === 0 || date.getDay() === 6; 
             }
 
             function isPublicHoliday(date) {
@@ -184,7 +169,6 @@
                 const firstDay = new Date(year, month, 1).getDay();
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-                // Correct the start of the week from Sunday (0) to Monday (1)
                 const startDayOffset = (firstDay === 0) ? 6 : firstDay - 1;
 
                 for (let i = 0; i < startDayOffset; i++) {

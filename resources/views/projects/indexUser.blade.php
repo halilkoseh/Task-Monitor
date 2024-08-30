@@ -106,7 +106,6 @@
 
                         @if ($project->users && count($project->users) > 0)
                             @php
-                                // Kullanıcı isimlerini tutmak için bir dizi oluştur
                                 $printedNames = [];
                             @endphp
                             <div class="mb-4">
@@ -118,7 +117,6 @@
                                     @foreach ($project->users as $user)
                                         @if (!in_array($user->name, $printedNames))
                                             @php
-                                                // İsmi daha önce bastırılmamışsa diziye ekle
                                                 $printedNames[] = $user->name;
                                             @endphp
                                             <li class="text-gray-600">{{ $user->name }}</li>

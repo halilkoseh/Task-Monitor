@@ -84,7 +84,7 @@
                 <div class="flex items-center justify-end space-x-2">
 
                     @if ($workSessions->isNotEmpty())
-                        <p class="bg-[#7F7F7F] rounded-lg px-3 py-1">Mesai Durumu: {{ $workSessions->first()->status }}</p>
+                        <p class="bg-[#7F7F7F] rounded-lg px-3 py-1">Mesai Durumu: {{ $workSessions->last()->status }}</p>
                     @else
                         <p class="bg-[#7F7F7F] rounded-lg px-3 py-1">Mesai Durumu: Başlamadı</p>
                     @endif
@@ -108,12 +108,11 @@
 
     </div>
     @php
-        // WorkSessions'u en son eklenenden en önce olacak şekilde sıralıyoruz
 $workSessions = $workSessions->sortByDesc('created_at');
     @endphp
-    <div class="space-y-8"> <!-- Daha geniş aralıklar için space-y-6 yerine space-y-8 -->
+    <div class="space-y-8"> 
         @foreach ($workSessions as $session)
-            <div class="bg-[#CAF1DE] shadow-xl rounded-lg overflow-hidden p-6">
+            <div class="bg-[] shadow-xl rounded-lg overflow-hidden p-6">
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <div class="bg-[#7F7F7F] text-white py-2 px-4">
                         <p class="text-lg font-semibold">

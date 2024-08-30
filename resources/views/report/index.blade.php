@@ -3,7 +3,6 @@
 @section('content')
     <div class="container px-12 py-12">
         <div class="flex flex-wrap justify-center gap-10">
-            <!-- Task Status Chart -->
 
 
 
@@ -21,7 +20,6 @@
 
 
 
-            <!-- Offday Chart -->
             <div class="w-full md:w-1/3 lg:w-1/4 bg-white shadow-lg rounded-lg p-4">
                 <a href="{{ route('admin.offdays.index') }}">
 
@@ -32,13 +30,10 @@
             </div>
         </div>
         </a>
-        <!-- Assigned Tasks -->
 
     </div>
 
-    <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <!-- Chart.js and Data Labels Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
@@ -75,16 +70,16 @@
                                     'rgba(255, 165, 0, 1)', // Test Ediliyor - bg-orange-500
                                     'rgba(14, 165, 233, 1)', // Tamamlandı - bg-sky-500
                                 ],
-                                borderWidth: 3, // Increased border width
-                                borderRadius: 8, // Reduced bar radius
-                                barThickness: 50 // Increased bar thickness
+                                borderWidth: 3, 
+                                borderRadius: 8, 
+                                barThickness: 50 
                             }]
                         },
                         options: {
                             responsive: true,
                             plugins: {
                                 legend: {
-                                    display: false, // Hide the legend
+                                    display: false, 
                                 },
                                 tooltip: {
                                     callbacks: {

@@ -13,7 +13,6 @@ use App\Models\User;
 
 class OffdayController extends Controller
 {
-    // Admin tarafındaki index metodu
     public function index()
     {
         $offdays = Offday::all();
@@ -21,7 +20,6 @@ class OffdayController extends Controller
         return view('admin.offdays.index', compact('offdays', 'users'));
     }
 
-    // Admin tarafındaki create metodu
     public function create()
     {
         return view('admin.offdays.create');
@@ -36,7 +34,6 @@ class OffdayController extends Controller
     {
         $attachmentPath = null;
 
-        // Validate the request
         $request->validate([
             'reason' => 'required',
             'attachments' => 'nullable|file|mimes:zip',
@@ -44,7 +41,6 @@ class OffdayController extends Controller
             'offday_dates.*' => 'date',
         ]);
 
-        // Handle file upload
         if ($request->hasFile('attachments')) {
             $file = $request->file('attachments');
             $fileName = time() . '.' . $file->getClientOriginalExtension();
@@ -53,13 +49,11 @@ class OffdayController extends Controller
             $attachmentPath = 'attachments/' . $fileName;
         }
 
-        // Loop through each selected date
         foreach ($request->offday_dates as $offday_date) {
-            // Create the offday record for each date
             Offday::create([
                 'user_id' => Auth::id(),
                 'reason' => $request->reason,
-                'document' => $attachmentPath, // Store relative path
+                'document' => $attachmentPath,
                 'status' => 'pending',
                 'offday_date' => $offday_date,
             ]);
@@ -75,13 +69,11 @@ class OffdayController extends Controller
 
 
 
-    // Kullanıcı tarafındaki create metodu
     public function createUser()
     {
         return view('offday.create');
     }
 
-    // Kullanıcı tarafındaki store metodu
     public function storeUser(Request $request)
     {
         $attachmentPath = null;
@@ -104,11 +96,10 @@ class OffdayController extends Controller
 
         }
 
-        // Create the offday record
         Offday::create([
             'user_id' => Auth::id(),
             'reason' => $request->reason,
-            'document' => $attachmentPath, // Store relative path
+            'document' => $attachmentPath,
             'status' => 'pending',
             'offday_date' => $request->offday_date,
         ]);
