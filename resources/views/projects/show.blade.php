@@ -336,7 +336,7 @@
 </head>
 
 <body class="">
-    <div class="container ml-32">
+    <div class="container ml-48">
         <div class="header ml-32 py-4 flex gap-4">
 
 
@@ -374,7 +374,7 @@
 
         </div>
 
-        <div class="board ml-32">
+        <div class="board ml-40">
             <div class="column" data-status="Atandı" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
                 <h2 class="text-red-600">Atandı</h2>
                 @foreach ($project->tasks()->where('status', 'Atandı')->get() as $task)
