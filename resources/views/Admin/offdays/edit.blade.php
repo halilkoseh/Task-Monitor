@@ -58,7 +58,7 @@
 
                     <div class="flex justify-end">
                         <button type="submit"
-                            class="ml-2 bg-sky-600 text-white px-4 py-2 rounded-full shadow-sm hover:bg-indigo-700">Güncelle</button>
+                            class="ml-2 mt-4 bg-sky-600 text-white px-4 py-2 rounded-full shadow-sm hover:bg-indigo-700">Güncelle</button>
                     </div>
             </form>
         </div>

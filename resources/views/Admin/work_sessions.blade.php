@@ -13,7 +13,7 @@
 
     .main-content {
         min-height: 100vh;
-        margin-left: 24rem;
+        margin-left: 20rem;
         padding: 1rem;
         box-sizing: border-box;
         padding: 20px;
@@ -76,13 +76,21 @@
                 <h2 class="text-3xl flex items-center mt-2">
                     <i class="fas fa-clock mr-3 text-sky-500"></i> Kullanıcıların Mesai Bilgileri
                 </h2>
-                @csrf
                 <form action="{{ route('admin.filterWorkSessions') }}" method="GET" class="flex items-center space-x-2">
+                    @csrf
                     <select name="user_id"
                         class="border border-gray-300 rounded-lg py-2 px-4 focus:ring-2 focus:ring-sky-500 focus:outline-none">
-                        <option value="">Kullanıcı Seçin</option>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <option value="">Tümünü Gör</option>
+                        @php
+                            $addedUsers = [];
+                        @endphp
+                        @foreach ($workSessions as $session)
+                            @if (!in_array($session->user->id, $addedUsers))
+                                <option value="{{ $session->user->id }}">{{ $session->user->name }}</option>
+                                @php
+                                    $addedUsers[] = $session->user->id;
+                                @endphp
+                            @endif
                         @endforeach
                     </select>
                     <button type="submit"
@@ -99,122 +107,126 @@
                             <th class="py-4 px-6 border-b border-gray-300 text-left">
                                 <div class="flex items-center">
                                     <i class="fas fa-user mr-2 text-gray-600"></i>
-                                    <div>Kullanıcı</div>
+                                    <span>Kullanıcı</span>
+                                </div>
+                            </th>
+                            <th class="py-4 px-6 border-b border-gray-300 text-left">
+                                <div class="flex items-center">
+                                    <i class="fas fa-tasks mr-2 text-gray-600"></i>
+                                    <span>Görev</span>
                                 </div>
                             </th>
                             <th class="py-4 px-6 border-b border-gray-300 text-left">
                                 <div class="flex items-center">
                                     <i class="fas fa-hourglass-start mr-2 text-gray-600"></i>
-                                    <div>Mesai Başlangıcı</div>
+                                    <span>Mesai Başlangıcı</span>
                                 </div>
                             </th>
                             <th class="py-4 px-6 border-b border-gray-300 text-left">
                                 <div class="flex items-center">
                                     <i class="fas fa-hourglass-end mr-2 text-gray-600"></i>
-                                    <div>Mesai Bitişi</div>
+                                    <span>Mesai Bitişi</span>
                                 </div>
                             </th>
                             <th class="py-4 px-6 border-b border-gray-300 text-left">
                                 <div class="flex items-center">
                                     <i class="fas fa-info-circle mr-2 text-gray-600"></i>
-                                    <div>Durum</div>
+                                    <span>Durum</span>
                                 </div>
                             </th>
                             <th class="py-4 px-6 border-b border-gray-300 text-left">
                                 <div class="flex items-center">
                                     <i class="fas fa-coffee mr-2 text-gray-600"></i>
-                                    <div>Mola Başlangıcı</div>
+                                    <span>Mola Başlangıcı</span>
                                 </div>
                             </th>
                             <th class="py-4 px-6 border-b border-gray-300 text-left">
                                 <div class="flex items-center">
                                     <i class="fas fa-clock mr-2 text-gray-600"></i>
-                                    <div>Mola Bitişi</div>
+                                    <span>Mola Bitişi</span>
                                 </div>
                             </th>
                             <th class="py-4 px-6 border-b border-gray-300 text-left">
                                 <div class="flex items-center">
                                     <i class="fas fa-cogs mr-2 text-gray-600"></i>
-                                    <div>İşlemler</div>
+                                    <span>İşlemler</span>
                                 </div>
                             </th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @foreach ($workSessions as $session)
+                            <tr class="bg-white hover:bg-gray-50 transition duration-150 ease-in-out">
 
 
-                    @foreach ($workSessions as $session)
-                        <tr class="table-row bg-white hover:bg-gray-50 transition duration-150 ease-in-out">
-                            <td class="py-6 px-8 border-b border-gray-300 flex items-center space-x-6">
-                                <img src="{{ asset('images/' . $user->profilePic) }}" alt="{{ $user->name }}"
-                                    class="w-12 h-12 rounded-full object-cover border-2 border-gray-300 shadow-lg">
-                                <span class="text-lg font-semibold text-gray-800">{{ $session->user->name }}</span>
-                            </td>
+                                <td class="py-6 px-8 border-b border-gray-300">
+                                    <span class="text-lg font-semibold text-gray-800">{{ $session->user->name }}</span>
+                                </td>
 
-                            <td class="py-6 px-8 border-b border-gray-300">
-                                <p class="text-sm text-gray-600">{{ $session->created_at }}</p>
-                            </td>
 
-                            <td class="py-6 px-8 border-b border-gray-300">
-                                <p class="text-sm text-gray-600">{{ $session->end_time }}</p>
-                            </td>
-
-                            <td class="py-6 px-8 border-b border-gray-300">
-                                @php
-                                    $badgeColor =
-                                        $session->status === 'completed'
-                                            ? 'bg-green-500 text-white'
-                                            : ($session->status === 'working'
-                                                ? 'bg-purple-100 text-gray-600'
-                                                : 'bg-orange-100 text-gray-600');
-                                @endphp
-                                <span
-                                    class="inline-block px-4 py-2 text-sm font-semibold leading-tight rounded-full {{ $badgeColor }}">
-                                    {{ ucfirst($session->translated_status) }}
-                                </span>
-                            </td>
-
-                            <td class="py-6 px-8 border-b border-gray-300">
-                                @foreach ($session->breaks as $break)
-                                    <p class="py-2 pl-16 text-gray-600 text-sm">
-                                        {{ $break->created_at }}
-                                    </p>
-                                @endforeach
-                            </td>
-
-                            <td class="py-6 px-8 border-b border-gray-300">
-                                @foreach ($session->breaks as $break)
-                                    <span class="text-sm text-gray-600">{{ $break->end_time }}</span>
-                                @endforeach
-                            </td>
-
-                            <td class="py-6 px-8 border-b border-gray-300 relative">
-                                <div class="dropdown flex justify-center text-red-600">
-                                    <button class="dropdown-toggle">
-                                        <i class="fa-solid fa-file-pen"></i>
-                                    </button>
-                                    <div class="dropdown-content bg-white shadow-lg rounded-lg p-2">
-                                        <a href="{{ route('admin.editWorkSession', $session->id) }}"
-                                            class="block px-4 py-2 text-blue-600 hover:bg-blue-100 rounded">Düzenle</a>
-                                        <form action="{{ route('admin.destroyWorkSession', $session->id) }}" method="POST"
-                                            onsubmit="return confirm('Bu oturumu silmek istediğinize emin misiniz?');"
-                                            class="block mt-2">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded">
-                                                Sil
-                                            </button>
-                                        </form>
+                                <td class="py-6 px-8 border-b border-gray-300">
+                                    <span class="text-sm text-gray-600">{{ $session->user->gorev }}</span>
+                                </td>
+                                <td class="py-6 px-8 border-b border-gray-300">
+                                    <p class="text-sm text-gray-600">{{ $session->created_at }}</p>
+                                </td>
+                                <td class="py-6 px-8 border-b border-gray-300">
+                                    <p class="text-sm text-gray-600">{{ $session->end_time }}</p>
+                                </td>
+                                <td class="py-6 px-8 border-b border-gray-300">
+                                    @php
+                                        $badgeColor = match ($session->status) {
+                                            'completed' => 'bg-green-500 text-white',
+                                            'working' => 'bg-purple-100 text-gray-600',
+                                            default => 'bg-orange-100 text-gray-600',
+                                        };
+                                    @endphp
+                                    <span
+                                        class="inline-block px-4 py-2 text-sm font-semibold leading-tight rounded-full {{ $badgeColor }}">
+                                        {{ ucfirst($session->translated_status) }}
+                                    </span>
+                                </td>
+                                <td class="py-6 px-8 border-b border-gray-300">
+                                    @foreach ($session->breaks as $break)
+                                        <p class="py-2 text-gray-600 text-sm">
+                                            {{ $break->created_at }}
+                                        </p>
+                                    @endforeach
+                                </td>
+                                <td class="py-6 px-8 border-b border-gray-300">
+                                    @foreach ($session->breaks as $break)
+                                        <span class="text-sm text-gray-600">{{ $break->end_time }}</span>
+                                    @endforeach
+                                </td>
+                                <td class="py-6 px-8 border-b border-gray-300 relative">
+                                    <div class="dropdown flex justify-center text-red-600">
+                                        <button class="dropdown-toggle">
+                                            <i class="fa-solid fa-file-pen"></i>
+                                        </button>
+                                        <div class="dropdown-content bg-white shadow-lg rounded-lg p-2">
+                                            <a href="{{ route('admin.editWorkSession', $session->id) }}"
+                                                class="block px-4 py-2 text-blue-600 hover:bg-blue-100 rounded">Düzenle</a>
+                                            <form action="{{ route('admin.destroyWorkSession', $session->id) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Bu oturumu silmek istediğinize emin misiniz?');"
+                                                class="block mt-2">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded">
+                                                    Sil
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
-
             </div>
         </div>
+
     </div>
 
     <script>

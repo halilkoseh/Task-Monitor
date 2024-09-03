@@ -120,6 +120,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.contacts.index') }}"
+                        class="sidebar-item flex items-center text-lg text-gray-600">
+                        <i class="fa-solid fa-life-ring mr-3"></i>
+                        Destek Talepleri
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.reports.index') }}"
                         class="sidebar-item flex items-center text-lg text-gray-600">
                         <i class="fa-regular fa-copy mr-3"></i>
@@ -390,7 +397,8 @@
                     </div>
                 @endforeach
             </div>
-            <div class="column" data-status="basladi" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+            <div class="column" data-status="basladi" ondragover="event.preventDefault()"
+                ondrop="handleDrop(event)">
                 <h2 class="text-yellow-600">Başladı</h2>
                 @foreach ($project->tasks()->where('status', 'basladi')->get() as $task)
                     <div class="task-card bg-yellow-100" draggable="true" data-task-id="{{ $task->id }}"

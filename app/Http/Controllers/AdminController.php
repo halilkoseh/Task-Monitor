@@ -27,7 +27,7 @@ class AdminController extends Controller
 
         $userTasks = User::with('tasks')->get();
 
-        
+
         $tasks = Task::all();
 
         $loggedInUser = auth()->user();
@@ -36,7 +36,7 @@ class AdminController extends Controller
             'users' => $users,
             'userTasks' => $userTasks,
             'tasks' => $tasks,
-            'loggedInUser' => $loggedInUser,  
+            'loggedInUser' => $loggedInUser,
         ]);
     }
 
@@ -212,12 +212,7 @@ class AdminController extends Controller
                 'project_id' => $request->project,
             ]);
 
-            $user = User::find($userId);
-            if ($user && $user->email) {
-                Mail::to($user->email)->send(new TaskAssigned($task, $user));
-            } else {
-                return redirect()->back()->with('error', 'Kullanıcı e-posta adresi bulunamadı!');
-            }
+
         }
 
         return redirect()->back()->with('success', 'Görevler başarıyla atandı!');
@@ -369,7 +364,7 @@ class AdminController extends Controller
 
     public function contactindex()
     {
-        $contacts = Contact::with('user')->latest()->paginate(10); 
+        $contacts = Contact::with('user')->latest()->paginate(10);
         return view('admin.support', compact('contacts'));
     }
 
