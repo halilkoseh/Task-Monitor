@@ -115,7 +115,7 @@
 
 
 
-    <div id="popup-message" class="fixed inset-0 flex items-center justify-end bg-gray-900 bg-opacity-70 hidden">
+    <div id="popup-message" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 hidden">
         <div class="bg-white p-8 rounded-lg shadow-2xl max-w-sm w-full">
             <div class="flex items-center justify-center mb-4">
                 <i class="fa-solid fa-thumbs-up text-green-500 text-3xl"></i>
@@ -143,16 +143,19 @@
 
     <script>
         document.getElementById('contact-form').addEventListener('submit', function(event) {
-            event.preventDefault(); 
+            event.preventDefault();
 
             var popup = document.getElementById('popup-message');
             popup.classList.remove('hidden');
 
             setTimeout(function() {
                 popup.classList.add('hidden');
-                // Formu gönder
-                event.target.submit(); /
+                event.target.submit();
             }, 5000);
         });
+
+        function closePopup() {
+            document.getElementById('popup-message').classList.add('hidden');
+        }
     </script>
 @endsection

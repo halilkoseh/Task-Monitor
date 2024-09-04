@@ -388,8 +388,7 @@
                         <div class="task-info">Proje İsmi: {{ $project->name }}</div>
                         <div class="task-info">
                             Ek Materyaller: @if ($task->attachments)
-                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı
-                                    Görüntüle</a>
+                                Var
                             @else
                                 Yok
                             @endif
@@ -411,8 +410,7 @@
                         <div class="task-info">Proje İsmi: {{ $project->name }}</div>
                         <div class="task-info">
                             Ek Materyaller: @if ($task->attachments)
-                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı
-                                    Görüntüle</a>
+                            Var
                             @else
                                 Yok
                             @endif
@@ -434,8 +432,7 @@
                         <div class="task-info">Proje İsmi: {{ $project->name }}</div>
                         <div class="task-info">
                             Ek Materyaller: @if ($task->attachments)
-                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı
-                                    Görüntüle</a>
+                            Var
                             @else
                                 Yok
                             @endif
@@ -457,8 +454,7 @@
                         <div class="task-info">Proje İsmi: {{ $project->name }}</div>
                         <div class="task-info">
                             Ek Materyaller: @if ($task->attachments)
-                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı
-                                    Görüntüle</a>
+                            Var
                             @else
                                 Yok
                             @endif
@@ -480,8 +476,7 @@
                         <div class="task-info">Proje İsmi: {{ $project->name }}</div>
                         <div class="task-info">
                             Ek Materyaller: @if ($task->attachments)
-                                <a href="{{ asset('storage/' . $task->attachments) }}" target="_blank">Dosyayı
-                                    Görüntüle</a>
+                            Var
                             @else
                                 Yok
                             @endif

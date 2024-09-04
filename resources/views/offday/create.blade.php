@@ -1,7 +1,7 @@
 @extends('userLayout.app')
 
 @section('content')
-    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg mt-64">
+    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg mt-32 ">
 
         <div class="mt-6 mb-6">
             <a href="{{ route('offday.index') }}" class="text-sky-500 hover:text-blue-800 transition-colors duration-200">

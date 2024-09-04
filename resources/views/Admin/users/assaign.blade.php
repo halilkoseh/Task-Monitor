@@ -6,12 +6,24 @@
 </style>
 
 @section('content')
-    <div id="mainContent" class="flex-1 p-8 mt-8">
-        <h1 class="text-3xl font-semibold text-center mb-8 text-gray-900">Görev Atama</h1>
+    <div id="mainContent" class="flex-1 p-8 mt-8 ml-32 ">
 
-        <form class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg space-y-6" action="{{ route('admin.tasks.store') }}"
+
+
+        <form class=" mx-auto bg-white p-8 rounded-lg shadow-lg space-y-6 w-1/2" action="{{ route('admin.tasks.store') }}"
             method="POST" enctype="multipart/form-data" id="taskForm">
             @csrf
+
+            <h1 class="text-3xl font-semibold text-center mb-8 text-gray-900">Görev Atama</h1>
+
+            <div class="mt-6 mb-6">
+                <a href="{{ route('mission.index') }}" class="text-sky-500 hover:text-blue-800">
+                    <i class="fa-solid fa-chevron-left"></i> Geri Dön
+                </a>
+            </div>
+
+
+            
 
             <div class="mb-4">
                 <label for="taskTitle" class="block text-gray-700 font-bold mb-2">Görev Başlığı</label>
@@ -70,7 +82,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="attachments" class="block text-gray-700 font-bold mb-2">Ek Materyaller (.zip)</label>
+                <label for="attachments" class="block text-red-700 font-bold mb-2">Ek Materyaller (.zip)</label>
                 <input type="file" id="attachments" name="attachments"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     accept=".zip">
