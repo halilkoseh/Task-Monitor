@@ -44,7 +44,7 @@
                 url: '/tasks/status-counts',
                 method: 'GET',
                 success: function(data) {
-                    var statuses = ['Atandı', 'basladi', 'Devam Ediyor', 'test ediliyor', 'Tamamlandı'];
+                    var statuses = ['Atandı', 'basladi', 'Devam Ediyor', 'Test Ediliyor', 'Tamamlandı'];
                     var counts = statuses.map(status => data[status] || 0);
                     var totalCount = counts.reduce((a, b) => a + b, 0);
 
