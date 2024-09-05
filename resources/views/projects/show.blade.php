@@ -350,7 +350,7 @@
                 <button onclick="window.location.href='{{ route('admin.users.assaign') }}'"
                     class="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-600 transition-colors duration-300">
                     <i class="fa-solid fa-list-check"></i>
-                    <span>Task Ata</span>
+                    <span>Görev Ata</span>
                 </button>
 
                 <button onclick="window.location.href='{{ route('mission.index') }}'"
@@ -396,10 +396,10 @@
                     </div>
                 @endforeach
             </div>
-            <div class="column" data-status="basladi" ondragover="event.preventDefault()"
+            <div class="column" data-status="Başladı" ondragover="event.preventDefault()"
                 ondrop="handleDrop(event)">
                 <h2 class="text-yellow-600">Başladı</h2>
-                @foreach ($project->tasks()->where('status', 'basladi')->get() as $task)
+                @foreach ($project->tasks()->where('status', 'Başladı')->get() as $task)
                     <div class="task-card bg-yellow-100" draggable="true" data-task-id="{{ $task->id }}"
                         ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
                         <div class="task-title">{{ $task->title }}</div>

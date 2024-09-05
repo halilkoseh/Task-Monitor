@@ -391,7 +391,7 @@
                 </a>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 task-board text-gray-600">
-                @foreach (['Atandı', 'basladi', 'Devam Ediyor', 'Test Ediliyor', 'Tamamlandı'] as $index => $status) @php $statusCount = $userTasks->pluck('tasks')->flatten()->where('status', $status)->count(); @endphp
+                @foreach (['Atandı', 'Başladı', 'Devam Ediyor', 'Test Ediliyor', 'Tamamlandı'] as $index => $status) @php $statusCount = $userTasks->pluck('tasks')->flatten()->where('status', $status)->count(); @endphp
 
                 <div
                     class="p-4 rounded-lg shadow-lg min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-white"
