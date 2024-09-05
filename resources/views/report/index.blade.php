@@ -44,7 +44,7 @@
                 url: '/tasks/status-counts',
                 method: 'GET',
                 success: function(data) {
-                    var statuses = ['Atandı', 'basladi', 'Devam Ediyor', 'Test Ediliyor', 'Tamamlandı'];
+                    var statuses = ['Atandı', 'basladi', 'Devam Ediyor', 'test ediliyor', 'Tamamlandı'];
                     var counts = statuses.map(status => data[status] || 0);
                     var totalCount = counts.reduce((a, b) => a + b, 0);
 
@@ -70,16 +70,16 @@
                                     'rgba(255, 165, 0, 1)', // Test Ediliyor - bg-orange-500
                                     'rgba(14, 165, 233, 1)', // Tamamlandı - bg-sky-500
                                 ],
-                                borderWidth: 3, 
-                                borderRadius: 8, 
-                                barThickness: 50 
+                                borderWidth: 3,
+                                borderRadius: 8,
+                                barThickness: 50
                             }]
                         },
                         options: {
                             responsive: true,
                             plugins: {
                                 legend: {
-                                    display: false, 
+                                    display: false,
                                 },
                                 tooltip: {
                                     callbacks: {
