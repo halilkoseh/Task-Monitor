@@ -440,7 +440,7 @@
                     </div>
                 @endforeach
             </div>
-            <div class="column" data-status="test ediliyor" ondragover="event.preventDefault()"
+            <div class="column" data-status="Test Ediliyor" ondragover="event.preventDefault()"
                 ondrop="handleDrop(event)">
                 <h2 class="text-orange-600">Test Ediliyor</h2>
                 @foreach ($project->tasks()->where('status', 'Test Ediliyor')->get() as $task)
