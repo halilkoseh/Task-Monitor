@@ -56,15 +56,15 @@
                     <label for="email" class="block text-gray-700 font-medium">Konu</label>
                     <input type="text" id="email" name="email"
                         class="mt-1 block w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                        placeholder="Email Adresinizi Giriniz">
+                        placeholder="Konu Giriniz">
                 </div>
                 <div>
                     <label for="message" class="block text-gray-700 font-medium">Mesajınız</label>
-                    <textarea id="message" name="message" rows="4"
+                    <textarea id="message" name="message" rows="4" required
                         class="mt-1 block w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                         placeholder="Mesajınızı Buraya Yazınız"></textarea>
                 </div>
-                <button type="submit" id="submit-btn"
+                <button type="submit" id="submit-btn" required
                     class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                     Gönder
                 </button>

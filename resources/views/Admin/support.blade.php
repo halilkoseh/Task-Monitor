@@ -211,7 +211,7 @@
                                 </span>
                             </td>
                             <td>{{ $contact->email }}</td>
-                            <td>{{ $contact->message }}</td>
+                            <td>{{ \Illuminate\Support\Str::limit($contact->message, 40, '...') }}</td>
                             <td>{{ $contact->created_at->format('d-m-Y H:i') }}</td>
                             <td class="relative">
                                 <div class="dropdown flex justify-center text-blue-600">

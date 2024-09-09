@@ -212,6 +212,12 @@
     .badge-light-green-100 {
         background-color: #dcedc8;
     }
+
+    #suggestions {
+    z-index: 9999; /* Öneri kutusunu en üste getirmek için yüksek bir z-index değeri */
+    position: absolute; /* Zaten tanımlı, öneri kutusunu sabitlemek için kullanılır */
+}
+
 </style>
 
 
@@ -225,6 +231,7 @@
                 class="search-input py-2 px-4 w-full border border-sky-500 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
             />
             <i class="fas fa-search search-icon absolute right-3 top-1/2 transform -translate-y-1/2"></i>
+           
             <div id="suggestions" class="suggestions absolute bg-white border border-gray-300 rounded-lg mt-1 w-full hidden"></div>
         </div>
 
