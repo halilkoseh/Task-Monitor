@@ -1,7 +1,7 @@
 # Task Monitor: İş Yönetiminizi Kolaylaştırın!
 
 Projemin ayrıntıları için: <br>
-𝙝𝙩𝙩𝙥𝙨://𝙬𝙬𝙬.𝙘𝙖𝙣𝙫𝙖.𝙘𝙤𝙢/𝙙𝙚𝙨𝙞𝙜𝙣/𝘿𝘼𝙂𝙋5𝘾𝙬𝙖𝙕𝙠𝙜/𝙇𝙧1𝙃𝙏𝙇𝙒𝘾𝘼𝙬𝙕𝙆6𝙘𝙟𝙠𝙐𝙬95𝙔𝘼/𝙚𝙙𝙞𝙩?𝙪𝙩𝙢_𝙘𝙤𝙣𝙩𝙚𝙣𝙩=𝘿𝘼𝙂𝙋5𝘾𝙬𝙖𝙕𝙠𝙜&𝙪𝙩𝙢_𝙘𝙖𝙢𝙥𝙖𝙞𝙜𝙣=𝙙𝙚𝙨𝙞𝙜𝙣𝙨𝙝𝙖𝙧𝙚&𝙪𝙩𝙢_𝙢𝙚𝙙𝙞𝙪𝙢=𝙡𝙞𝙣𝙠2&𝙪𝙩𝙢_𝙨𝙤𝙪𝙧𝙘𝙚=𝙨𝙝𝙖𝙧𝙚𝙗𝙪𝙩𝙩𝙤𝙣
+https://www.canva.com/design/DAGP5CwaZkg/Lr1HTLWCAwZK6cjkUw95YA/edit?utm_content=DAGP5CwaZkg&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 Task Monitor ile işlerinizi ve projelerinizi daha verimli bir şekilde yönetin. Kullanıcı dostu arayüzü ve kapsamlı özellikleriyle Task Monitor, iş takibinde yeni bir çağ başlatıyor.
 
