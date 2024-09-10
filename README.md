@@ -1,9 +1,14 @@
 # Task Monitor: İş Yönetiminizi Kolaylaştırın!
 
 Projemin ayrıntıları için: <br>
+Admin Paneli: <br>
 https://www.canva.com/design/DAGP5CwaZkg/Lr1HTLWCAwZK6cjkUw95YA/edit?utm_content=DAGP5CwaZkg&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
-Task Monitor ile işlerinizi ve projelerinizi daha verimli bir şekilde yönetin. Kullanıcı dostu arayüzü ve kapsamlı özellikleriyle Task Monitor, iş takibinde yeni bir çağ başlatıyor.
+<br>Kullanıcı Paneli: <br>
+https://www.canva.com/design/DAGQXpB8r1c/je-dSqIGd6ViU-s9adDRlQ/edit?utm_content=DAGQXpB8r1c&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
+
+<br>Task Monitor ile işlerinizi ve projelerinizi daha verimli bir şekilde yönetin. Kullanıcı dostu arayüzü ve kapsamlı özellikleriyle Task Monitor, iş takibinde yeni bir çağ başlatıyor.
 
 ## Öne Çıkan Özellikler
 
