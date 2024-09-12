@@ -157,7 +157,8 @@
 
     <div class="content-container w-full">
         <div class="container mx-auto p-4">
-            <h2 class="text-2xl font-bold mb-4 ml-4"><i class="fa-solid fa-list-check" style="color: #0BA5E9;"></i> Atanmış Tasklar
+            <h2 class="text-2xl font-bold mb-4 ml-4"><i class="fa-solid fa-list-check" style="color: #0BA5E9;"></i> Atanmış
+                Tasklar
             </h2>
             @if (session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -231,11 +232,13 @@
                                 'bg-[#dcedc8] text-gray-600',
                                 'bg-sky-100 text-gray-600',
                             ];
+                            $today = now()->format('Y-m-d');
                         @endphp
                         @foreach ($tasks as $index => $task)
                             @php
                                 $user = $task->user;
                                 $badgeColor = $badgeColors[$index % count($badgeColors)];
+                                $isOverdue = $task->due_date < $today && $task->status !== 'Tamamlandı';
                             @endphp
                             <tr>
                                 <td class="icon-container">
@@ -259,8 +262,14 @@
                                     <p>{{ $task->start_date }} / {{ $task->due_date }}</p>
                                 </td>
                                 <td>
+                                    @php
+                                        $taskStatus = $isOverdue ? 'Teslim Edilmedi, ' . $task->status : $task->status;
+                                    @endphp
+
                                     <span
-                                        class="inline-block rounded-full px-2 py-1 text-sm font-semibold {{ $badgeColor }}">{{ $task->status }}</span>
+                                        class="inline-block rounded-full px-2 py-1 text-sm font-semibold {{ $isOverdue ? 'bg-red-500 text-white animate-pulse' : $badgeColor }}">
+                                        {{ $taskStatus }}
+                                    </span>
                                 </td>
                                 <td>
                                     @if ($task->attachments)
@@ -281,6 +290,7 @@
                             </tr>
                         @endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>
