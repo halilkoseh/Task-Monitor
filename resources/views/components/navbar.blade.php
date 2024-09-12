@@ -72,6 +72,8 @@
 </head>
 
 <body>
+
+
     <div class="lg:hidden p-4 relative">
         <span class="sidebar-toggle text-gray-600">
             <i class="fas fa-bars"></i>
@@ -126,13 +128,44 @@
                     İzin Takip
                 </a>
             </li>
+            @php
+                use App\Models\Contact;
+                // Bildirimleri sorgulama
+                $contacts = Contact::all();
+            @endphp
+
             <li>
                 <a href="{{ route('admin.contacts.index') }}"
                     class="sidebar-item flex items-center text-lg text-gray-600">
                     <i class="fa-solid fa-life-ring mr-3"></i>
-                    Destek Talepleri
+                    Destek Talepleri (<span id="new-contacts-count">{{ $contacts->count() }}</span>)
                 </a>
             </li>
+
+
+
+
+            <script>
+                window.onload = function() {
+                    let totalContactsCount = {{ $contacts->count() }};
+                    let lastSeenCount = localStorage.getItem('last_seen_contacts_count') || 0;
+
+                    let currentPage = window.location.pathname;
+
+                    if (currentPage === '/admin/contacts') {
+                        // Eğer admin/contacts sayfasındaysa, bildirim sayısını sıfırla
+                        document.getElementById('new-contacts-count').textContent = 0;
+                        localStorage.setItem('last_seen_contacts_count', totalContactsCount);
+                    } else {
+                        // Eğer admin/contacts sayfasında değilse, sabit bildirim sayısını göster
+                        document.getElementById('new-contacts-count').textContent = totalContactsCount - lastSeenCount;
+                    }
+                };
+            </script>
+
+
+
+
             <li>
                 <a href="{{ route('admin.reports.index') }}"
                     class="sidebar-item flex items-center text-lg text-gray-600">
