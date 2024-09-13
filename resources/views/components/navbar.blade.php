@@ -128,6 +128,9 @@
                     İzin Takip
                 </a>
             </li>
+
+
+
             @php
                 use App\Models\Contact;
                 // Bildirimleri sorgulama
@@ -138,30 +141,35 @@
                 <a href="{{ route('admin.contacts.index') }}"
                     class="sidebar-item flex items-center text-lg text-gray-600">
                     <i class="fa-solid fa-life-ring mr-3"></i>
-                    Destek Talepleri (<span id="new-contacts-count">{{ $contacts->count() }}</span>)
+                    Destek Talepleri
+                    <span id="new-contacts-count" class="ml-2  px-2 py-1 rounded text-[#0BA5E9]">
+                        {{ $contacts->count() > 0 ? $contacts->count() : '' }}
+                    </span>
                 </a>
             </li>
-
-
-
 
             <script>
                 window.onload = function() {
                     let totalContactsCount = {{ $contacts->count() }};
                     let lastSeenCount = localStorage.getItem('last_seen_contacts_count') || 0;
-
                     let currentPage = window.location.pathname;
 
                     if (currentPage === '/admin/contacts') {
                         // Eğer admin/contacts sayfasındaysa, bildirim sayısını sıfırla
-                        document.getElementById('new-contacts-count').textContent = 0;
+                        document.getElementById('new-contacts-count').textContent = '';
                         localStorage.setItem('last_seen_contacts_count', totalContactsCount);
                     } else {
                         // Eğer admin/contacts sayfasında değilse, sabit bildirim sayısını göster
-                        document.getElementById('new-contacts-count').textContent = totalContactsCount - lastSeenCount;
+                        let unreadCount = totalContactsCount - lastSeenCount;
+                        if (unreadCount > 0) {
+                            document.getElementById('new-contacts-count').textContent = unreadCount;
+                        } else {
+                            document.getElementById('new-contacts-count').textContent = '';
+                        }
                     }
                 };
             </script>
+
 
 
 
