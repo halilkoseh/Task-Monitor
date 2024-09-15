@@ -136,7 +136,7 @@
         setTimeout(function () {
             popup.classList.add("hidden");
             event.target.submit();
-        }, 5000);
+        }, 1000);
     });
 
     function closePopup() {
