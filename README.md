@@ -64,3 +64,6 @@ Katkıda bulunmak isterseniz, lütfen önce [CONTRIBUTING.md](CONTRIBUTING.md) d
 
 
 Task Monitor ile iş yönetiminizi bir üst seviyeye taşıyın.
+
+
+https://drive.google.com/file/d/1BsPdMEqTAeg_43dqQTvWde7r6gSANEGs/view?usp=sharing
