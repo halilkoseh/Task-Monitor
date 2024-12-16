@@ -1,6 +1,10 @@
 # Task Monitor: İş Yönetiminizi Kolaylaştırın!
 
 Projemin ayrıntıları için: <br>
+
+https://drive.google.com/file/d/1BsPdMEqTAeg_43dqQTvWde7r6gSANEGs/view?usp=sharing
+
+
 Admin Paneli: <br>
 https://www.canva.com/design/DAGP5CwaZkg/Lr1HTLWCAwZK6cjkUw95YA/edit?utm_content=DAGP5CwaZkg&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
